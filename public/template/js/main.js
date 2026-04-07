@@ -34,37 +34,32 @@ $(function () {
 
     ***************************/
 
-    const preloaderTimeline = gsap.timeline();
+    const hidePreloader = () => {
+        if (!$(".mil-preloader").length) {
+            return;
+        }
 
-    preloaderTimeline
-        .to(".mil-preloader", {
-            height: 0,
-            ease: "sine",
-            duration: .4,
-            delay: '2.3',
-        })
-        .to(".mil-preloader .mil-load", {
-            width: 'calc(100% - 30px)',
-            ease: "linear",
-            duration: '1.3',
-            delay: '-2.3',
-        })
-        .to(".mil-preloader .mil-load", {
-            opacity: 0,
-            ease: "sine",
-            duration: '0.4',
-            delay: '-0.6',
-        })
-        .to(".mil-preloader p", {
-            scale: .5,
-            opacity: 0,
-            ease: "sine",
-            duration: .4,
-            delay: '-0.7',
-            onComplete: function () {
-                ScrollTrigger.refresh();
-            },
-        })
+        gsap.timeline()
+            .to(".mil-preloader", {
+                autoAlpha: 0,
+                ease: "sine.out",
+                duration: 0.2,
+            })
+            .set(".mil-preloader", {
+                display: "none",
+                onComplete: function () {
+                    ScrollTrigger.refresh();
+                },
+            });
+    };
+
+    if (document.readyState === "complete") {
+        hidePreloader();
+    } else {
+        window.addEventListener("load", hidePreloader, {
+            once: true
+        });
+    }
 
     /***************************
 

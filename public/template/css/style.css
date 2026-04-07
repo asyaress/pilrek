@@ -822,7 +822,9 @@ preloader
 .mil-preloader {
   width: 100vw;
   height: 100vh;
-  background-color: rgb(242, 116, 87);
+  background-color: rgba(12, 18, 30, 0.94);
+  -webkit-backdrop-filter: blur(8px);
+          backdrop-filter: blur(8px);
   position: fixed;
   z-index: 999;
   top: 0;
@@ -834,14 +836,30 @@ preloader
   justify-content: center;
   align-items: center;
 }
+.mil-preloader:before {
+  content: "";
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08) url("../img/logo.png") center/28px 28px no-repeat;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  animation: mil-preloader-spin 0.8s linear infinite;
+}
 .mil-preloader .mil-load {
-  position: absolute;
-  bottom: 15px;
-  left: 15px;
-  background-color: rgb(255, 255, 255);
-  height: 5px;
-  width: 0;
-  border-radius: 3px;
+  display: none;
+}
+.mil-preloader p {
+  display: none;
+}
+
+@keyframes mil-preloader-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* -------------------------------------------
