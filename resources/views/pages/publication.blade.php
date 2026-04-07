@@ -23,58 +23,9 @@
         <div class="progress-wrap active-progress"></div>
 
         <!-- top panel end -->
-        <div class="mil-top-panel">
-            <div class="container">
-                <a href="{{ route('home') }}" class="mil-logo">
-                    <img src="{{ asset('template/img/logo.png') }}" alt="Plax" width="83" height="32">
-                </a>
-                <nav class="mil-top-menu">
-                    <ul>
-                        <li class="mil-has-children">
-                            <a href="javascript:void(0)">Home</a>
-                            <ul>
-                                <li><a href="{{ route('home') }}">Type 1</a></li>
-                                </ul>
-                        </li>
-                        <li>
-                            <a href="{{ route('about') }}">About</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('services') }}">Services</a>
-                        </li>
-                        <li class="mil-has-children mil-active">
-                            <a href="javascript:void(0)">Blog</a>
-                            <ul>
-                                <li><a href="{{ route('blog') }}">Blog list</a></li>
-                                <li><a href="{{ route('publication') }}">Blog details</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="{{ route('contact') }}">Contact</a>
-                        </li>
-                        <li class="mil-has-children">
-                            <a href="javascript:void(0)">Pages</a>
-                            <ul>
-                                <li><a href="{{ route('career') }}">Career</a></li>
-                                <li><a href="{{ route('career.details') }}">Career details</a></li>
-                                <li><a href="{{ route('price') }}">Pricing</a></li>
-                                <li><a href="{{ route('register') }}">Register</a></li>
-                                
-                            </ul>
-                        </li>
-                    </ul>
-                </nav>
-                <div class="mil-menu-buttons">
-                    <a href="{{ route('register') }}" class="mil-btn mil-sm">Log in</a>
-                    <div class="mil-menu-btn">
-                        <span></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- top panel end -->
+    @include('partials.navbar', ['activePage' => 'informasi'])
 
-        <!-- content -->
+
         <div id="smooth-content">
 
             <!-- banner -->
@@ -293,79 +244,7 @@
                 </div>
             </div>
             <!-- publication end -->
-
-            <!-- footer -->
-            <footer class="mil-footer-with-bg mil-p-160-0">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xl-3">
-                            <a href="javascript:void(0)" class="mil-footer-logo mil-mb-60">
-                                <img src="{{ asset('template/img/logo-2.png') }}" alt="Plax" width="28" height="32">
-                            </a>
-                        </div>
-                        <div class="col-xl-3 mil-mb-60">
-                            <h6 class="mil-mb-60">Usefull Links</h6>
-                            <ul class="mil-footer-list">
-                                <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="{{ route('home') }}">Home</a>
-                                </li>
-                                <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="{{ route('about') }}">About Us</a>
-                                </li>
-                                <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="{{ route('contact') }}">Contact Us</a>
-                                </li>
-                                <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="{{ route('services') }}">Services</a>
-                                </li>
-                                <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="{{ route('price') }}">Pricing</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-xl-3 mil-mb-60">
-                            <h6 class="mil-mb-60">Help</h6>
-                            <ul class="mil-footer-list">
-                                <li class="mil-text-m mil-soft mil-mb-15">
-                                    999 Rue du Cherche-Midi, 7755500666 Paris, <br>France
-                                </li>
-                                <li class="mil-text-m mil-soft mil-mb-15">
-                                    +001 (808) 555-0111
-                                </li>
-                                <li class="mil-text-m mil-soft mil-mb-15">
-                                    support@plax.network
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-xl-3 mil-mb-80">
-                            <h6 class="mil-mb-60">Newsletter</h6>
-                            <p class="mil-text-xs mil-soft mil-mb-15">Subscribe to get the latest news form us</p>
-                            <form class="mil-subscripe-form-footer">
-                                <input class="mil-input" type="email" placeholder="Email">
-                                <button type="submit"><i class="far fa-envelope-open mil-dark"></i></button>
-                                <div class="mil-checkbox-frame mil-mt-15">
-                                    <div class="mil-checkbox">
-                                        <input type="checkbox" id="checkbox-2" checked>
-                                        <label for="checkbox-2"></label>
-                                    </div>
-                                    <p class="mil-text-xs mil-soft">Subscribe to get the latest news</p>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="mil-footer-bottom">
-                        <div class="row">
-                            <div class="col-xl-6">
-                                <p class="mil-text-s mil-soft">Â© 2024 Plax Finance & Fintech Design</p>
-                            </div>
-                            <div class="col-xl-6">
-                                <p class="mil-text-s mil-text-right mil-sm-text-left mil-soft">Developed by <a href="https://bslthemes.com" target="_blank">bslthemes</a></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </footer>
-            <!-- footer end -->
+        @include('partials.footer')
 
         </div>
         <!-- content end -->
@@ -390,3 +269,5 @@
     <!-- plax js -->
     <script src="js/main.js"></script>
 @endsection
+
+

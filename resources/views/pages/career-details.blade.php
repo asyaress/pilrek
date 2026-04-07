@@ -1,229 +1,218 @@
 ﻿@extends('layouts.app')
 
-@section('title', 'Career Details')
+@section('title', 'Calon Rektor Detail')
 
 @section('content')
-<!-- wrapper -->
-    <div id="smooth-wrapper" class="mil-wrapper">
+<style>
+    .pilrek-candidate-photo {
+        padding: 22px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 32px;
+        background: linear-gradient(180deg, rgba(19, 26, 39, 0.96) 0%, rgba(14, 19, 31, 0.96) 100%);
+        box-shadow: 0 30px 70px rgba(0, 0, 0, 0.16);
+    }
 
-        <!-- preloader -->
-        <div class="mil-preloader">
-            <div class="mil-load"></div>
-            <p class="h2 mil-mb-30"><span class="mil-light mil-counter" data-number="100">100</span><span class="mil-light">%</span></p>
-        </div>
-        <!-- preloader end -->
+    .pilrek-candidate-photo img {
+        width: 100%;
+        border-radius: 22px;
+        display: block;
+    }
 
-        <!-- scroll progress -->
-        <div class="mil-progress-track">
-            <div class="mil-progress"></div>
-        </div>
-        <!-- scroll progress end -->
+    .pilrek-profile-card {
+        padding: 36px 34px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 28px;
+        background: linear-gradient(180deg, rgba(19, 26, 39, 0.96) 0%, rgba(14, 19, 31, 0.96) 100%);
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.14);
+    }
 
-        <!-- back to top -->
-        <div class="progress-wrap active-progress"></div>
+    .pilrek-profile-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
 
-        <!-- top panel end -->
-        <div class="mil-top-panel">
-            <div class="container">
-                <a href="{{ route('home') }}" class="mil-logo">
-                    <img src="{{ asset('template/img/logo.png') }}" alt="Plax" width="83" height="32">
-                </a>
-                <nav class="mil-top-menu">
-                    <ul>
-                        <li class="mil-has-children">
-                            <a href="javascript:void(0)">Home</a>
-                            <ul>
-                                <li><a href="{{ route('home') }}">Type 1</a></li>
-                                </ul>
-                        </li>
-                        <li>
-                            <a href="{{ route('about') }}">About</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('services') }}">Services</a>
-                        </li>
-                        <li class="mil-has-children">
-                            <a href="javascript:void(0)">Blog</a>
-                            <ul>
-                                <li><a href="{{ route('blog') }}">Blog list</a></li>
-                                <li><a href="{{ route('publication') }}">Blog details</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="{{ route('contact') }}">Contact</a>
-                        </li>
-                        <li class="mil-has-children mil-active">
-                            <a href="javascript:void(0)">Pages</a>
-                            <ul>
-                                <li><a href="{{ route('career') }}">Career</a></li>
-                                <li><a href="{{ route('career.details') }}">Career details</a></li>
-                                <li><a href="{{ route('price') }}">Pricing</a></li>
-                                <li><a href="{{ route('register') }}">Register</a></li>
-                                
-                            </ul>
-                        </li>
-                    </ul>
-                </nav>
-                <div class="mil-menu-buttons">
-                    <a href="{{ route('register') }}" class="mil-btn mil-sm">Log in</a>
-                    <div class="mil-menu-btn">
-                        <span></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- top panel end -->
+    .pilrek-profile-list li {
+        display: grid;
+        grid-template-columns: minmax(180px, 220px) 1fr;
+        gap: 18px;
+        padding: 16px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
 
-        <!-- content -->
-        <div id="smooth-content">
+    .pilrek-profile-list li:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
 
-            <!-- banner -->
-            <div class="mil-banner mil-banner-inner mil-dissolve">
-                <div class="container">
-                    <div class="row align-items-center justify-content-center">
-                        <div class="col-xl-8">
-                            <div class="mil-banner-text mil-text-center">
-                                <div class="mil-text-m mil-mb-20">Job Information</div>
-                                <h1 class="mil-mb-60">Frontend Software Engineer</h1>
-                                <ul class="mil-breadcrumbs mil-pub-info mil-center">
-                                    <li><span>Software Engineering</span></li>
-                                    <li><a href="{{ route('about') }}">Office work</a></li>
-                                    <li><a href="{{ route('about') }}">Paris, France</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- banner end -->
+    .pilrek-profile-label {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 14px;
+        letter-spacing: 0.04em;
+    }
 
-            <!-- vacancie -->
-            <div class="mil-blog-list mil-p-0-160">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-xl-9">
-                            <h4 class="mil-mb-30 mil-up">Description:</h4>
-                            <p class="mil-text-m mil-soft mil-mb-60 mil-up">As a Frontend Software Engineer at Plax, you will be responsible for designing, developing and implementing attractive and effective user interfaces. You will work closely with backend designers and developers to ensure a smooth and enjoyable user experience.</p>
-                            <h4 class="mil-mb-30 mil-up">Your homework:</h4>
-                            <ul class="mil-text-mist mil-text-m mil-soft mil-mb-60">
-                                <li class="mil-up">Develop interactive and responsive user interfaces.</li>
-                                <li class="mil-up">Collaborate with designers to translate designs to code.</li>
-                                <li class="mil-up">Optimize applications to ensure fast and efficient performance.</li>
-                                <li class="mil-up">Collaborate with the backend team to integrate functionalities.</li>
-                                <li class="mil-up">Collaborate with the backend team to integrate functionalities.</li>
-                            </ul>
-                            <h4 class="mil-mb-30 mil-up">Requirements:</h4>
-                            <ul class="mil-text-mist mil-check mil-text-m mil-soft mil-mb-60">
-                                <li class="mil-up">Proven experience in frontend software development.</li>
-                                <li class="mil-up">Solid knowledge of HTML, CSS and JavaScript.</li>
-                                <li class="mil-up">Experience in frontend frameworks such as React or Angular.</li>
-                                <li class="mil-up">Ability to work in a collaborative and agile environment.</li>
-                                <li class="mil-up">Passion for creating exceptional user experiences.</li>
-                            </ul>
-                            <h4 class="mil-mb-30 mil-up">Profile:</h4>
-                            <p class="mil-text-m mil-soft mil-up mil-mb-60">We are looking for an engineer passionate about frontend technology, with skills to transform creative designs into captivating user experiences. If you are passionate about innovation, collaboration and creating quality products, we want to meet you!</p>
-                            <div class="mil-up">
-                                <a href="{{ route('contact') }}" class="mil-btn mil-m mil-add-arrow mil-add-arrow">Apply for this position</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- vacancie end -->
+    .pilrek-profile-value {
+        color: #fff;
+        font-size: 16px;
+        line-height: 1.6;
+    }
 
-            <!-- footer -->
-            <footer class="mil-footer-with-bg mil-p-160-0">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xl-3">
-                            <a href="javascript:void(0)" class="mil-footer-logo mil-mb-60">
-                                <img src="{{ asset('template/img/logo-2.png') }}" alt="Plax" width="28" height="32">
-                            </a>
-                        </div>
-                        <div class="col-xl-3 mil-mb-60">
-                            <h6 class="mil-mb-60">Usefull Links</h6>
-                            <ul class="mil-footer-list">
-                                <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="{{ route('home') }}">Home</a>
-                                </li>
-                                <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="{{ route('about') }}">About Us</a>
-                                </li>
-                                <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="{{ route('contact') }}">Contact Us</a>
-                                </li>
-                                <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="{{ route('services') }}">Services</a>
-                                </li>
-                                <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="{{ route('price') }}">Pricing</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-xl-3 mil-mb-60">
-                            <h6 class="mil-mb-60">Help</h6>
-                            <ul class="mil-footer-list">
-                                <li class="mil-text-m mil-soft mil-mb-15">
-                                    999 Rue du Cherche-Midi, 7755500666 Paris, <br>France
-                                </li>
-                                <li class="mil-text-m mil-soft mil-mb-15">
-                                    +001 (808) 555-0111
-                                </li>
-                                <li class="mil-text-m mil-soft mil-mb-15">
-                                    support@plax.network
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-xl-3 mil-mb-80">
-                            <h6 class="mil-mb-60">Newsletter</h6>
-                            <p class="mil-text-xs mil-soft mil-mb-15">Subscribe to get the latest news form us</p>
-                            <form class="mil-subscripe-form-footer">
-                                <input class="mil-input" type="email" placeholder="Email">
-                                <button type="submit"><i class="far fa-envelope-open mil-dark"></i></button>
-                                <div class="mil-checkbox-frame mil-mt-15">
-                                    <div class="mil-checkbox">
-                                        <input type="checkbox" id="checkbox" checked>
-                                        <label for="checkbox"></label>
-                                    </div>
-                                    <p class="mil-text-xs mil-soft">Subscribe to get the latest news</p>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="mil-footer-bottom">
-                        <div class="row">
-                            <div class="col-xl-6">
-                                <p class="mil-text-s mil-soft">Â© 2024 Plax Finance & Fintech Design</p>
-                            </div>
-                            <div class="col-xl-6">
-                                <p class="mil-text-s mil-text-right mil-sm-text-left mil-soft">Developed by <a href="https://bslthemes.com" target="_blank">bslthemes</a></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </footer>
-            <!-- footer end -->
+    .pilrek-vision-box {
+        padding: 42px 38px;
+        border-radius: 30px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+    }
 
-        </div>
-        <!-- content end -->
+    .pilrek-program-card {
+        height: 100%;
+        padding: 34px 30px;
+        border-radius: 26px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    @media (max-width: 991px) {
+        .pilrek-profile-list li {
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+
+        .pilrek-profile-card,
+        .pilrek-vision-box {
+            padding: 30px 24px;
+        }
+    }
+</style>
+
+<div id="smooth-wrapper" class="mil-wrapper">
+
+    <div class="mil-preloader">
+        <div class="mil-load"></div>
+        <p class="h2 mil-mb-30"><span class="mil-light mil-counter" data-number="100">100</span><span class="mil-light">%</span></p>
     </div>
-    <!-- wrapper end -->
 
-    <!-- jquery js -->
-    <script src="js/plugins/jquery.min.js"></script>
+    <div class="mil-progress-track">
+        <div class="mil-progress"></div>
+    </div>
 
-    <!-- swiper css -->
-    <script src="js/plugins/swiper.min.js"></script>
-    <!-- gsap js -->
-    <script src="js/plugins/gsap.min.js"></script>
-    <!-- scroll smoother -->
-    <script src="js/plugins/ScrollSmoother.min.js"></script>
-    <!-- scroll trigger js -->
-    <script src="js/plugins/ScrollTrigger.min.js"></script>
-    <!-- scroll to js -->
-    <script src="js/plugins/ScrollTo.min.js"></script>
-    <!-- magnific -->
-    <script src="js/plugins/magnific-popup.js"></script>
-    <!-- plax js -->
-    <script src="js/main.js"></script>
+    <div class="progress-wrap active-progress"></div>
+    @include('partials.navbar', ['activePage' => 'calon-rektor'])
+
+
+
+    <div id="smooth-content">
+
+        <div class="mil-banner mil-banner-inner mil-dissolve">
+            <div class="container">
+                <div class="row align-items-center justify-content-center">
+                    <div class="col-xl-9">
+                        <div class="mil-banner-text mil-text-center">
+                            <div class="mil-text-m mil-mb-20">Calon Rektor</div>
+                            <h1 class="mil-mb-40">Prof. Dr. Ir. Ahmad Prasetyo, M.Sc.</h1>
+                            <ul class="mil-breadcrumbs mil-pub-info mil-center">
+                                <li><span>Fakultas Teknik</span></li>
+                                <li><span>Guru Besar Teknik Industri</span></li>
+                                <li><span>Pencalonan 2026-2030</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mil-p-0-160">
+            <div class="container">
+                <div class="row align-items-start">
+                    <div class="col-xl-4 col-lg-5 mil-mb-60">
+                        <div class="pilrek-candidate-photo mil-up">
+                            <img src="{{ asset('template/img/inner-pages/team/1.png') }}" alt="Prof. Dr. Ir. Ahmad Prasetyo, M.Sc.">
+                        </div>
+                    </div>
+                    <div class="col-xl-8 col-lg-7 mil-mb-60">
+                        <div class="pilrek-profile-card mil-up">
+                            <div class="mil-text-m mil-text-gradient-2 mil-mb-20">Profil Calon</div>
+                            <h3 class="mil-mb-30">Informasi Akademik dan Kelembagaan</h3>
+                            <ul class="pilrek-profile-list">
+                                <li>
+                                    <div class="pilrek-profile-label">Nama Lengkap</div>
+                                    <div class="pilrek-profile-value">Prof. Dr. Ir. Ahmad Prasetyo, M.Sc.</div>
+                                </li>
+                                <li>
+                                    <div class="pilrek-profile-label">NIP</div>
+                                    <div class="pilrek-profile-value">19690415 199403 1 002</div>
+                                </li>
+                                <li>
+                                    <div class="pilrek-profile-label">Tempat, Tanggal Lahir</div>
+                                    <div class="pilrek-profile-value">Makassar, 15 April 1969</div>
+                                </li>
+                                <li>
+                                    <div class="pilrek-profile-label">Fakultas / Unit</div>
+                                    <div class="pilrek-profile-value">Fakultas Teknik</div>
+                                </li>
+                                <li>
+                                    <div class="pilrek-profile-label">Jurusan / Program Studi</div>
+                                    <div class="pilrek-profile-value">Teknik Industri</div>
+                                </li>
+                                <li>
+                                    <div class="pilrek-profile-label">Jabatan Akademik</div>
+                                    <div class="pilrek-profile-value">Guru Besar</div>
+                                </li>
+                                <li>
+                                    <div class="pilrek-profile-label">Jabatan Saat Ini</div>
+                                    <div class="pilrek-profile-value">Dekan Fakultas Teknik</div>
+                                </li>
+                                <li>
+                                    <div class="pilrek-profile-label">Pendidikan Terakhir</div>
+                                    <div class="pilrek-profile-value">Doktor Manajemen Teknologi Pendidikan Tinggi</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="col-xl-10">
+                        <div class="pilrek-vision-box mil-mb-30 mil-up">
+                            <div class="mil-text-m mil-text-gradient-2 mil-mb-20">Visi</div>
+                            <h3 class="mil-mb-20">Mewujudkan universitas yang unggul, berintegritas, inklusif, dan berdaya saing global melalui tata kelola akademik yang kolaboratif dan berkelanjutan.</h3>
+                            <p class="mil-text-m mil-soft">Visi ini menempatkan kualitas akademik, penguatan riset, pelayanan kelembagaan, serta pengembangan sumber daya manusia sebagai fondasi utama dalam membangun universitas yang relevan terhadap kebutuhan masyarakat dan perkembangan ilmu pengetahuan.</p>
+                        </div>
+
+                        <div class="pilrek-vision-box mil-up">
+                            <div class="mil-text-m mil-text-gradient-2 mil-mb-20">Misi</div>
+                            <ul class="mil-list-2 mil-type-2">
+                                <li>
+                                    <div class="mil-up">
+                                        <h5 class="mil-mb-15">Penguatan Mutu Akademik</h5>
+                                        <p class="mil-text-m mil-soft">Mendorong peningkatan kualitas pembelajaran, akreditasi program studi, dan budaya akademik yang adaptif terhadap tantangan masa depan.</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="mil-up">
+                                        <h5 class="mil-mb-15">Peningkatan Riset dan Inovasi</h5>
+                                        <p class="mil-text-m mil-soft">Memperluas ekosistem riset unggulan yang terintegrasi dengan kebutuhan industri, pemerintah, dan masyarakat.</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="mil-up">
+                                        <h5 class="mil-mb-15">Tata Kelola Transparan</h5>
+                                        <p class="mil-text-m mil-soft">Membangun sistem tata kelola yang akuntabel, partisipatif, dan berbasis data dalam seluruh proses kelembagaan.</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="mil-up">
+                                        <h5 class="mil-mb-15">Penguatan Jejaring Strategis</h5>
+                                        <p class="mil-text-m mil-soft">Meningkatkan kemitraan nasional dan internasional untuk mendukung mobilitas akademik, kolaborasi riset, dan pengabdian masyarakat.</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+        @include('partials.footer')
+
+    </div>
+</div>
 @endsection
+

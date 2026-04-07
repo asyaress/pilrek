@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', 'Home')
 
@@ -70,7 +70,7 @@
     }
 
     .pilrek-countdown-item {
-        padding: 18px 12px;
+        padding: 20px 12px;
         border: 1px solid rgba(255, 255, 255, 0.12);
         border-radius: 18px;
         background: rgba(255, 255, 255, 0.08);
@@ -185,46 +185,9 @@
     </div>
 
     <div class="progress-wrap active-progress"></div>
+    @include('partials.navbar', ['activePage' => 'home'])
 
-    <div class="mil-top-panel">
-        <div class="container">
-            <a href="{{ route('home') }}" class="mil-logo">
-                <img src="{{ asset('template/img/logo.png') }}" alt="Plax" width="83" height="32">
-            </a>
 
-            <nav class="mil-top-menu">
-                <ul>
-                    <li class="mil-active">
-                        <a href="{{ route('home') }}">Home</a>
-                    </li>
-                    <li><a href="{{ route('about') }}">Timeline</a></li>
-                    <li><a href="{{ route('services') }}">Calon Rektor</a></li>
-                    <li class="mil-has-children">
-                        <a href="javascript:void(0)">Blog</a>
-                        <ul>
-                            <li><a href="{{ route('blog') }}">Blog list</a></li>
-                            <li><a href="{{ route('publication') }}">Blog details</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="{{ route('contact') }}">Contact</a></li>
-                    <li class="mil-has-children">
-                        <a href="javascript:void(0)">Pages</a>
-                        <ul>
-                            <li><a href="{{ route('career') }}">Career</a></li>
-                            <li><a href="{{ route('career.details') }}">Career details</a></li>
-                            <li><a href="{{ route('price') }}">Pricing</a></li>
-                            <li><a href="{{ route('register') }}">Register</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </nav>
-
-            <div class="mil-menu-buttons">
-                <a href="{{ route('register') }}" class="mil-btn mil-sm">Log in</a>
-                <div class="mil-menu-btn"><span></span></div>
-            </div>
-        </div>
-    </div>
 
     <div id="smooth-content">
 
@@ -327,27 +290,9 @@
                 </div>
             </div>
         </div>
-
-        <footer class="mil-footer-with-bg">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-3">
-                        <img src="{{ asset('template/img/logo-2.png') }}" alt="Logo" width="28">
-                    </div>
-                    <div class="col-xl-3">
-                        <h6>Links</h6>
-                        <ul>
-                            <li><a href="{{ route('home') }}">Home</a></li>
-                            <li><a href="{{ route('about') }}">About</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="text-center">
-                    <p>&copy; 2024 Plax</p>
-                </div>
-            </div>
-        </footer>
+        @include('partials.footer')
 
     </div>
 </div>
 @endsection
+
