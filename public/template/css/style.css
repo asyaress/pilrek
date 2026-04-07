@@ -918,15 +918,19 @@ back to top
 
 ------------------------------------------- */
 .progress-wrap {
+  --scroll-progress: 0%;
+  --mil-progress-color: #f2bb1d;
+  --mil-progress-track: rgba(242, 187, 29, 0.22);
+  --mil-progress-inner: #ffffff;
+  --mil-progress-icon: #d39a00;
   position: fixed;
   right: 30px;
   bottom: 30px;
-  height: 72px;
-  width: 72px;
-  background-color: rgb(242, 116, 87);
+  height: 64px;
+  width: 64px;
   cursor: pointer;
   display: block;
-  border-radius: 50px;
+  border-radius: 50%;
   z-index: 998;
   opacity: 0;
   visibility: hidden;
@@ -934,20 +938,43 @@ back to top
   align-items: center;
   justify-content: center;
   transition: 0.4s cubic-bezier(0, 0, 0.3642, 1);
+  background: conic-gradient(var(--mil-progress-color) var(--scroll-progress), var(--mil-progress-track) 0);
+  box-shadow: 0 12px 30px rgba(230, 176, 22, 0.2);
 }
 .progress-wrap .active-progress {
   opacity: 1;
   visibility: visible;
 }
+.progress-wrap:before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--mil-progress-inner);
+}
 .progress-wrap:after {
   font-family: "Font Awesome 5 Free";
   font-weight: 900;
   content: "\f062";
+  position: relative;
   z-index: 1;
-  color: rgb(255, 255, 255);
+  color: var(--mil-progress-icon);
+  font-size: 18px;
 }
 .progress-wrap:hover {
-  filter: brightness(110%);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px rgba(230, 176, 22, 0.28);
+}
+@media screen and (max-width: 768px) {
+  .progress-wrap {
+    right: 20px;
+    bottom: 20px;
+    height: 56px;
+    width: 56px;
+  }
+  .progress-wrap:after {
+    font-size: 16px;
+  }
 }
 
 /* -------------------------------------------

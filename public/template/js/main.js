@@ -80,24 +80,42 @@ $(function () {
 
     ***************************/
 
-    gsap.fromTo(".progress-wrap", {
-        yPercent: 100,
-        autoAlpha: 0
-    }, {
-        yPercent: 0,
-        autoAlpha: 1,
-        scrollTrigger: {
-            start: 500,
-            toggleActions: "play none none reverse"
-        }
-    })
+    const progressWrap = document.querySelector('.progress-wrap');
 
-    document.querySelector('.progress-wrap').addEventListener("click", (e) => {
-        gsap.to(window, {
-            scrollTo: 0,
-            duration: 0.55
-        })
-    });
+    if (progressWrap) {
+        const updateBackToTopProgress = () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
+            const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = scrollHeight > 0 ? Math.min(scrollTop / scrollHeight, 1) : 0;
+
+            progressWrap.style.setProperty('--scroll-progress', `${progress * 100}%`);
+        };
+
+        gsap.fromTo(progressWrap, {
+            yPercent: 100,
+            autoAlpha: 0
+        }, {
+            yPercent: 0,
+            autoAlpha: 1,
+            scrollTrigger: {
+                start: 500,
+                toggleActions: "play none none reverse"
+            }
+        });
+
+        updateBackToTopProgress();
+        window.addEventListener('scroll', updateBackToTopProgress, {
+            passive: true
+        });
+        window.addEventListener('resize', updateBackToTopProgress);
+
+        progressWrap.addEventListener("click", () => {
+            gsap.to(window, {
+                scrollTo: 0,
+                duration: 0.55
+            });
+        });
+    }
     /***************************
 
     back to top
