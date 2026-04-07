@@ -38,8 +38,8 @@
                                 <h1 class="mil-mb-60">The Benefits of Using Virtual Cards</h1>
                                 <ul class="mil-breadcrumbs mil-pub-info mil-center">
                                     <li><span>December 9, 2023</span></li>
-                                    <li><a href="{{ route('timeline') }}">48 Comments</a></li>
-                                    <li><a href="{{ route('timeline') }}">356 Shared</a></li>
+                                    <li><a href="{{ route('berita') }}">48 Comments</a></li>
+                                    <li><a href="{{ route('berita') }}">356 Shared</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -63,7 +63,7 @@
                             <p class="mil-text-m mil-soft mil-mb-30 mil-up">Virtual cards represent a significant evolution in the way we manage our money. Beyond convenience, they offer an additional layer of security, enabling safer transactions in an ever-changing digital world. Discover how these cards are setting the standard for the future of personal finances.</p>
                             <p class="mil-text-m mil-soft mil-mb-60 mil-up">To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure? On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee</p>
                             <div class="mil-mb-60 mil-up">
-                                <blockquote class="mil-text-xl mil-mb-30">"With virtual cards, you're not just taking your wallet into the digital world, you're taking security and flexibility to new heights. We're seeing a revolutionary change in how we interact with money, and virtual cards are leading the way.â€</blockquote>
+                                <blockquote class="mil-text-xl mil-mb-30">"With virtual cards, you're not just taking your wallet into the digital world, you're taking security and flexibility to new heights. We're seeing a revolutionary change in how we interact with money, and virtual cards are leading the way."</blockquote>
                                 <p class="mil-text-m"> - Jill Martinsen</p>
                             </div>
                             <h4 class="mil-mb-60 mil-up">No one Rejects, Dislikes</h4>
@@ -250,24 +250,6 @@
         <!-- content end -->
     </div>
     <!-- wrapper end -->
-
-    <!-- jquery js -->
-    <script src="js/plugins/jquery.min.js"></script>
-
-    <!-- swiper css -->
-    <script src="js/plugins/swiper.min.js"></script>
-    <!-- gsap js -->
-    <script src="js/plugins/gsap.min.js"></script>
-    <!-- scroll smoother -->
-    <script src="js/plugins/ScrollSmoother.min.js"></script>
-    <!-- scroll trigger js -->
-    <script src="js/plugins/ScrollTrigger.min.js"></script>
-    <!-- scroll to js -->
-    <script src="js/plugins/ScrollTo.min.js"></script>
-    <!-- magnific -->
-    <script src="js/plugins/magnific-popup.js"></script>
-    <!-- plax js -->
-    <script src="js/main.js"></script>
 @endsection
 
 

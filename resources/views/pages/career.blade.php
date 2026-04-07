@@ -38,7 +38,7 @@
                                 <h1 class="mil-mb-60">Where your Talent Finds a Home</h1>
                                 <ul class="mil-breadcrumbs mil-center">
                                     <li><a href="{{ route('home') }}">Home</a></li>
-                                    <li><a href="{{ route('calon-rektor') }}">Career</a></li>
+                                    <li><a href="{{ route('career') }}">Career</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -186,24 +186,6 @@
         <!-- content end -->
     </div>
     <!-- wrapper end -->
-
-    <!-- jquery js -->
-    <script src="js/plugins/jquery.min.js"></script>
-
-    <!-- swiper css -->
-    <script src="js/plugins/swiper.min.js"></script>
-    <!-- gsap js -->
-    <script src="js/plugins/gsap.min.js"></script>
-    <!-- scroll smoother -->
-    <script src="js/plugins/ScrollSmoother.min.js"></script>
-    <!-- scroll trigger js -->
-    <script src="js/plugins/ScrollTrigger.min.js"></script>
-    <!-- scroll to js -->
-    <script src="js/plugins/ScrollTo.min.js"></script>
-    <!-- magnific -->
-    <script src="js/plugins/magnific-popup.js"></script>
-    <!-- plax js -->
-    <script src="js/main.js"></script>
 @endsection
 
 
