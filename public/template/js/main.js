@@ -213,15 +213,6 @@ $(function () {
     menu
 
     ***************************/
-    ScrollTrigger.create({
-        start: 'top -70',
-        end: 99999,
-        toggleClass: {
-            className: 'mil-active',
-            targets: '.mil-top-panel'
-        }
-    });
-
     $('.mil-menu-btn').on('click', function () {
         $('.mil-menu-btn , .mil-top-menu').toggleClass('mil-active');
     });
@@ -230,17 +221,19 @@ $(function () {
     top panel scroll animation
 
     ***************************/
-    $(window).on("scroll", function () {
-        var scroll = $(window).scrollTop();
+    const updateTopPanelState = () => {
+        var scroll = window.scrollY || $(window).scrollTop();
+        var isMobile = window.innerWidth <= 768;
 
-        var isDesktop = $(window).width() > 768;
-
-        if ((isDesktop && scroll >= 60) || (!isDesktop)) {
+        if (isMobile || scroll >= 60) {
             $(".mil-top-panel").addClass("mil-active");
         } else {
             $(".mil-top-panel").removeClass("mil-active");
         }
-    });
+    };
+
+    $(window).on("scroll resize", updateTopPanelState);
+    updateTopPanelState();
     /***************************
 
     sliders

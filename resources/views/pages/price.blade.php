@@ -66,7 +66,7 @@
                                     <h6 class="mil-mb-15">Plax Consumer</h6>
                                     <p class="mil-text-s mil-soft mil-mb-30">Sending and receiving money in up to 5 countries</p>
                                     <h4 class="mil-mb-30">$ <span class="mil-pricing-table-price" data-year-price="0.00" data-month-price="0.00">0.00</span><span class="mil-sup-text mil-soft"> / month</span></h4>
-                                    <a href="{{ route('contact') }}" class="mil-btn mil-m mil-fw mil-mb-30">Choose a plan</a>
+                                    <a href="{{ route('kontak') }}" class="mil-btn mil-m mil-fw mil-mb-30">Choose a plan</a>
                                     <ul class="mil-text-mist mil-type-2 mil-check mil-text-s mil-soft mil-mb-60">
                                         <li>Unlimited transactions</li>
                                         <li>Basic Technical Support (Email)</li>
@@ -84,7 +84,7 @@
                                     <h6 class="mil-light mil-mb-15">Plax Business</h6>
                                     <p class="mil-text-s mil-dark-soft mil-mb-30">Access to multi-currency accounts and local payments</p>
                                     <h4 class="mil-light mil-mb-30">$ <span class="mil-light mil-pricing-table-price" data-year-price="9.99" data-month-price="14.99">14.99</span><span class="mil-sup-text mil-dark-soft"> / month</span></h4>
-                                    <a href="{{ route('contact') }}" class="mil-btn mil-m mil-fw mil-mb-30">Choose a plan</a>
+                                    <a href="{{ route('kontak') }}" class="mil-btn mil-m mil-fw mil-mb-30">Choose a plan</a>
                                     <ul class="mil-text-mist mil-type-2 mil-check mil-text-s mil-dark-soft mil-mb-60">
                                         <li>Unlimited transactions</li>
                                         <li>Basic Technical Support (Email)</li>
@@ -101,7 +101,7 @@
                                     <h6 class="mil-mb-15">Plax Enterprise</h6>
                                     <p class="mil-text-s mil-soft mil-mb-30">Secure and reliable transactions at the enterprise level</p>
                                     <h4 class="mil-mb-30">$ <span class="mil-pricing-table-price" data-year-price="34.99" data-month-price="49.00">49.99</span><span class="mil-sup-text mil-soft"> / month</span></h4>
-                                    <a href="{{ route('contact') }}" class="mil-btn mil-m mil-fw mil-mb-30">Choose a plan</a>
+                                    <a href="{{ route('kontak') }}" class="mil-btn mil-m mil-fw mil-mb-30">Choose a plan</a>
                                     <ul class="mil-text-mist mil-type-2 mil-check mil-text-s mil-soft mil-mb-60">
                                         <li>Unlimited transactions</li>
                                         <li>Basic Technical Support (Email)</li>
@@ -162,5 +162,6 @@
     <!-- plax js -->
     <script src="js/main.js"></script>
 @endsection
+
 
 

@@ -1,4 +1,4 @@
-@php
+﻿@php
     $activePage = $activePage ?? '';
 @endphp
 
@@ -14,16 +14,20 @@
                     <a href="{{ route('home') }}">Home</a>
                 </li>
                 <li class="{{ $activePage === 'timeline' ? 'mil-active' : '' }}">
-                    <a href="{{ route('about') }}">Timeline</a>
+                    <a href="{{ route('timeline') }}">Timeline</a>
                 </li>
                 <li class="{{ $activePage === 'calon-rektor' ? 'mil-active' : '' }}">
                     <a href="{{ route('calon-rektor') }}">Calon Rektor</a>
                 </li>
-                <li class="{{ $activePage === 'blog' ? 'mil-active' : '' }}">
-                    <a href="{{ route('blog') }}">Berita</a>
+                <li class="{{ $activePage === 'berita' ? 'mil-active mil-has-children' : 'mil-has-children' }}">
+                    <a href="javascript:void(0)">Berita</a>
+                    <ul>
+                        <li><a href="{{ route('berita') }}">Berita</a></li>
+                        <li><a href="{{ route('publikasi') }}">Publikasi</a></li>
+                    </ul>
                 </li>
                 <li class="{{ $activePage === 'contact' ? 'mil-active' : '' }}">
-                    <a href="{{ route('contact') }}">Kontak</a>
+                    <a href="{{ route('kontak') }}">Kontak</a>
                 </li>
             </ul>
         </nav>
@@ -36,3 +40,4 @@
         </div>
     </div>
 </div>
+

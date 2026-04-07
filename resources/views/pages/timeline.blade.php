@@ -38,7 +38,7 @@
                                 <h1 class="mil-mb-60">More than a Platform, a Financial Revolution</h1>
                                 <ul class="mil-breadcrumbs mil-center">
                                     <li><a href="{{ route('home') }}">Home</a></li>
-                                    <li><a href="{{ route('about') }}">About us</a></li>
+                                    <li><a href="{{ route('timeline') }}">About us</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -293,5 +293,6 @@
     <!-- plax js -->
     <script src="js/main.js"></script>
 @endsection
+
 
 

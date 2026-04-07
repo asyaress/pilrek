@@ -113,7 +113,7 @@
                             </ul>
                         </div>
                         <div class="mil-right mil-up">
-                            <a href="{{ route('career.details') }}" class="mil-btn mil-m mil-add-arrow">See position</a>
+                            <a href="{{ route('calon-rektor.detail') }}" class="mil-btn mil-m mil-add-arrow">See position</a>
                         </div>
                     </div>
                     <div class="mil-vacancie mil-mb-30 mil-up">
@@ -127,7 +127,7 @@
                             </ul>
                         </div>
                         <div class="mil-right mil-up">
-                            <a href="{{ route('career.details') }}" class="mil-btn mil-m mil-add-arrow">See position</a>
+                            <a href="{{ route('calon-rektor.detail') }}" class="mil-btn mil-m mil-add-arrow">See position</a>
                         </div>
                     </div>
                     <div class="mil-vacancie mil-mb-30 mil-up">
@@ -141,7 +141,7 @@
                             </ul>
                         </div>
                         <div class="mil-right mil-up">
-                            <a href="{{ route('career.details') }}" class="mil-btn mil-m mil-add-arrow">See position</a>
+                            <a href="{{ route('calon-rektor.detail') }}" class="mil-btn mil-m mil-add-arrow">See position</a>
                         </div>
                     </div>
                     <div class="mil-vacancie mil-mb-30 mil-up">
@@ -155,7 +155,7 @@
                             </ul>
                         </div>
                         <div class="mil-right mil-up">
-                            <a href="{{ route('career.details') }}" class="mil-btn mil-m mil-add-arrow">See position</a>
+                            <a href="{{ route('calon-rektor.detail') }}" class="mil-btn mil-m mil-add-arrow">See position</a>
                         </div>
                     </div>
                     <div class="mil-vacancie mil-mb-60 mil-up">
@@ -169,7 +169,7 @@
                             </ul>
                         </div>
                         <div class="mil-right mil-up">
-                            <a href="{{ route('career.details') }}" class="mil-btn mil-m mil-add-arrow">See position</a>
+                            <a href="{{ route('calon-rektor.detail') }}" class="mil-btn mil-m mil-add-arrow">See position</a>
                         </div>
                     </div>
 
@@ -205,5 +205,6 @@
     <!-- plax js -->
     <script src="js/main.js"></script>
 @endsection
+
 
 

@@ -38,7 +38,7 @@
                                 <h1 class="mil-mb-60">Connect with Us: We are Here to Help You</h1>
                                 <ul class="mil-breadcrumbs mil-center">
                                     <li><a href="{{ route('home') }}">Home</a></li>
-                                    <li><a href="{{ route('contact') }}">Contact</a></li>
+                                    <li><a href="{{ route('kontak') }}">Contact</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -135,5 +135,6 @@
     <!-- plax js -->
     <script src="js/main.js"></script>
 @endsection
+
 
 

@@ -23,7 +23,7 @@
         <div class="progress-wrap active-progress"></div>
 
         <!-- top panel end -->
-    @include('partials.navbar', ['activePage' => 'informasi'])
+    @include('partials.navbar', ['activePage' => 'berita'])
 
 
         <div id="smooth-content">
@@ -38,8 +38,8 @@
                                 <h1 class="mil-mb-60">The Benefits of Using Virtual Cards</h1>
                                 <ul class="mil-breadcrumbs mil-pub-info mil-center">
                                     <li><span>December 9, 2023</span></li>
-                                    <li><a href="{{ route('about') }}">48 Comments</a></li>
-                                    <li><a href="{{ route('about') }}">356 Shared</a></li>
+                                    <li><a href="{{ route('timeline') }}">48 Comments</a></li>
+                                    <li><a href="{{ route('timeline') }}">356 Shared</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -104,11 +104,11 @@
                                 </ul>
                             </div>
                             <div class="mil-next-post">
-                                <a href="{{ route('publication') }}" class="mil-descr mil-up">
+                                <a href="{{ route('publikasi') }}" class="mil-descr mil-up">
                                     <p class="mil-text-m mil-soft mil-mb-15">Read next posts</p>
                                     <h5>How to Optimize Business Payments with Plax Business</h5>
                                 </a>
-                                <a href="{{ route('publication') }}" class="mil-cover mil-up">
+                                <a href="{{ route('publikasi') }}" class="mil-cover mil-up">
                                     <img src="{{ asset('template/img/inner-pages/blog/3.png') }}" alt="cover">
                                     <i class="fas fa-arrow-right"></i>
                                 </a>
@@ -269,5 +269,6 @@
     <!-- plax js -->
     <script src="js/main.js"></script>
 @endsection
+
 
 

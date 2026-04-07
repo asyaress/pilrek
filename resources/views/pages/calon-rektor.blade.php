@@ -12,18 +12,24 @@
     .pilrek-candidate-card {
         height: 100%;
         padding: 22px 22px 28px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        border: none;
         border-radius: 30px;
-        background: linear-gradient(180deg, rgba(19, 26, 39, 0.96) 0%, rgba(14, 19, 31, 0.96) 100%);
-        box-shadow: 0 24px 70px rgba(0, 0, 0, 0.14);
+        background: linear-gradient(180deg, #ffffff 0%, #f8fbf8 100%);
+        box-shadow: 0 18px 50px rgba(23, 67, 46, 0.08);
         text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .pilrek-candidate-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 24px 55px rgba(23, 67, 46, 0.12);
     }
 
     .pilrek-candidate-portrait {
         overflow: hidden;
         border-radius: 22px;
         margin-bottom: 24px;
-        background: rgba(255, 255, 255, 0.04);
+        background: #edf5ee;
         aspect-ratio: 4 / 5;
     }
 
@@ -35,18 +41,22 @@
     }
 
     .pilrek-candidate-unit {
-        color: rgba(255, 255, 255, 0.62);
+        color: #5f7a68;
         font-size: 14px;
         line-height: 1.5;
         margin-bottom: 8px;
     }
 
     .pilrek-candidate-role {
-        color: rgba(255, 255, 255, 0.72);
+        color: #547361;
         font-size: 15px;
         line-height: 1.6;
         min-height: 48px;
         margin-bottom: 24px;
+    }
+
+    .pilrek-candidate-card h5 {
+        color: #1f4b35;
     }
 
     .pilrek-candidate-card .mil-btn {
@@ -151,7 +161,7 @@
                                 <h5 class="mil-mb-15">{{ $candidate['name'] }}</h5>
                                 <div class="pilrek-candidate-unit">{{ $candidate['unit'] }}</div>
                                 <div class="pilrek-candidate-role">{{ $candidate['role'] }}</div>
-                                <a href="{{ route('career.details') }}" class="mil-btn mil-m">Lihat Detail</a>
+                                <a href="{{ route('calon-rektor.detail') }}" class="mil-btn mil-m">Lihat Detail</a>
                             </div>
                         </div>
                     @endforeach
@@ -166,7 +176,7 @@
                                 <h5 class="mil-mb-15">{{ $candidate['name'] }}</h5>
                                 <div class="pilrek-candidate-unit">{{ $candidate['unit'] }}</div>
                                 <div class="pilrek-candidate-role">{{ $candidate['role'] }}</div>
-                                <a href="{{ route('career.details') }}" class="mil-btn mil-m">Informasi Lengkap</a>
+                                <a href="{{ route('calon-rektor.detail') }}" class="mil-btn mil-m">Informasi Lengkap</a>
                             </div>
                         </div>
                     @endforeach

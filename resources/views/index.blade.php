@@ -4,10 +4,44 @@
 
 @section('content')
 <style>
+    .pilrek-home-shell {
+        background: #ffffff;
+    }
+
+    .pilrek-home-shell #smooth-content {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    .pilrek-home-shell .mil-top-panel:not(.mil-active) {
+        height: 100px;
+        background-color: transparent;
+        box-shadow: none;
+    }
+
+    .pilrek-home-shell .mil-top-panel.mil-active {
+        height: 84px;
+        background-color: #ffffff;
+        box-shadow: 0 8px 24px rgba(13, 81, 82, 0.1);
+    }
+
+    .pilrek-home-shell .mil-top-panel,
+    .pilrek-home-shell .mil-top-panel .container {
+        transition: all 0.4s ease;
+    }
+
+    .pilrek-home-shell .mil-top-panel .container {
+        min-height: 100px;
+    }
+
+    .pilrek-home-shell .mil-top-panel.mil-active .container {
+        min-height: 84px;
+    }
+
     .pilrek-hero {
-        position: relative;
-        overflow: hidden;
-        padding: 220px 0 180px;
+        margin-top: 0 !important;
+        padding: 100px 0 180px;
+        min-height: 100vh;
     }
 
     .pilrek-hero::before {
@@ -98,24 +132,30 @@
         max-width: 100%;
         margin: 0 auto;
         padding: 62px 72px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        border: none;
         border-radius: 36px;
-        background: linear-gradient(180deg, rgba(21, 27, 41, 0.96) 0%, rgba(13, 18, 30, 0.96) 100%);
-        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.18);
+        background: linear-gradient(180deg, #ffffff 0%, #f8fbf8 100%);
+        box-shadow: 0 24px 55px rgba(23, 67, 46, 0.08);
         text-align: center;
     }
 
     .pilrek-rules-card p {
         max-width: 1000px;
         margin: 0 auto;
-        color: rgba(255, 255, 255, 0.68);
+        color: #5b7263;
         font-size: 15px;
         line-height: 2;
     }
 
+    .pilrek-rules-card h3 {
+        color: #1f4b35;
+    }
+
     @media (max-width: 991px) {
         .pilrek-hero {
-            padding: 180px 0 140px;
+            margin-top: 0 !important;
+            padding: 100px 0 140px;
+            min-height: auto;
         }
 
         .pilrek-countdown {
@@ -130,8 +170,21 @@
     }
 
     @media (max-width: 767px) {
+        .pilrek-home-shell .mil-top-panel,
+        .pilrek-home-shell .mil-top-panel.mil-active {
+            height: 80px;
+            background-color: #ffffff;
+            box-shadow: 0 8px 24px rgba(13, 81, 82, 0.1);
+        }
+
+        .pilrek-home-shell .mil-top-panel .container,
+        .pilrek-home-shell .mil-top-panel.mil-active .container {
+            min-height: 80px;
+        }
+
         .pilrek-hero {
-            padding: 160px 0 120px;
+            margin-top: 0 !important;
+            padding: 80px 0 120px;
         }
 
         .pilrek-hero h1 {
@@ -170,7 +223,7 @@
     }
 </style>
 
-<div id="smooth-wrapper" class="mil-wrapper">
+<div id="smooth-wrapper" class="mil-wrapper pilrek-home-shell">
 
     <div class="mil-preloader">
         <div class="mil-load"></div>
@@ -225,68 +278,10 @@
             <div class="container">
                 <div class="pilrek-rules-card mil-up">
                     <div class="mil-text-m mil-mb-20 mil-text-gradient-2">Syarat-Syarat</div>
-                    <h3 class="mil-light mil-mb-30">Ketentuan Umum Pemilihan</h3>
+                    <h3 class="mil-mb-30">Ketentuan Umum Pemilihan</h3>
                     <p>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Curabitur blandit tempus porttitor. Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec id elit non mi porta gravida at eget metus. Sed posuere consectetur est at lobortis. Nullam quis risus eget urna mollis ornare vel eu leo. Maecenas faucibus mollis interdum. Vestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum. Nulla vitae elit libero, a pharetra augue. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
                     </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="mil-features mil-p-0-80">
-            <div class="container">
-                <div class="row flex-sm-row-reverse align-items-center">
-                    <div class="col-xl-6">
-                        <h2>Our essence, your experience</h2>
-                        <p class="mil-text-m mil-soft">Visualize your financial progress with detailed reports and graphs.</p>
-                    </div>
-                    <div class="col-xl-6">
-                        <img src="{{ asset('template/img/home-2/2.png') }}" alt="image">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="mil-cta">
-            <div class="container text-center">
-                <h2>Protected coverage on your purchases</h2>
-                <p>Enjoy instant protection for 45 days.</p>
-                <img src="{{ asset('template/img/home-2/3.png') }}" alt="illustration">
-            </div>
-        </div>
-
-        <div class="icon-boxes">
-            <div class="container">
-                <div class="row">
-                    @foreach ([1, 2, 3] as $i)
-                        <div class="col-xl-4">
-                            <div class="mil-icon-box">
-                                <img src="{{ asset('template/img/home-2/icons/' . $i . '.svg') }}" alt="icon">
-                                <h5>Feature {{ $i }}</h5>
-                                <p>Short description here.</p>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-
-        <div class="mil-testimonials">
-            <div class="container">
-                <div class="swiper-container">
-                    <div class="swiper-wrapper">
-                        @foreach ([1, 2, 3] as $i)
-                            <div class="swiper-slide">
-                                <blockquote>
-                                    <p>Sample testimonial text.</p>
-                                    <div class="mil-customer">
-                                        <img src="{{ asset('template/img/faces/' . $i . '.jpg') }}" alt="User {{ $i }}">
-                                        <h6>User {{ $i }}</h6>
-                                    </div>
-                                </blockquote>
-                            </div>
-                        @endforeach
-                    </div>
                 </div>
             </div>
         </div>
@@ -295,4 +290,3 @@
     </div>
 </div>
 @endsection
-

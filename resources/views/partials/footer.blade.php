@@ -13,13 +13,13 @@
                         <a href="{{ route('home') }}">Beranda</a>
                     </li>
                     <li class="mil-text-m mil-soft mil-mb-15">
-                        <a href="{{ route('about') }}">Timeline</a>
+                        <a href="{{ route('timeline') }}">Timeline</a>
                     </li>
                     <li class="mil-text-m mil-soft mil-mb-15">
                         <a href="{{ route('calon-rektor') }}">Calon Rektor</a>
                     </li>
                     <li class="mil-text-m mil-soft mil-mb-15">
-                        <a href="{{ route('contact') }}">Kontak</a>
+                        <a href="{{ route('kontak') }}">Kontak</a>
                     </li>
                 </ul>
             </div>
