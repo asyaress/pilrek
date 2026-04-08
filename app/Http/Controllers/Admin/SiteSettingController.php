@@ -8,6 +8,7 @@ use App\Support\AdminActivityLogger;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -144,14 +145,12 @@ class SiteSettingController extends Controller
 
     private function storeAsset(UploadedFile $file, string $prefix): string
     {
-        $directory = public_path('uploads/settings');
-        if (!is_dir($directory)) {
-            mkdir($directory, 0755, true);
+        $filename = $prefix . '-' . now()->format('YmdHis') . '-' . Str::random(6) . '.' . $file->getClientOriginalExtension();
+        $storedPath = $file->storeAs('settings', $filename, 'public');
+        if ($storedPath === false) {
+            return '';
         }
 
-        $filename = $prefix . '-' . now()->format('YmdHis') . '-' . Str::random(6) . '.' . $file->getClientOriginalExtension();
-        $file->move($directory, $filename);
-
-        return 'uploads/settings/' . $filename;
+        return 'storage/' . $storedPath;
     }
 }

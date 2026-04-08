@@ -5,6 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'Admin CMS Pilrek')</title>
+    <link rel="shortcut icon" href="{{ asset('unmul.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('unmul.png') }}" type="image/png">
 
     <link rel="stylesheet" href="{{ asset('AdminLTE-3.1.0/plugins/fontawesome-free/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('AdminLTE-3.1.0/dist/css/adminlte.min.css') }}">

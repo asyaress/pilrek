@@ -8,6 +8,7 @@ use App\Support\AdminActivityLogger;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -215,16 +216,13 @@ class RectorCandidateController extends Controller
 
     private function storePhoto(UploadedFile $file): string
     {
-        $directory = public_path('uploads/candidates');
-
-        if (!is_dir($directory)) {
-            mkdir($directory, 0755, true);
+        $filename = 'candidate-' . now()->format('YmdHis') . '-' . Str::random(6) . '.' . $file->getClientOriginalExtension();
+        $storedPath = $file->storeAs('candidates', $filename, 'public');
+        if ($storedPath === false) {
+            return '';
         }
 
-        $filename = 'candidate-' . now()->format('YmdHis') . '-' . Str::random(6) . '.' . $file->getClientOriginalExtension();
-        $file->move($directory, $filename);
-
-        return 'uploads/candidates/' . $filename;
+        return 'storage/' . $storedPath;
     }
 
     /**

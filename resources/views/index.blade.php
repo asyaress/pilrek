@@ -75,6 +75,14 @@
             margin-top: auto;
         }
 
+        .pilrek-candidate-card .mil-link.mil-accent {
+            color: #ffc107;
+        }
+
+        .pilrek-candidate-card .mil-link.mil-accent:hover {
+            color: #e0a800;
+        }
+
         .pilrek-candidate-section {
             padding-top: 40px;
         }

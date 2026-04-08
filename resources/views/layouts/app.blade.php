@@ -75,10 +75,10 @@
 
     <!-- Favicon -->
     @php
-        $faviconPath = $siteSettings?->favicon_path ? asset($siteSettings->favicon_path) : asset('template/favicon.ico');
+        $faviconPath = asset('unmul.png');
     @endphp
-    <link rel="shortcut icon" href="{{ $faviconPath }}" type="image/x-icon">
-    <link rel="icon" href="{{ $faviconPath }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ $faviconPath }}" type="image/png">
+    <link rel="icon" href="{{ $faviconPath }}" type="image/png">
 </head>
 
 <body>

@@ -10,7 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -185,39 +185,34 @@ class NewsPostController extends Controller
     public function mediaLibrary(Request $request): JsonResponse
     {
         $search = trim((string) $request->query('q', ''));
-        $directory = public_path('uploads/news');
-
-        if (!is_dir($directory)) {
-            return response()->json([
-                'items' => [],
-            ]);
-        }
 
         $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
-        $files = collect(File::files($directory))
-            ->filter(function (\SplFileInfo $file) use ($allowedExtensions): bool {
-                return in_array(strtolower($file->getExtension()), $allowedExtensions, true);
+        $files = collect(Storage::disk('public')->files('news'))
+            ->filter(static function (string $path) use ($allowedExtensions): bool {
+                $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+
+                return in_array($extension, $allowedExtensions, true);
             })
             ->when(
                 $search !== '',
-                function ($collection) use ($search) {
-                    return $collection->filter(function (\SplFileInfo $file) use ($search): bool {
-                        return str_contains(strtolower($file->getFilename()), strtolower($search));
+                static function ($collection) use ($search) {
+                    return $collection->filter(static function (string $path) use ($search): bool {
+                        return str_contains(strtolower(basename($path)), strtolower($search));
                     });
                 }
             )
-            ->sortByDesc(fn (\SplFileInfo $file) => $file->getMTime())
+            ->sortByDesc(static fn (string $path): int => Storage::disk('public')->lastModified($path))
             ->take(80)
             ->values()
-            ->map(function (\SplFileInfo $file): array {
-                $relativePath = 'uploads/news/' . $file->getFilename();
+            ->map(static function (string $path): array {
+                $relativePath = 'storage/' . ltrim($path, '/');
 
                 return [
-                    'name' => $file->getFilename(),
+                    'name' => basename($path),
                     'url' => asset($relativePath),
                     'path' => $relativePath,
-                    'size_kb' => round($file->getSize() / 1024, 1),
-                    'modified_at' => date('Y-m-d H:i:s', $file->getMTime()),
+                    'size_kb' => round(Storage::disk('public')->size($path) / 1024, 1),
+                    'modified_at' => date('Y-m-d H:i:s', Storage::disk('public')->lastModified($path)),
                 ];
             })
             ->all();
@@ -294,15 +289,13 @@ class NewsPostController extends Controller
 
     private function storeNewsImage(UploadedFile $file, string $prefix): string
     {
-        $directory = public_path('uploads/news');
-        if (!is_dir($directory)) {
-            mkdir($directory, 0755, true);
+        $filename = $prefix . '-' . now()->format('YmdHis') . '-' . Str::random(6) . '.' . $file->getClientOriginalExtension();
+        $storedPath = $file->storeAs('news', $filename, 'public');
+        if ($storedPath === false) {
+            return '';
         }
 
-        $filename = $prefix . '-' . now()->format('YmdHis') . '-' . Str::random(6) . '.' . $file->getClientOriginalExtension();
-        $file->move($directory, $filename);
-
-        return 'uploads/news/' . $filename;
+        return 'storage/' . $storedPath;
     }
 
     /**
