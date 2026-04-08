@@ -2,7 +2,7 @@
 <html lang="en-US">
 
 <head>
-    <title>@yield('title', 'Plax - Finance & Fintech')</title>
+    <title>@yield('title', ($siteSettings?->site_name ?? 'Portal Pilrek Unmul'))</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,9 +22,63 @@
     <!-- plax css -->
     <link rel="stylesheet" href="{{ asset('template/css/style.css') }}" type="text/css" media="all">
 
+    <style>
+        .mil-preloader {
+            background: #145843;
+            perspective: 1100px;
+        }
+
+        .mil-preloader:before {
+            display: none;
+        }
+
+        .mil-preloader .mil-load {
+            width: 94px;
+            height: 94px;
+            display: block;
+            position: relative;
+            background: url('{{ asset('unmul.png') }}') center/contain no-repeat;
+            transform-style: preserve-3d;
+            animation: pilrek-logo-side-spin 2.4s linear infinite;
+            filter: drop-shadow(0 16px 20px rgba(4, 18, 14, 0.42));
+        }
+
+        .mil-preloader .mil-load:before {
+            display: none;
+        }
+
+        .mil-preloader .mil-load:after {
+            display: none;
+        }
+
+        .mil-preloader p {
+            display: none;
+        }
+
+        @keyframes pilrek-logo-side-spin {
+            from {
+                transform: rotateY(0deg);
+            }
+            to {
+                transform: rotateY(360deg);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .mil-preloader .mil-load,
+            .mil-preloader .mil-load:before,
+            .mil-preloader .mil-load:after {
+                animation: none;
+            }
+        }
+    </style>
+
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ asset('template/favicon.ico') }}" type="image/x-icon">
-    <link rel="icon" href="{{ asset('template/favicon.ico') }}" type="image/x-icon">
+    @php
+        $faviconPath = $siteSettings?->favicon_path ? asset($siteSettings->favicon_path) : asset('template/favicon.ico');
+    @endphp
+    <link rel="shortcut icon" href="{{ $faviconPath }}" type="image/x-icon">
+    <link rel="icon" href="{{ $faviconPath }}" type="image/x-icon">
 </head>
 
 <body>

@@ -1,315 +1,1041 @@
 @extends('layouts.app')
 
-@section('title', 'Home')
+@section('title', 'Pilrek Unmul 2026-2030')
 
 @section('content')
-<div id="smooth-wrapper" class="mil-wrapper">
-    <div class="mil-preloader">
-        <div class="mil-load"></div>
-        <p class="h2 mil-mb-30"><span class="mil-light mil-counter" data-number="100">100</span><span class="mil-light">%</span></p>
-    </div>
+    <style>
+        .pilrek-home-kicker {
+            display: inline-flex;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(3, 166, 166, 0.12);
+            color: #0a6565;
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
 
-    <div class="mil-progress-track">
-        <div class="mil-progress"></div>
-    </div>
+        .pilrek-countdown-panel {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 38px 34px;
+            border-radius: 26px;
+            border: 1px solid rgba(2, 34, 53, 0.08);
+            background: linear-gradient(180deg, #ffffff 0%, #f7fafb 100%);
+            box-shadow: 0 16px 45px rgba(2, 34, 53, 0.08);
+        }
 
-    <div class="progress-wrap active-progress"></div>
-    @include('partials.navbar', ['activePage' => 'home'])
+        .pilrek-countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(120px, 1fr));
+            gap: 12px;
+        }
 
-    <div id="smooth-content">
-        <div class="mil-banner mil-dissolve">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-xl-6">
-                        <div class="mil-banner-text">
-                            <h6 class="mil-text-gradient-2 mil-mb-20">Send money globally with Plax</h6>
-                            <h1 class="mil-display mil-text-gradient-3 mil-mb-60">Your Ally for Financial Control</h1>
-                            <div class="mil-buttons-frame">
-                                <a href="{{ route('register') }}" class="mil-btn mil-md mil-add-arrow">Try demo</a>
-                                <a href="https://www.youtube.com/watch?v=gRhoYxy9Oss" class="mil-btn mil-md mil-light mil-add-play has-popup-video">Watch tutorial</a>
+        .pilrek-countdown-item {
+            border-radius: 18px;
+            padding: 16px 8px;
+            text-align: center;
+            background: #ffffff;
+            border: 1px solid rgba(2, 34, 53, 0.08);
+        }
+
+        .pilrek-countdown-value {
+            display: block;
+            font-size: 34px;
+            line-height: 1;
+            margin-bottom: 6px;
+            color: #022235;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .pilrek-countdown-label {
+            color: #6c7b88;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .pilrek-candidate-card {
+            border-radius: 24px;
+            padding: 18px 18px 24px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(180deg, #ffffff 0%, #f7fafb 100%);
+            border: 1px solid rgba(2, 34, 53, 0.08);
+            box-shadow: 0 16px 40px rgba(2, 34, 53, 0.08);
+        }
+
+        .pilrek-candidate-role {
+            min-height: 76px;
+        }
+
+        .pilrek-candidate-card .mil-link {
+            margin-top: auto;
+        }
+
+        .pilrek-candidate-section {
+            padding-top: 40px;
+        }
+
+        .pilrek-candidate-photo {
+            border-radius: 18px;
+            overflow: hidden;
+            margin-bottom: 18px;
+            aspect-ratio: 4 / 5;
+            background: #e8eef2;
+        }
+
+        .pilrek-candidate-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .pilrek-roadmap-shell {
+            background: transparent;
+        }
+
+        .pilrek-roadmap-canvas {
+            display: grid;
+            grid-template-columns: minmax(420px, 56%) minmax(300px, 44%);
+            gap: 18px;
+            align-items: stretch;
+            position: relative;
+            background: transparent;
+        }
+
+        .pilrek-roadmap-left {
+            position: relative;
+            z-index: 5;
+        }
+
+        .pilrek-roadmap-heading {
+            margin-bottom: 14px;
+        }
+
+        .pilrek-roadmap-heading h3 {
+            margin: 0;
+            font-size: clamp(30px, 2.6vw, 48px);
+            line-height: 1.1;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: #0c2230;
+        }
+
+        .pilrek-roadmap-heading p {
+            margin: 10px 0 0;
+            font-size: clamp(14px, 1.05vw, 18px);
+            color: #253745;
+        }
+
+        .pilrek-roadmap-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .pilrek-step-card {
+            position: relative;
+            min-height: 106px;
+            padding: 16px 28px 16px 112px;
+            background: rgba(255, 255, 255, 0.58);
+            clip-path: polygon(30px 0, calc(100% - 30px) 0, 100% 50%, calc(100% - 30px) 100%, 30px 100%, 0 50%);
+            box-shadow: 0 10px 18px rgba(0, 0, 0, 0.06);
+        }
+
+        .pilrek-step-number {
+            position: absolute;
+            left: 36px;
+            top: 50%;
+            transform: translateY(-50%);
+            margin: 0;
+            font-size: 30px;
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: 0.02em;
+            color: var(--step-color, #f2c400);
+        }
+
+        .pilrek-step-date {
+            margin: 0 0 6px;
+            color: #0f7180;
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .pilrek-step-title {
+            margin: 0 0 4px;
+            font-size: 22px;
+            line-height: 1.2;
+            font-weight: 800;
+            color: #0a3d4b;
+        }
+
+        .pilrek-step-desc {
+            margin: 0;
+            font-size: 15px;
+            line-height: 1.45;
+            color: #243540;
+            max-width: 420px;
+        }
+
+        .pilrek-hidden {
+            display: none !important;
+        }
+
+        .pilrek-roadmap-right {
+            position: relative;
+            min-height: 640px;
+            background: transparent;
+            overflow: visible;
+        }
+
+        .pilrek-road-svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .pilrek-road-fill {
+            fill: none;
+            stroke: #000;
+            stroke-width: 124;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .pilrek-road-lane {
+            fill: none;
+            stroke: #dddddd;
+            stroke-width: 3.2;
+            stroke-dasharray: 22 16;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            opacity: 0.95;
+        }
+
+        .pilrek-road-milestones {
+            position: absolute;
+            inset: 0;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .pilrek-road-milestone {
+            --size: 88px;
+            position: absolute;
+            width: var(--size);
+            height: var(--size);
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            pointer-events: auto;
+        }
+
+        .pilrek-road-milestone::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: var(--color, #f2c400);
+            box-shadow: 0 10px 18px rgba(0, 0, 0, 0.14);
+        }
+
+        .pilrek-road-milestone .icon {
+            position: relative;
+            z-index: 1;
+            color: #fff;
+            font-size: 22px;
+            display: grid;
+            place-items: center;
+        }
+
+        .pilrek-road-milestone .icon i,
+        .pilrek-road-milestone .icon svg {
+            color: #fff !important;
+            fill: #fff;
+            stroke: #fff;
+        }
+
+        .pilrek-road-milestone .connector {
+            position: absolute;
+            top: calc(100% - 2px);
+            left: 50%;
+            width: 3px;
+            height: var(--line, 38px);
+            transform: translateX(-50%);
+            background: repeating-linear-gradient(to bottom,
+                    color-mix(in srgb, var(--color, #f2c400) 96%, white 4%) 0 5px,
+                    transparent 5px 10px);
+        }
+
+        .pilrek-road-milestone .dot {
+            position: absolute;
+            left: 50%;
+            bottom: calc(-1 * var(--line, 38px) - 10px);
+            transform: translateX(-50%);
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--color, #f2c400);
+        }
+
+        .pilrek-road-flag {
+            position: absolute;
+            transform: translate(-50%, -50%) rotate(var(--rot, 0deg));
+            transform-origin: center center;
+            z-index: 2;
+            pointer-events: none;
+            opacity: 0.56;
+            text-align: center;
+        }
+
+        .pilrek-road-flag-line {
+            position: relative;
+            width: 16px;
+            height: 58px;
+            border-radius: 3px;
+            border: 2px solid rgba(255, 255, 255, 0.88);
+            background-color: #e9ecef;
+            background-image:
+                linear-gradient(45deg, #101010 25%, transparent 25%, transparent 75%, #101010 75%, #101010),
+                linear-gradient(45deg, #101010 25%, transparent 25%, transparent 75%, #101010 75%, #101010);
+            background-size: 10px 10px;
+            background-position: 0 0, 5px 5px;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.28);
+        }
+
+        .pilrek-road-flag-line::before,
+        .pilrek-road-flag-line::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            width: 30px;
+            height: 5px;
+            transform: translateX(-50%);
+            border-radius: 999px;
+            background: repeating-linear-gradient(90deg,
+                    #d61f1f 0 8px,
+                    #ffffff 8px 16px);
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+        }
+
+        .pilrek-road-flag-line::before {
+            top: -8px;
+        }
+
+        .pilrek-road-flag-line::after {
+            bottom: -8px;
+        }
+
+        .pilrek-road-flag-text {
+            margin-top: 10px;
+            font-size: 9px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: #f8fbfd;
+            font-weight: 700;
+            text-shadow: 0 2px 7px rgba(0, 0, 0, 0.35);
+        }
+
+        .pilrek-roadmap-load {
+            margin-top: 18px;
+            text-align: center;
+        }
+
+        .pilrek-road-milestone:focus-visible {
+            outline: 3px solid rgba(3, 166, 166, 0.65);
+            outline-offset: 4px;
+        }
+
+        .pilrek-tl-modal[hidden] {
+            display: none !important;
+        }
+
+        .pilrek-tl-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 1200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .pilrek-tl-modal-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(6, 19, 27, 0.62);
+            backdrop-filter: blur(2px);
+        }
+
+        .pilrek-tl-modal-dialog {
+            position: relative;
+            width: min(560px, 100%);
+            border-radius: 18px;
+            padding: 24px 24px 22px;
+            background: #fff;
+            border: 1px solid rgba(2, 34, 53, 0.08);
+            box-shadow: 0 22px 45px rgba(2, 34, 53, 0.24);
+        }
+
+        .pilrek-tl-modal-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 36px;
+            height: 36px;
+            border: 0;
+            border-radius: 50%;
+            font-size: 24px;
+            line-height: 1;
+            color: #29414f;
+            background: #f1f5f7;
+            cursor: pointer;
+        }
+
+        .pilrek-tl-modal-kicker {
+            margin: 0 0 8px;
+            font-size: 12px;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            color: #6c7b88;
+        }
+
+        .pilrek-tl-modal-title {
+            margin: 0 0 10px;
+            font-size: 28px;
+            line-height: 1.2;
+            color: #0a3d4b;
+        }
+
+        .pilrek-tl-modal-date {
+            margin: 0 0 12px;
+            font-size: 14px;
+            color: #0f7180;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .pilrek-tl-modal-desc {
+            margin: 0;
+            color: #304551;
+            font-size: 16px;
+            line-height: 1.65;
+        }
+
+        .pilrek-news-card {
+            display: block;
+            height: 100%;
+            border-radius: 24px;
+            overflow: hidden;
+            background: linear-gradient(180deg, #ffffff 0%, #f7fafb 100%);
+            border: 1px solid rgba(2, 34, 53, 0.08);
+            box-shadow: 0 16px 40px rgba(2, 34, 53, 0.08);
+        }
+
+        .pilrek-news-cover {
+            aspect-ratio: 16 / 10;
+            overflow: hidden;
+        }
+
+        .pilrek-news-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .pilrek-news-body {
+            padding: 22px 20px 24px;
+        }
+
+        .pilrek-news-date {
+            color: #6c7b88;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 991px) {
+            .pilrek-countdown-grid {
+                grid-template-columns: repeat(2, minmax(120px, 1fr));
+            }
+
+            .pilrek-roadmap-canvas {
+                grid-template-columns: 1fr;
+            }
+
+            .pilrek-roadmap-left {
+                width: 100%;
+                order: 2;
+            }
+
+            .pilrek-roadmap-right {
+                order: 1;
+                display: block;
+                width: 100%;
+                min-height: 430px;
+                margin-bottom: 16px;
+            }
+
+            .pilrek-step-card {
+                min-height: 96px;
+                padding: 16px 22px 16px 92px;
+            }
+
+            .pilrek-step-number {
+                left: 28px;
+                font-size: 26px;
+            }
+
+            .pilrek-step-title {
+                font-size: 19px;
+            }
+
+            .pilrek-step-desc {
+                font-size: 14px;
+                max-width: none;
+            }
+
+            .pilrek-road-fill {
+                stroke-width: 112;
+            }
+
+            .pilrek-road-lane {
+                stroke-width: 3;
+                stroke-dasharray: 18 14;
+            }
+        }
+
+        @media (max-width: 575px) {
+            .pilrek-countdown-panel {
+                padding: 28px 16px;
+            }
+
+            .pilrek-countdown-grid {
+                gap: 8px;
+            }
+
+            .pilrek-countdown-item {
+                padding: 12px 6px;
+            }
+
+            .pilrek-countdown-value {
+                font-size: 24px;
+            }
+
+            .pilrek-roadmap-right {
+                min-height: 350px;
+            }
+
+            .pilrek-candidate-section {
+                padding-top: 24px;
+            }
+
+            .pilrek-candidate-role {
+                min-height: 0;
+            }
+        }
+    </style>
+
+    <div id="smooth-wrapper" class="mil-wrapper">
+        <div class="mil-preloader">
+            <div class="mil-load"></div>
+            <p class="h2 mil-mb-30"><span class="mil-light mil-counter" data-number="100">100</span><span
+                    class="mil-light">%</span></p>
+        </div>
+
+        <div class="mil-progress-track">
+            <div class="mil-progress"></div>
+        </div>
+
+        <div class="progress-wrap active-progress"></div>
+        @include('partials.navbar', ['activePage' => 'home'])
+
+        <div id="smooth-content">
+            <div class="mil-banner mil-dissolve">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-xl-6">
+                            <div class="mil-banner-text">
+                                <div class="pilrek-home-kicker mil-mb-20">Portal Resmi</div>
+                                <h1 class="mil-display mil-text-gradient-3 mil-mb-30">Pilrek Unmul 2026-2030</h1>
+                                <p class="mil-text-m mil-soft mil-mb-40">
+                                    Pusat informasi resmi Pemilihan Rektor Universitas Mulawarman periode 2026-2030, mulai
+                                    dari timeline tahapan, profil calon, hingga publikasi berita terbaru.
+                                </p>
+                                <div class="mil-buttons-frame">
+                                    <a href="{{ route('calon-rektor') }}" class="mil-btn mil-md mil-add-arrow">Lihat Calon
+                                        Rektor</a>
+                                    <a href="{{ route('timeline') }}" class="mil-btn mil-md mil-light">Lihat Timeline</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="mil-banner-img">
+                                <img src="{{ asset('foto-depan.png') }}" alt="Pilrek Unmul"
+                                    style="max-width: 135%; transform: translateX(5%)">
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-6">
-                        <div class="mil-banner-img">
-                            <img src="{{ asset('template/img/home-2/1.png') }}" alt="banner" style="max-width: 135%; transform: translateX(5%)">
+                </div>
+            </div>
+
+            <div class="mil-p-100-160">
+                <div class="container">
+                    <div class="pilrek-countdown-panel mil-up">
+                        <div class="mil-text-center mil-mb-10">
+                            <h4 class="mil-mb-10">Hitung Mundur Tahap Utama Pilrek</h4>
+                            <p class="mil-text-m mil-soft">Menuju pemaparan visi dan misi calon rektor</p>
+                        </div>
+                        <div class="pilrek-countdown-grid" data-countdown-target="2026-09-01T08:00:00+08:00">
+                            <div class="pilrek-countdown-item">
+                                <span class="pilrek-countdown-value" data-countdown="days">00</span>
+                                <span class="pilrek-countdown-label">Hari</span>
+                            </div>
+                            <div class="pilrek-countdown-item">
+                                <span class="pilrek-countdown-value" data-countdown="hours">00</span>
+                                <span class="pilrek-countdown-label">Jam</span>
+                            </div>
+                            <div class="pilrek-countdown-item">
+                                <span class="pilrek-countdown-value" data-countdown="minutes">00</span>
+                                <span class="pilrek-countdown-label">Menit</span>
+                            </div>
+                            <div class="pilrek-countdown-item">
+                                <span class="pilrek-countdown-value" data-countdown="seconds">00</span>
+                                <span class="pilrek-countdown-label">Detik</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="mil-brands mil-p-160-160">
-            <div class="container">
-                <h5 class="mil-text-center mil-soft mil-mb-60 mil-up">Join over 7,000 satisfied customers who enjoy our service!</h5>
-                <div class="row justify-content-center">
-                    <div class="col-3 col-md-2 mil-text-center">
-                        <div class="mil-brand">
-                            <img src="{{ asset('template/img/brands/1.svg') }}" alt="brand" class="mil-up">
+            <div class="mil-p-0-130 pilrek-candidate-section">
+                <div class="container">
+                    <div class="row justify-content-between align-items-end mil-mb-60">
+                        <div class="col-xl-8">
+                            <div class="mil-text-m mil-text-gradient-2 mil-mb-15">Calon Rektor</div>
+                            <h2>Foto Calon Rektor Unmul</h2>
                         </div>
-                    </div>
-                    <div class="col-3 col-md-2 mil-text-center">
-                        <div class="mil-brand">
-                            <img src="{{ asset('template/img/brands/2.svg') }}" alt="brand" class="mil-up">
-                        </div>
-                    </div>
-                    <div class="col-3 col-md-2 mil-text-center">
-                        <div class="mil-brand">
-                            <img src="{{ asset('template/img/brands/3.svg') }}" alt="brand" class="mil-up">
-                        </div>
-                    </div>
-                    <div class="col-3 col-md-2">
-                        <div class="mil-brand mil-text-center">
-                            <img src="{{ asset('template/img/brands/4.svg') }}" alt="brand" class="mil-up">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="mil-features mil-p-0-80">
-            <div class="container">
-                <div class="row flex-sm-row-reverse justify-content-between align-items-center">
-                    <div class="col-xl-6 mil-mb-80">
-                        <h2 class="mil-mb-30 mil-up">Our essence, your experience</h2>
-                        <p class="mil-text-m mil-soft mil-mb-60 mil-up">Visualize your financial progress with detailed reports and graphs <br>that give you visual insights into your spending and saving habits.</p>
-                        <ul class="mil-list-2 mil-type-2">
-                            <li>
-                                <div class="mil-up">
-                                    <h5 class="mil-mb-15">Plax Global Service</h5>
-                                    <p class="mil-text-m mil-soft">Experience exceptional service around the world. <br>With our Plax Global Service, we provide assistance <br>and support, wherever you are, to ensure your peace.</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="mil-up">
-                                    <h5 class="mil-mb-15">Personalized Rewards Program</h5>
-                                    <p class="mil-text-m mil-soft">Enjoy a rewards program that fits your lifestyle. Earn <br>points with every purchase and access exclusive <br>rewards, from trips to high-quality products.</p>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-xl-6 mil-mb-80">
-                        <div class="mil-image-frame">
-                            <img src="{{ asset('template/img/home-2/2.png') }}" alt="image" class="mil-up">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="mil-cta mil-up">
-            <div class="container">
-                <div class="mil-out-frame mil-visible mil-illustration-fix mil-p-160-0">
-                    <div class="row align-items-end">
-                        <div class="mil-text-center">
-                            <h2 class="mil-mb-30 mil-up">Protected coverage on your <br>purchases with Plax Standard</h2>
-                            <p class="mil-text-m mil-soft mil-mb-60 mil-up">Enjoy instant coverage against theft or accidental damage <br>for the first forty-five (45) days from the date of purchase.</p>
-                        </div>
-                    </div>
-                    <div class="mil-illustration-absolute mil-up">
-                        <img src="{{ asset('template/img/home-2/3.png') }}" alt="illustration">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="icon-boxes mil-p-160-130">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-4 mil-mb-30">
-                        <div class="mil-icon-box mil-with-bg mil-center mil-up">
-                            <img src="{{ asset('template/img/home-2/icons/1.svg') }}" alt="icon" class="mil-mb-30 mil-up">
-                            <h5 class="mil-mb-20 mil-up">Make your Purchase</h5>
-                            <p class="mil-text-s mil-soft mil-up">Enjoy instant coverage against theft or accidental damage for the first forty-five (45) days from the date of purchase.</p>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 mil-mb-30">
-                        <div class="mil-icon-box mil-with-bg mil-center mil-up">
-                            <img src="{{ asset('template/img/home-2/icons/2.svg') }}" alt="icon" class="mil-mb-30 mil-up">
-                            <h5 class="mil-mb-20 mil-up">Manage your Rewards</h5>
-                            <p class="mil-text-s mil-soft mil-up">Rewards easily, access a personalized rewards program that fits your lifestyle and preferences.</p>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 mil-mb-30">
-                        <div class="mil-icon-box mil-with-bg mil-center mil-up">
-                            <img src="{{ asset('template/img/home-2/icons/3.svg') }}" alt="icon" class="mil-mb-30 mil-up">
-                            <h5 class="mil-mb-20 mil-up">Access Exclusive Benefits</h5>
-                            <p class="mil-text-s mil-soft mil-up">From special offers to added security, every transaction is not just a purchase, but an open door to a range.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="mil-cta mil-up">
-            <div class="container">
-                <div class="mil-out-frame mil-p-160-100">
-                    <div class="row align-items-end">
-                        <div class="col-xl-8 mil-mb-80-adaptive-30">
-                            <h2 class="mil-up">Innovation and Efficiency in Every Transaction</h2>
-                        </div>
-                        <div class="col-xl-4 mil-mb-80 mil-up">
-                            <a href="{{ route('timeline') }}" class="mil-btn mil-m mil-add-arrow mil-adaptive-right">Learn More</a>
+                        <div class="col-xl-4 mil-text-right mil-sm-text-left">
+                            <a href="{{ route('calon-rektor') }}" class="mil-btn mil-m mil-add-arrow">Lihat Semua Calon</a>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xl-4 mil-mb-60">
-                            <div class="mil-icon-box">
-                                <img src="{{ asset('template/img/home-1/icons/1.svg') }}" alt="icon" class="mil-mb-30 mil-up">
-                                <h5 class="mil-mb-30 mil-up">Unmatched Speed</h5>
-                                <p class="mil-text-m mil-soft mil-up">Make instant transfers and experience <br>Plax's unparalleled speed with every transaction.</p>
+                        @forelse (($homeCandidates ?? []) as $candidate)
+                            <div class="col-xl-3 col-md-6 mil-mb-30">
+                                <div class="pilrek-candidate-card mil-up">
+                                    <div class="pilrek-candidate-photo">
+                                        <img src="{{ $candidate['photo_url'] }}" alt="{{ $candidate['name'] }}">
+                                    </div>
+                                    <h5 class="mil-mb-10">{{ $candidate['name'] }}</h5>
+                                    <p class="mil-text-s mil-soft mil-mb-20 pilrek-candidate-role">{{ $candidate['role_summary'] ?: '-' }}</p>
+                                    <a href="{{ route('calon-rektor.detail', $candidate['slug']) }}" class="mil-link mil-accent">Profil Lengkap</a>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="col-12">
+                                <div class="alert alert-light text-center">Data calon rektor belum tersedia.</div>
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
+            </div>
+
+            @php
+                $timelineItems = $timelineItems ?? [];
+                $timelineCount = count($timelineItems);
+                $homeTimelineVisible = 5;
+                $homeTimelineItems = $homeTimelineItems ?? array_slice($timelineItems, 0, $homeTimelineVisible);
+                $timelineStepColors = ['#f2c400', '#a8b42d', '#56a35f', '#158a7b', '#0f463d'];
+                $timelineStepIcons = ['fa-chart-line', 'fa-user-check', 'fa-file-signature', 'fa-bullseye', 'fa-flag-checkered'];
+            @endphp
+
+            <div class="mil-p-0-130">
+                <div class="container">
+                    <div class="row justify-content-between align-items-end mil-mb-60">
+                        <div class="col-xl-8">
+                            <div class="mil-text-m mil-text-gradient-2 mil-mb-15">Timeline</div>
+                            <h2>Timeline Pemilihan Rektor Universitas Mulawarman Periode 2026-2030</h2>
+                        </div>
+                        <div class="col-xl-4 mil-text-right mil-sm-text-left">
+                            <a href="{{ route('timeline') }}" class="mil-btn mil-m mil-add-arrow">Detail Timeline</a>
+                        </div>
+                    </div>
+                    <div class="pilrek-roadmap-shell mil-up" data-roadmap-section>
+                        <div class="pilrek-roadmap-canvas" data-road-canvas>
+                            <div class="pilrek-roadmap-left" data-road-left>
+                                <!-- <div class="pilrek-roadmap-heading">
+                                    <h3>Optimization Path Roadmap</h3>
+                                    <p>Focuses on ongoing improvement and long-term planning</p>
+                                </div> -->
+                                <div class="pilrek-roadmap-steps">
+                                    @foreach ($homeTimelineItems as $itemIndex => $item)
+                                        @php
+                                            $stepNumber = str_pad((string) ($itemIndex + 1), 2, '0', STR_PAD_LEFT);
+                                            $stepColor = $timelineStepColors[$itemIndex % count($timelineStepColors)];
+                                        @endphp
+                                        <article class="pilrek-step-card" data-road-step>
+                                            <p class="pilrek-step-number" style="--step-color: {{ $stepColor }};">
+                                                {{ $stepNumber }}</p>
+                                            <p class="pilrek-step-date">{{ $item['date'] }}</p>
+                                            <h4 class="pilrek-step-title">{{ $item['title'] }}</h4>
+                                            <p class="pilrek-step-desc">{{ $item['description'] }}</p>
+                                        </article>
+                                    @endforeach
+                                </div>
+                            </div>
+                            <div class="pilrek-roadmap-right" data-road-visual>
+                                <svg class="pilrek-road-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none"
+                                    aria-hidden="true">
+                                    <path class="pilrek-road-fill" data-road-fill />
+                                    <path class="pilrek-road-lane" data-road-lane />
+                                </svg>
+                                <div class="pilrek-road-milestones" data-road-milestones></div>
                             </div>
                         </div>
-                        <div class="col-xl-4 mil-mb-60">
-                            <div class="mil-icon-box">
-                                <img src="{{ asset('template/img/home-1/icons/2.svg') }}" alt="icon" class="mil-mb-30 mil-up">
-                                <h5 class="mil-mb-30 mil-up">Extensive Global Network</h5>
-                                <p class="mil-text-m mil-soft mil-up">Connect with the world through our <br>global network that spans more than <br>170 countries.</p>
+
+                        @if ($timelineCount > $homeTimelineVisible)
+                            <div class="pilrek-roadmap-load">
+                                <a href="{{ route('timeline') }}" class="mil-btn mil-m mil-add-arrow">Lihat Timeline
+                                    Lengkap</a>
                             </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+            <div class="mil-p-0-130">
+                <div class="container">
+                    <div class="row justify-content-between align-items-end mil-mb-60">
+                        <div class="col-xl-8">
+                            <div class="mil-text-m mil-text-gradient-2 mil-mb-15">Persyaratan</div>
+                            <h2>Persyaratan Calon Rektor</h2>
                         </div>
-                        <div class="col-xl-4 mil-mb-60">
-                            <div class="mil-icon-box">
-                                <img src="{{ asset('template/img/home-1/icons/3.svg') }}" alt="icon" class="mil-mb-30 mil-up">
-                                <h5 class="mil-mb-30 mil-up">Advanced Security</h5>
-                                <p class="mil-text-m mil-soft mil-up">Protect your assets with our robust <br>security protocols and cutting-edge <br>technologies.</p>
+                        <div class="col-xl-4 mil-text-right mil-sm-text-left">
+                            <a href="{{ route('persyaratan') }}" class="mil-btn mil-m mil-add-arrow">Halaman
+                                Persyaratan</a>
+                        </div>
+                    </div>
+                    <div class="mil-up">
+                        @include('partials.requirement-card-stack', [
+                            'items' => $homeRequirementItems ?? [],
+                            'showHeading' => false,
+                            'stackId' => 'home-requirement-stack',
+                        ])
+                    </div>
+                </div>
+            </div>
+
+            <div class="mil-p-0-160">
+                <div class="container">
+                    <div class="row justify-content-between align-items-end mil-mb-60">
+                        <div class="col-xl-8">
+                            <div class="mil-text-m mil-text-gradient-2 mil-mb-15">Berita</div>
+                            <h2>Berita Terkini Pilrek Unmul</h2>
+                        </div>
+                        <div class="col-xl-4 mil-text-right mil-sm-text-left">
+                            <a href="{{ route('berita') }}" class="mil-btn mil-m mil-add-arrow">Semua Berita</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        @forelse (($homeNewsItems ?? []) as $newsItem)
+                            <div class="col-xl-4 col-md-6 mil-mb-30">
+                                <a href="{{ route('publikasi', ['slug' => $newsItem['slug']]) }}" class="pilrek-news-card mil-up">
+                                    <div class="pilrek-news-cover">
+                                        <img src="{{ $newsItem['cover_url'] }}" alt="{{ $newsItem['title'] }}">
+                                    </div>
+                                    <div class="pilrek-news-body">
+                                        <div class="pilrek-news-date">{{ $newsItem['published_label'] }}</div>
+                                        <h6 class="mil-mb-15">{{ $newsItem['title'] }}</h6>
+                                        <p class="mil-text-s mil-soft">{{ $newsItem['excerpt'] ?: 'Ringkasan berita belum tersedia.' }}</p>
+                                    </div>
+                                </a>
                             </div>
-                        </div>
+                        @empty
+                            <div class="col-12">
+                                <div class="alert alert-light text-center">Belum ada berita untuk ditampilkan.</div>
+                            </div>
+                        @endforelse
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="mil-features mil-p-160-80">
-            <div class="container">
-                <div class="row justify-content-between align-items-center">
-                    <div class="col-xl-6 mil-mb-80">
-                        <h2 class="mil-mb-30 mil-up">Plax Standard unusual activity detection</h2>
-                        <p class="mil-text-m mil-soft mil-mb-60 mil-up">Keep track of your financial activity and the response to alert. <br>Your security is our priority, always one step forward.</p>
-                        <ul class="mil-list-2 mil-type-2 mil-mb-60">
-                            <li>
-                                <div class="mil-up">
-                                    <h5 class="mil-mb-15">Connected device management</h5>
-                                    <p class="mil-text-m mil-soft">Plax monitors the devices connected to your <br>account. If we detect activity from a new device or <br>an unusual change, we will notify you.</p>
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="mil-up"><a href="{{ route('timeline') }}" class="mil-btn mil-button-transform mil-m mil-add-arrow">More Information</a></div>
-                    </div>
-                    <div class="col-xl-6 mil-mb-80">
-                        <img src="{{ asset('template/img/home-2/4.png') }}" alt="image" class="mil-up" style="width: 115%">
-                    </div>
+            <div class="pilrek-tl-modal" data-pilrek-tl-modal hidden>
+                <div class="pilrek-tl-modal-backdrop" data-pilrek-tl-close></div>
+                <div class="pilrek-tl-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="pilrekTlTitleHome">
+                    <button type="button" class="pilrek-tl-modal-close" data-pilrek-tl-close
+                        aria-label="Tutup detail timeline">&times;</button>
+                    <p class="pilrek-tl-modal-kicker" data-pilrek-tl-number>Timeline</p>
+                    <h4 class="pilrek-tl-modal-title" id="pilrekTlTitleHome" data-pilrek-tl-title>-</h4>
+                    <p class="pilrek-tl-modal-date" data-pilrek-tl-date>-</p>
+                    <p class="pilrek-tl-modal-desc" data-pilrek-tl-desc>-</p>
                 </div>
             </div>
-        </div>
 
-        <div class="mil-features mil-p-0-80">
-            <div class="container">
-                <div class="row flex-sm-row-reverse justify-content-between align-items-center">
-                    <div class="col-xl-6 mil-mb-80">
-                        <h2 class="mil-mb-30 mil-up">Instant Alerts and Notifications with Plax</h2>
-                        <p class="mil-text-m mil-soft mil-mb-60 mil-up">Visualize your financial progress with detailed reports and graphs <br>that give you visual insights into your spending and saving habits.</p>
-                        <ul class="mil-list-2 mil-type-2">
-                            <li>
-                                <div class="mil-up">
-                                    <h5 class="mil-mb-15">Security in real time</h5>
-                                    <p class="mil-text-m mil-soft">Notifications allow you to take immediate action in <br>case of unauthorized transactions or unusual activities.</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="mil-up">
-                                    <h5 class="mil-mb-15">Notification History</h5>
-                                    <p class="mil-text-m mil-soft">Keep track of your financial activity and the response to alert. <br>Your security is our priority, always one step forward.</p>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-xl-5 mil-mb-80">
-                        <img src="{{ asset('template/img/home-2/5.png') }}" alt="image" class="mil-up" style="width: 100%">
-                    </div>
-                </div>
-            </div>
+            @include('partials.footer')
         </div>
-
-        <div class="mil-testimonials mil-p-0-160">
-            <div class="container">
-                <div class="swiper-container mil-testimonials-2 mil-up">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <blockquote class="mil-with-bg">
-                                <svg width="50" height="32" viewBox="0 0 50 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="mil-mb-30 mil-up mil-accent">
-                                    <path d="M13.0425 9.59881C13.734 7.27646 15.0099 5.16456 16.7515 3.45982C17.0962 3.11455 17.2958 2.65336 17.31 2.16891C17.3243 1.68445 17.1523 1.2126 16.8285 0.848135L16.6225 0.619235C16.3552 0.313531 15.9908 0.106228 15.5887 0.0311485C15.1866 -0.0439312 14.7706 0.0176452 14.4085 0.205827C-0.299477 8.01918 -0.116489 18.6169 0.0295105 20.4165C0.0195105 20.6139 -0.000488281 20.8112 -0.000488281 21.0085C0.0518962 23.1543 0.724816 25.2405 1.93898 27.0214C3.15314 28.8023 4.85796 30.2037 6.85252 31.0604C8.84709 31.9171 11.0483 32.1935 13.1967 31.8569C15.3452 31.5203 17.3514 30.5848 18.9788 29.1606C20.6063 27.7364 21.7873 25.8829 22.3826 23.8185C22.9779 21.7541 22.9627 19.5648 22.3389 17.5086C21.715 15.4524 20.5085 13.615 18.8614 12.2129C17.2144 10.8108 15.1954 9.90246 13.0425 9.59487V9.59881Z" fill="#03A6A6" />
-                                    <path d="M40.2255 9.59881C40.9171 7.27648 42.193 5.16459 43.9345 3.45982C44.2793 3.11455 44.4788 2.65336 44.4931 2.16891C44.5074 1.68445 44.3353 1.2126 44.0115 0.848135L43.8055 0.619235C43.5382 0.313531 43.1738 0.106228 42.7717 0.0311485C42.3696 -0.0439312 41.9536 0.0176452 41.5915 0.205827C26.8835 8.01918 27.0665 18.6169 27.2115 20.4165C27.2015 20.6139 27.1815 20.8112 27.1815 21.0085C27.2332 23.1544 27.9055 25.241 29.1191 27.0224C30.3328 28.8038 32.0373 30.2057 34.0318 31.063C36.0262 31.9203 38.2274 32.1972 40.3761 31.8611C42.5248 31.525 44.5313 30.5899 46.1591 29.166C47.787 27.742 48.9684 25.8887 49.5641 23.8242C50.1599 21.7598 50.1451 19.5704 49.5215 17.514C48.8979 15.4576 47.6915 13.6199 46.0445 12.2176C44.3975 10.8152 42.3785 9.90659 40.2255 9.59881Z" fill="#03A6A6" />
-                                </svg>
-                                <p class="mil-text-m mil-mb-30 mil-up">I had never felt so connected to my finances. The instant alerts from Plax keep me informed in real time, giving me a feeling of total control.</p>
-                                <div class="mil-customer">
-                                    <img src="{{ asset('template/img/faces/1.jpg') }}" alt="Customer" class="mil-up">
-                                    <h6 class="mil-up">Rudiger Karlsen</h6>
-                                </div>
-                            </blockquote>
-                        </div>
-                        <div class="swiper-slide">
-                            <blockquote class="mil-with-bg">
-                                <svg width="50" height="32" viewBox="0 0 50 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="mil-mb-30 mil-up mil-accent">
-                                    <path d="M13.0425 9.59881C13.734 7.27646 15.0099 5.16456 16.7515 3.45982C17.0962 3.11455 17.2958 2.65336 17.31 2.16891C17.3243 1.68445 17.1523 1.2126 16.8285 0.848135L16.6225 0.619235C16.3552 0.313531 15.9908 0.106228 15.5887 0.0311485C15.1866 -0.0439312 14.7706 0.0176452 14.4085 0.205827C-0.299477 8.01918 -0.116489 18.6169 0.0295105 20.4165C0.0195105 20.6139 -0.000488281 20.8112 -0.000488281 21.0085C0.0518962 23.1543 0.724816 25.2405 1.93898 27.0214C3.15314 28.8023 4.85796 30.2037 6.85252 31.0604C8.84709 31.9171 11.0483 32.1935 13.1967 31.8569C15.3452 31.5203 17.3514 30.5848 18.9788 29.1606C20.6063 27.7364 21.7873 25.8829 22.3826 23.8185C22.9779 21.7541 22.9627 19.5648 22.3389 17.5086C21.715 15.4524 20.5085 13.615 18.8614 12.2129C17.2144 10.8108 15.1954 9.90246 13.0425 9.59487V9.59881Z" fill="#03A6A6" />
-                                    <path d="M40.2255 9.59881C40.9171 7.27648 42.193 5.16459 43.9345 3.45982C44.2793 3.11455 44.4788 2.65336 44.4931 2.16891C44.5074 1.68445 44.3353 1.2126 44.0115 0.848135L43.8055 0.619235C43.5382 0.313531 43.1738 0.106228 42.7717 0.0311485C42.3696 -0.0439312 41.9536 0.0176452 41.5915 0.205827C26.8835 8.01918 27.0665 18.6169 27.2115 20.4165C27.2015 20.6139 27.1815 20.8112 27.1815 21.0085C27.2332 23.1544 27.9055 25.241 29.1191 27.0224C30.3328 28.8038 32.0373 30.2057 34.0318 31.063C36.0262 31.9203 38.2274 32.1972 40.3761 31.8611C42.5248 31.525 44.5313 30.5899 46.1591 29.166C47.787 27.742 48.9684 25.8887 49.5641 23.8242C50.1599 21.7598 50.1451 19.5704 49.5215 17.514C48.8979 15.4576 47.6915 13.6199 46.0445 12.2176C44.3975 10.8152 42.3785 9.90659 40.2255 9.59881Z" fill="#03A6A6" />
-                                </svg>
-                                <p class="mil-text-m mil-mb-30 mil-up">Plax Standard has proven to be more than a card; it is my financial defender. Proactive alerts give me confidence that my security is in good hands.</p>
-                                <div class="mil-customer">
-                                    <img src="{{ asset('template/img/faces/2.jpg') }}" alt="Customer" class="mil-up">
-                                    <h6 class="mil-up">Branka Berg</h6>
-                                </div>
-                            </blockquote>
-                        </div>
-                        <div class="swiper-slide">
-                            <blockquote class="mil-with-bg">
-                                <svg width="50" height="32" viewBox="0 0 50 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="mil-mb-30 mil-up mil-accent">
-                                    <path d="M13.0425 9.59881C13.734 7.27646 15.0099 5.16456 16.7515 3.45982C17.0962 3.11455 17.2958 2.65336 17.31 2.16891C17.3243 1.68445 17.1523 1.2126 16.8285 0.848135L16.6225 0.619235C16.3552 0.313531 15.9908 0.106228 15.5887 0.0311485C15.1866 -0.0439312 14.7706 0.0176452 14.4085 0.205827C-0.299477 8.01918 -0.116489 18.6169 0.0295105 20.4165C0.0195105 20.6139 -0.000488281 20.8112 -0.000488281 21.0085C0.0518962 23.1543 0.724816 25.2405 1.93898 27.0214C3.15314 28.8023 4.85796 30.2037 6.85252 31.0604C8.84709 31.9171 11.0483 32.1935 13.1967 31.8569C15.3452 31.5203 17.3514 30.5848 18.9788 29.1606C20.6063 27.7364 21.7873 25.8829 22.3826 23.8185C22.9779 21.7541 22.9627 19.5648 22.3389 17.5086C21.715 15.4524 20.5085 13.615 18.8614 12.2129C17.2144 10.8108 15.1954 9.90246 13.0425 9.59487V9.59881Z" fill="#03A6A6" />
-                                    <path d="M40.2255 9.59881C40.9171 7.27648 42.193 5.16459 43.9345 3.45982C44.2793 3.11455 44.4788 2.65336 44.4931 2.16891C44.5074 1.68445 44.3353 1.2126 44.0115 0.848135L43.8055 0.619235C43.5382 0.313531 43.1738 0.106228 42.7717 0.0311485C42.3696 -0.0439312 41.9536 0.0176452 41.5915 0.205827C26.8835 8.01918 27.0665 18.6169 27.2115 20.4165C27.2015 20.6139 27.1815 20.8112 27.1815 21.0085C27.2332 23.1544 27.9055 25.241 29.1191 27.0224C30.3328 28.8038 32.0373 30.2057 34.0318 31.063C36.0262 31.9203 38.2274 32.1972 40.3761 31.8611C42.5248 31.525 44.5313 30.5899 46.1591 29.166C47.787 27.742 48.9684 25.8887 49.5641 23.8242C50.1599 21.7598 50.1451 19.5704 49.5215 17.514C48.8979 15.4576 47.6915 13.6199 46.0445 12.2176C44.3975 10.8152 42.3785 9.90659 40.2255 9.59881Z" fill="#03A6A6" />
-                                </svg>
-                                <p class="mil-text-m mil-mb-30 mil-up">The detailed notification history in the app gives me a complete view of my financial activity. It is like having a personal security assistant always.</p>
-                                <div class="mil-customer">
-                                    <img src="{{ asset('template/img/faces/3.jpg') }}" alt="Customer" class="mil-up">
-                                    <h6 class="mil-up">Karl Andreassen</h6>
-                                </div>
-                            </blockquote>
-                        </div>
-                        <div class="swiper-slide">
-                            <blockquote class="mil-with-bg">
-                                <svg width="50" height="32" viewBox="0 0 50 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="mil-mb-30 mil-up mil-accent">
-                                    <path d="M13.0425 9.59881C13.734 7.27646 15.0099 5.16456 16.7515 3.45982C17.0962 3.11455 17.2958 2.65336 17.31 2.16891C17.3243 1.68445 17.1523 1.2126 16.8285 0.848135L16.6225 0.619235C16.3552 0.313531 15.9908 0.106228 15.5887 0.0311485C15.1866 -0.0439312 14.7706 0.0176452 14.4085 0.205827C-0.299477 8.01918 -0.116489 18.6169 0.0295105 20.4165C0.0195105 20.6139 -0.000488281 20.8112 -0.000488281 21.0085C0.0518962 23.1543 0.724816 25.2405 1.93898 27.0214C3.15314 28.8023 4.85796 30.2037 6.85252 31.0604C8.84709 31.9171 11.0483 32.1935 13.1967 31.8569C15.3452 31.5203 17.3514 30.5848 18.9788 29.1606C20.6063 27.7364 21.7873 25.8829 22.3826 23.8185C22.9779 21.7541 22.9627 19.5648 22.3389 17.5086C21.715 15.4524 20.5085 13.615 18.8614 12.2129C17.2144 10.8108 15.1954 9.90246 13.0425 9.59487V9.59881Z" fill="#03A6A6" />
-                                    <path d="M40.2255 9.59881C40.9171 7.27648 42.193 5.16459 43.9345 3.45982C44.2793 3.11455 44.4788 2.65336 44.4931 2.16891C44.5074 1.68445 44.3353 1.2126 44.0115 0.848135L43.8055 0.619235C43.5382 0.313531 43.1738 0.106228 42.7717 0.0311485C42.3696 -0.0439312 41.9536 0.0176452 41.5915 0.205827C26.8835 8.01918 27.0665 18.6169 27.2115 20.4165C27.2015 20.6139 27.1815 20.8112 27.1815 21.0085C27.2332 23.1544 27.9055 25.241 29.1191 27.0224C30.3328 28.8038 32.0373 30.2057 34.0318 31.063C36.0262 31.9203 38.2274 32.1972 40.3761 31.8611C42.5248 31.525 44.5313 30.5899 46.1591 29.166C47.787 27.742 48.9684 25.8887 49.5641 23.8242C50.1599 21.7598 50.1451 19.5704 49.5215 17.514C48.8979 15.4576 47.6915 13.6199 46.0445 12.2176C44.3975 10.8152 42.3785 9.90659 40.2255 9.59881Z" fill="#03A6A6" />
-                                </svg>
-                                <p class="mil-text-m mil-mb-30 mil-up">The detailed notification history in the app gives me a complete view of my financial activity. It is like having a personal security assistant always.</p>
-                                <div class="mil-customer">
-                                    <img src="{{ asset('template/img/faces/2.jpg') }}" alt="Customer" class="mil-up">
-                                    <h6 class="mil-up">Bett Nilsen</h6>
-                                </div>
-                            </blockquote>
-                        </div>
-                    </div>
-                </div>
-                <div class="mil-testi-pagination mil-up"></div>
-            </div>
-        </div>
-
-        <div class="mil-cta mil-up">
-            <div class="container">
-                <div class="mil-out-frame mil-visible mil-image mil-illustration-fix mil-p-160-0">
-                    <div class="row align-items-end">
-                        <div class="mil-text-center">
-                            <h2 class="mil-mb-30 mil-light mil-up">Buy with Confidence, Guaranteed <br>Protection for your purchases</h2>
-                            <p class="mil-text-m mil-dark-soft mil-mb-60 mil-up">Discover how we make each purchase a safe and reliable <br>experience for you.</p>
-                            <div class="mil-up mil-mb-60"><a href="{{ route('price') }}" class="mil-btn mil-button-transform mil-md mil-add-arrow">Protect My Purchases</a></div>
-                        </div>
-                    </div>
-                    <div class="mil-illustration-absolute mil-type-2 mil-up">
-                        <img src="{{ asset('template/img/home-2/6.png') }}" alt="illustration">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        @include('partials.footer')
     </div>
-</div>
+
+    <script>
+        (function () {
+            var countdownContainer = document.querySelector("[data-countdown-target]");
+            if (!countdownContainer) return;
+
+            var targetDate = new Date(countdownContainer.getAttribute("data-countdown-target")).getTime();
+            var daysEl = countdownContainer.querySelector('[data-countdown="days"]');
+            var hoursEl = countdownContainer.querySelector('[data-countdown="hours"]');
+            var minutesEl = countdownContainer.querySelector('[data-countdown="minutes"]');
+            var secondsEl = countdownContainer.querySelector('[data-countdown="seconds"]');
+
+            function pad(value) {
+                return String(value).padStart(2, "0");
+            }
+
+            function updateCountdown() {
+                var now = new Date().getTime();
+                var diff = targetDate - now;
+                if (diff < 0) diff = 0;
+
+                var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                var hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                var minutes = Math.floor((diff / (1000 * 60)) % 60);
+                var seconds = Math.floor((diff / 1000) % 60);
+
+                daysEl.textContent = pad(days);
+                hoursEl.textContent = pad(hours);
+                minutesEl.textContent = pad(minutes);
+                secondsEl.textContent = pad(seconds);
+            }
+
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        })();
+
+        (function () {
+            var roadmapSection = document.querySelector("[data-roadmap-section]");
+            if (!roadmapSection) return;
+
+            var steps = Array.prototype.slice.call(roadmapSection.querySelectorAll("[data-road-step]"));
+            if (!steps.length) return;
+
+            var roadmapCanvas = roadmapSection.querySelector("[data-road-canvas]");
+            var roadVisual = roadmapSection.querySelector("[data-road-visual]");
+            var roadSvg = roadmapSection.querySelector(".pilrek-road-svg");
+            var roadFill = roadmapSection.querySelector("[data-road-fill]");
+            var roadLane = roadmapSection.querySelector("[data-road-lane]");
+            var milestonesHost = roadmapSection.querySelector("[data-road-milestones]");
+            var roadmapLeft = roadmapSection.querySelector("[data-road-left]");
+            var modal = document.querySelector("[data-pilrek-tl-modal]");
+            var modalNumber = modal ? modal.querySelector("[data-pilrek-tl-number]") : null;
+            var modalTitle = modal ? modal.querySelector("[data-pilrek-tl-title]") : null;
+            var modalDate = modal ? modal.querySelector("[data-pilrek-tl-date]") : null;
+            var modalDesc = modal ? modal.querySelector("[data-pilrek-tl-desc]") : null;
+
+            var milestoneColors = @json($timelineStepColors);
+            var milestoneIcons = @json($timelineStepIcons);
+
+            function isCompactView() {
+                return window.matchMedia("(max-width: 991px)").matches;
+            }
+
+            function getStepDetail(index) {
+                var step = steps[index];
+                if (!step) return null;
+
+                var numberEl = step.querySelector(".pilrek-step-number");
+                var titleEl = step.querySelector(".pilrek-step-title");
+                var dateEl = step.querySelector(".pilrek-step-date");
+                var descEl = step.querySelector(".pilrek-step-desc");
+
+                return {
+                    number: numberEl ? numberEl.textContent.trim() : String(index + 1),
+                    title: titleEl ? titleEl.textContent.trim() : "Timeline",
+                    date: dateEl ? dateEl.textContent.trim() : "-",
+                    description: descEl ? descEl.textContent.trim() : "-"
+                };
+            }
+
+            function openModal(index) {
+                if (!modal) return;
+                var detail = getStepDetail(index);
+                if (!detail) return;
+
+                if (modalNumber) modalNumber.textContent = "Tahap " + detail.number;
+                if (modalTitle) modalTitle.textContent = detail.title;
+                if (modalDate) modalDate.textContent = detail.date;
+                if (modalDesc) modalDesc.textContent = detail.description;
+                modal.hidden = false;
+                document.body.style.overflow = "hidden";
+            }
+
+            function closeModal() {
+                if (!modal) return;
+                modal.hidden = true;
+                document.body.style.overflow = "";
+            }
+
+            if (modal) {
+                Array.prototype.forEach.call(modal.querySelectorAll("[data-pilrek-tl-close]"), function (closeEl) {
+                    closeEl.addEventListener("click", closeModal);
+                });
+
+                document.addEventListener("keydown", function (event) {
+                    if (event.key === "Escape" && !modal.hidden) {
+                        closeModal();
+                    }
+                });
+            }
+
+            function buildRoadCorePath(width, height, compact) {
+                if (compact) {
+                    var samples = 150;
+                    var startY = height * 0.05;
+                    var endY = height * 1.03;
+                    var centerX = width * 0.54;
+                    var amplitude = width * 0.40;
+                    var waves = 1.45;
+                    var path = "";
+
+                    for (var s = 0; s <= samples; s++) {
+                        var t = s / samples;
+                        var envelope = 0.72 + 0.28 * Math.sin(Math.PI * t);
+                        var waveX = centerX + amplitude * envelope * Math.sin(Math.PI / 2 + (t * Math.PI * 2 * waves));
+                        var waveY = startY + (endY - startY) * t;
+
+                        if (s === 0) {
+                            path = "M " + waveX + " " + waveY;
+                        } else {
+                            path += " L " + waveX + " " + waveY;
+                        }
+                    }
+
+                    return path;
+                }
+
+                function x(value) {
+                    return width * value;
+                }
+
+                function y(value) {
+                    return height * value;
+                }
+
+                return [
+                    "M " + x(0.43) + " " + y(-0.02),
+                    "C " + x(0.56) + " " + y(0.01) + ", " + x(0.69) + " " + y(0.06) + ", " + x(0.80) + " " + y(0.10),
+                    "C " + x(0.95) + " " + y(0.15) + ", " + x(0.97) + " " + y(0.28) + ", " + x(0.80) + " " + y(0.34),
+                    "C " + x(0.60) + " " + y(0.37) + ", " + x(0.24) + " " + y(0.40) + ", " + x(0.18) + " " + y(0.56),
+                    "C " + x(0.11) + " " + y(0.75) + ", " + x(0.42) + " " + y(0.86) + ", " + x(0.74) + " " + y(0.89),
+                    "C " + x(0.88) + " " + y(0.91) + ", " + x(0.94) + " " + y(0.95) + ", " + x(0.98) + " " + y(1.04)
+                ].join(" ");
+            }
+
+            function drawRoad() {
+                if (!roadVisual || !roadSvg || !roadFill || !roadLane || !milestonesHost) return;
+
+                var compact = isCompactView();
+                var markerCount = Math.min(steps.length, 5);
+
+                if (compact) {
+                    var compactHeight = Math.max(340, Math.min(560, 250 + markerCount * 62));
+                    roadVisual.style.height = compactHeight + "px";
+                    roadVisual.style.minHeight = compactHeight + "px";
+                } else {
+                    var leftHeight = roadmapLeft ? roadmapLeft.offsetHeight : (roadmapCanvas ? roadmapCanvas.offsetHeight : 620);
+                    roadVisual.style.height = leftHeight + "px";
+                    roadVisual.style.minHeight = leftHeight + "px";
+                }
+
+                var width = roadVisual.clientWidth;
+                var height = roadVisual.clientHeight;
+                if (width < 40 || height < 40) return;
+
+                roadSvg.setAttribute("viewBox", "0 0 " + width + " " + height);
+
+                var corePath = buildRoadCorePath(width, height, compact);
+                roadFill.setAttribute("d", corePath);
+                roadLane.setAttribute("d", corePath);
+
+                milestonesHost.innerHTML = "";
+                var totalLength = roadLane.getTotalLength();
+                var presetRatios = compact ? [0.16, 0.31, 0.48, 0.65, 0.82] : [0.18, 0.32, 0.47, 0.64, 0.80];
+                var presetOffsets = compact ? [52, 58, 56, 58, 62] : [62, 72, 70, 72, 78];
+
+                function createRoadFlag(label, ratio, yOffset) {
+                    var atLength = totalLength * ratio;
+                    var p = roadLane.getPointAtLength(atLength);
+                    var pPrev = roadLane.getPointAtLength(Math.max(0, atLength - 2));
+                    var pNext = roadLane.getPointAtLength(Math.min(totalLength, atLength + 2));
+                    var angle = Math.atan2(pNext.y - pPrev.y, pNext.x - pPrev.x) * 180 / Math.PI;
+                    var flag = document.createElement("div");
+
+                    flag.className = "pilrek-road-flag";
+                    flag.style.left = p.x + "px";
+                    flag.style.top = (p.y + yOffset) + "px";
+                    flag.style.setProperty("--rot", angle + "deg");
+                    flag.innerHTML = '<div class="pilrek-road-flag-text">' + label + '</div>';
+                    milestonesHost.appendChild(flag);
+                }
+
+                createRoadFlag("Start", compact ? 0.1 : 0.12, compact ? -8 : -10);
+                createRoadFlag("Finish", compact ? 0.93 : 0.94, compact ? 10 : 12);
+
+                for (var i = 0; i < markerCount; i++) {
+                    var ratio = presetRatios[i] !== undefined
+                        ? presetRatios[i]
+                        : (0.1 + (0.78 * i) / Math.max(1, markerCount - 1));
+                    var point = roadLane.getPointAtLength(totalLength * ratio);
+                    var color = milestoneColors[i % milestoneColors.length];
+                    var icon = milestoneIcons[i % milestoneIcons.length];
+                    var marker = document.createElement("div");
+                    var size = compact ? 74 : 88;
+                    var offset = presetOffsets[i] !== undefined ? presetOffsets[i] : 76;
+                    var lineHeight = Math.max(28, Math.round(offset - size / 2 - 5));
+
+                    marker.className = "pilrek-road-milestone";
+                    marker.style.left = point.x + "px";
+                    marker.style.top = (point.y - offset) + "px";
+                    marker.style.setProperty("--color", color);
+                    marker.style.setProperty("--line", lineHeight + "px");
+                    marker.style.setProperty("--size", size + "px");
+                    marker.innerHTML = '<div class="icon"><i class="fas ' + icon + '"></i></div><span class="connector"></span><span class="dot"></span>';
+                    marker.setAttribute("role", "button");
+                    marker.setAttribute("tabindex", "0");
+                    marker.setAttribute("aria-label", "Lihat detail tahap " + (i + 1));
+                    marker.addEventListener("click", (function (index) {
+                        return function () {
+                            openModal(index);
+                        };
+                    })(i));
+                    marker.addEventListener("keydown", (function (index) {
+                        return function (event) {
+                            if (event.key === "Enter" || event.key === " ") {
+                                event.preventDefault();
+                                openModal(index);
+                            }
+                        };
+                    })(i));
+
+                    milestonesHost.appendChild(marker);
+                }
+            }
+
+            window.addEventListener("resize", function () {
+                window.requestAnimationFrame(drawRoad);
+            });
+
+            window.requestAnimationFrame(drawRoad);
+        })();
+    </script>
 @endsection

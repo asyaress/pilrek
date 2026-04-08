@@ -22,6 +22,7 @@
         border-radius: 24px;
         display: block;
         object-fit: cover;
+        aspect-ratio: 4 / 5;
     }
 
     .pilrek-profile-card,
@@ -171,6 +172,15 @@
     }
 </style>
 
+@php
+    $birthDateLabel = $candidate['birth_date']
+        ? \Illuminate\Support\Carbon::parse($candidate['birth_date'])->translatedFormat('d F Y')
+        : '-';
+    $placeAndDate = $candidate['birth_place']
+        ? ($candidate['birth_place'] . ($birthDateLabel !== '-' ? ', ' . $birthDateLabel : ''))
+        : $birthDateLabel;
+@endphp
+
 <div id="smooth-wrapper" class="mil-wrapper">
 
     <div class="mil-preloader">
@@ -193,10 +203,10 @@
                     <div class="col-xl-9">
                         <div class="mil-banner-text mil-text-center">
                             <div class="mil-text-m mil-mb-20">Calon Rektor</div>
-                            <h1 class="mil-mb-40">Prof. Dr. Ir. Ahmad Prasetyo, M.Sc.</h1>
+                            <h1 class="mil-mb-40">{{ $candidate['name'] }}</h1>
                             <ul class="mil-breadcrumbs mil-pub-info mil-center">
-                                <li><span>Fakultas Teknik</span></li>
-                                <li><span>Guru Besar Teknik Industri</span></li>
+                                <li><span>{{ $candidate['faculty_unit'] ?: '-' }}</span></li>
+                                <li><span>{{ $candidate['academic_position'] ?: '-' }}</span></li>
                                 <li><span>Pencalonan 2026-2030</span></li>
                             </ul>
                         </div>
@@ -211,7 +221,7 @@
                 <div class="row align-items-start">
                     <div class="col-xl-4 col-lg-5 mil-mb-60">
                         <div class="pilrek-candidate-photo mil-up">
-                            <img src="{{ asset('template/img/inner-pages/team/1.png') }}" alt="Prof. Dr. Ir. Ahmad Prasetyo, M.Sc.">
+                            <img src="{{ $candidate['photo_url'] }}" alt="{{ $candidate['name'] }}">
                         </div>
                     </div>
                     <div class="col-xl-8 col-lg-7 mil-mb-60">
@@ -221,35 +231,35 @@
                             <ul class="pilrek-profile-list">
                                 <li>
                                     <div class="pilrek-profile-label">Nama Lengkap</div>
-                                    <div class="pilrek-profile-value">Prof. Dr. Ir. Ahmad Prasetyo, M.Sc.</div>
+                                    <div class="pilrek-profile-value">{{ $candidate['name'] }}</div>
                                 </li>
                                 <li>
                                     <div class="pilrek-profile-label">NIP</div>
-                                    <div class="pilrek-profile-value">19690415 199403 1 002</div>
+                                    <div class="pilrek-profile-value">{{ $candidate['nip'] ?: '-' }}</div>
                                 </li>
                                 <li>
                                     <div class="pilrek-profile-label">Tempat, Tanggal Lahir</div>
-                                    <div class="pilrek-profile-value">Makassar, 15 April 1969</div>
+                                    <div class="pilrek-profile-value">{{ $placeAndDate ?: '-' }}</div>
                                 </li>
                                 <li>
                                     <div class="pilrek-profile-label">Fakultas / Unit</div>
-                                    <div class="pilrek-profile-value">Fakultas Teknik</div>
+                                    <div class="pilrek-profile-value">{{ $candidate['faculty_unit'] ?: '-' }}</div>
                                 </li>
                                 <li>
                                     <div class="pilrek-profile-label">Jurusan / Program Studi</div>
-                                    <div class="pilrek-profile-value">Teknik Industri</div>
+                                    <div class="pilrek-profile-value">{{ $candidate['study_program'] ?: '-' }}</div>
                                 </li>
                                 <li>
                                     <div class="pilrek-profile-label">Jabatan Akademik</div>
-                                    <div class="pilrek-profile-value">Guru Besar</div>
+                                    <div class="pilrek-profile-value">{{ $candidate['academic_position'] ?: '-' }}</div>
                                 </li>
                                 <li>
                                     <div class="pilrek-profile-label">Jabatan Saat Ini</div>
-                                    <div class="pilrek-profile-value">Dekan Fakultas Teknik</div>
+                                    <div class="pilrek-profile-value">{{ $candidate['current_position'] ?: '-' }}</div>
                                 </li>
                                 <li>
                                     <div class="pilrek-profile-label">Pendidikan Terakhir</div>
-                                    <div class="pilrek-profile-value">Doktor Manajemen Teknologi Pendidikan Tinggi</div>
+                                    <div class="pilrek-profile-value">{{ $candidate['latest_education'] ?: '-' }}</div>
                                 </li>
                             </ul>
                         </div>
@@ -261,8 +271,7 @@
                         <div class="pilrek-content-card mil-up">
                             <div class="pilrek-section-kicker mil-mb-20">Profil Singkat</div>
                             <h3 class="mil-mb-25">Ringkasan Akademik dan Kepemimpinan</h3>
-                            <p>Prof. Dr. Ir. Ahmad Prasetyo, M.Sc. merupakan akademisi senior yang telah mengabdikan diri secara konsisten dalam pengembangan pendidikan tinggi, penguatan riset terapan, dan peningkatan tata kelola fakultas. Pengalaman panjang dalam tridarma perguruan tinggi membentuk kepemimpinan yang menekankan integritas, kualitas akademik, dan pelayanan kelembagaan yang berkelanjutan.</p>
-                            <p>Dalam perjalanan kariernya, beliau pernah mengemban amanah sebagai ketua program studi, wakil dekan, hingga dekan, dengan fokus pada penguatan mutu pembelajaran, pembinaan dosen muda, dan perluasan jejaring kolaborasi. Rekam jejak tersebut menjadi landasan utama dalam menawarkan arah kepemimpinan universitas yang lebih tertata, inklusif, dan responsif terhadap kebutuhan sivitas akademika.</p>
+                            <p>{{ $candidate['short_profile'] ?: 'Profil singkat calon belum tersedia.' }}</p>
                         </div>
                     </div>
 
@@ -270,9 +279,8 @@
                         <div class="pilrek-content-card mil-up">
                             <div class="pilrek-section-kicker mil-mb-20">Visi</div>
                             <div class="pilrek-vision-statement">
-                                <h4>Mewujudkan universitas yang unggul, berintegritas, inklusif, dan berdaya saing global melalui tata kelola akademik yang kolaboratif dan berkelanjutan.</h4>
+                                <h4>{{ $candidate['vision'] ?: 'Visi calon belum tersedia.' }}</h4>
                             </div>
-                            <p>Visi ini menempatkan penguatan mutu akademik, pengembangan sumber daya manusia, serta tata kelola institusi yang terbuka sebagai pilar utama dalam membangun universitas yang adaptif terhadap perubahan zaman dan tetap berakar pada nilai-nilai keilmuan.</p>
                         </div>
                     </div>
 
@@ -281,34 +289,23 @@
                             <div class="pilrek-section-kicker mil-mb-20">Misi</div>
                             <h3 class="mil-mb-15">Agenda Strategis Kepemimpinan</h3>
                             <ul class="pilrek-mission-list">
-                                <li class="pilrek-mission-item">
-                                    <div class="pilrek-mission-number">01</div>
-                                    <div class="pilrek-mission-body">
-                                        <h5>Penguatan Mutu Akademik</h5>
-                                        <p>Mendorong peningkatan kualitas pembelajaran, akreditasi program studi, serta pengembangan kurikulum yang relevan dengan kebutuhan ilmu pengetahuan, dunia kerja, dan kepentingan masyarakat luas.</p>
-                                    </div>
-                                </li>
-                                <li class="pilrek-mission-item">
-                                    <div class="pilrek-mission-number">02</div>
-                                    <div class="pilrek-mission-body">
-                                        <h5>Peningkatan Riset dan Inovasi</h5>
-                                        <p>Memperkuat ekosistem riset unggulan melalui kolaborasi lintas disiplin, dukungan terhadap publikasi ilmiah, serta hilirisasi inovasi yang memberikan dampak nyata bagi pembangunan daerah dan nasional.</p>
-                                    </div>
-                                </li>
-                                <li class="pilrek-mission-item">
-                                    <div class="pilrek-mission-number">03</div>
-                                    <div class="pilrek-mission-body">
-                                        <h5>Tata Kelola Transparan dan Akuntabel</h5>
-                                        <p>Membangun sistem tata kelola universitas yang partisipatif, berbasis data, dan akuntabel guna memastikan setiap kebijakan kelembagaan dapat dipertanggungjawabkan secara akademik maupun administratif.</p>
-                                    </div>
-                                </li>
-                                <li class="pilrek-mission-item">
-                                    <div class="pilrek-mission-number">04</div>
-                                    <div class="pilrek-mission-body">
-                                        <h5>Penguatan Jejaring Strategis</h5>
-                                        <p>Meningkatkan kemitraan dengan perguruan tinggi, lembaga pemerintah, industri, dan komunitas internasional untuk memperluas ruang kolaborasi akademik, mobilitas, dan pengabdian kepada masyarakat.</p>
-                                    </div>
-                                </li>
+                                @forelse ($candidate['missions'] as $missionIndex => $mission)
+                                    <li class="pilrek-mission-item">
+                                        <div class="pilrek-mission-number">{{ str_pad((string) ($missionIndex + 1), 2, '0', STR_PAD_LEFT) }}</div>
+                                        <div class="pilrek-mission-body">
+                                            <h5>{{ $mission['title'] ?? 'Misi' }}</h5>
+                                            <p>{{ $mission['description'] ?? '-' }}</p>
+                                        </div>
+                                    </li>
+                                @empty
+                                    <li class="pilrek-mission-item">
+                                        <div class="pilrek-mission-number">01</div>
+                                        <div class="pilrek-mission-body">
+                                            <h5>Misi</h5>
+                                            <p>Data misi calon belum tersedia.</p>
+                                        </div>
+                                    </li>
+                                @endforelse
                             </ul>
                         </div>
                     </div>

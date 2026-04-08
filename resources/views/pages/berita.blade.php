@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'Berita')
 
@@ -148,10 +148,7 @@
     <div class="progress-wrap active-progress"></div>
     @include('partials.navbar', ['activePage' => 'berita'])
 
-
-
     <div id="smooth-content">
-
         <div class="mil-banner mil-banner-inner mil-dissolve">
             <div class="container">
                 <div class="row align-items-center justify-content-center">
@@ -170,167 +167,51 @@
             </div>
         </div>
 
-        @php
-            $allPosts = [
-                [
-                    'id' => 1,
-                    'slug' => 'pengumuman-tahapan-penjaringan',
-                    'image' => '1.png',
-                    'title' => 'Pengumuman Tahapan Penjaringan Bakal Calon Rektor Periode 2026-2030',
-                    'tags' => ['pengumuman', 'tahapan', 'resmi'],
-                    'published_at' => '03 April 2026',
-                ],
-                [
-                    'id' => 2,
-                    'slug' => 'sosialisasi-pilrek-senat-akademik',
-                    'image' => '2.png',
-                    'title' => 'Sosialisasi Pemilihan Rektor Bersama Senat Akademik dan Sivitas Kampus',
-                    'tags' => ['sosialisasi', 'senat', 'kampus'],
-                    'published_at' => '05 April 2026',
-                ],
-                [
-                    'id' => 3,
-                    'slug' => 'rapat-koordinasi-panitia-pilrek',
-                    'image' => '3.png',
-                    'title' => 'Rapat Koordinasi Panitia Pemilihan Rektor Membahas Agenda Verifikasi Administrasi',
-                    'tags' => ['rapat', 'panitia', 'verifikasi'],
-                    'published_at' => '07 April 2026',
-                ],
-                [
-                    'id' => 4,
-                    'slug' => 'penetapan-daftar-calon-sementara',
-                    'image' => '4.png',
-                    'title' => 'Penetapan Daftar Calon Sementara Pemilihan Rektor Tahun 2026',
-                    'tags' => ['penetapan', 'calon', 'pengumuman'],
-                    'published_at' => '09 April 2026',
-                ],
-                [
-                    'id' => 5,
-                    'slug' => 'kegiatan-dialog-terbuka-kandidat',
-                    'image' => '5.png',
-                    'title' => 'Kegiatan Dialog Terbuka Kandidat Bersama Dosen, Mahasiswa, dan Tenaga Kependidikan',
-                    'tags' => ['kegiatan', 'dialog', 'kandidat'],
-                    'published_at' => '11 April 2026',
-                ],
-                [
-                    'id' => 6,
-                    'slug' => 'publikasi-jadwal-penyampaian-visi-misi',
-                    'image' => '6.png',
-                    'title' => 'Publikasi Jadwal Penyampaian Visi dan Misi Calon Rektor Secara Terbuka',
-                    'tags' => ['jadwal', 'visi-misi', 'publikasi'],
-                    'published_at' => '13 April 2026',
-                ],
-                [
-                    'id' => 7,
-                    'slug' => 'hasil-verifikasi-berkas-calon',
-                    'image' => '7.png',
-                    'title' => 'Hasil Verifikasi Berkas Administratif Calon Rektor Diumumkan Secara Resmi',
-                    'tags' => ['verifikasi', 'berkas', 'resmi'],
-                    'published_at' => '15 April 2026',
-                ],
-                [
-                    'id' => 8,
-                    'slug' => 'notulensi-rapat-senat-terbuka',
-                    'image' => '8.png',
-                    'title' => 'Notulensi Rapat Senat Terbuka Terkait Proses Pemilihan Rektor 2026',
-                    'tags' => ['senat', 'rapat', 'dokumen'],
-                    'published_at' => '17 April 2026',
-                ],
-                [
-                    'id' => 9,
-                    'slug' => 'pengumuman-debat-terbuka',
-                    'image' => '9.png',
-                    'title' => 'Pengumuman Debat Terbuka Calon Rektor untuk Sivitas Akademika',
-                    'tags' => ['debat', 'pengumuman', 'akademika'],
-                    'published_at' => '19 April 2026',
-                ],
-                [
-                    'id' => 10,
-                    'slug' => 'dokumentasi-kegiatan-panitia',
-                    'image' => '10.png',
-                    'title' => 'Dokumentasi Kegiatan Panitia dalam Menyiapkan Tahapan Pemilihan Rektor',
-                    'tags' => ['dokumentasi', 'panitia', 'kegiatan'],
-                    'published_at' => '21 April 2026',
-                ],
-                [
-                    'id' => 11,
-                    'slug' => 'surat-edaran-tata-tertib',
-                    'image' => '11.png',
-                    'title' => 'Surat Edaran Tata Tertib Penyampaian Program Kerja Calon Rektor',
-                    'tags' => ['surat edaran', 'tata tertib', 'resmi'],
-                    'published_at' => '23 April 2026',
-                ],
-                [
-                    'id' => 12,
-                    'slug' => 'pengumuman-hasil-tahap-akhir',
-                    'image' => '12.png',
-                    'title' => 'Pengumuman Hasil Tahap Akhir Seleksi Pemilihan Rektor Periode 2026-2030',
-                    'tags' => ['hasil akhir', 'pengumuman', 'pilrek'],
-                    'published_at' => '25 April 2026',
-                ],
-            ];
-
-            $perPage = 6;
-            $currentPage = request()->integer('page', 1);
-            $postCollection = collect($allPosts);
-            $currentItems = $postCollection->slice(($currentPage - 1) * $perPage, $perPage)->values();
-
-            $posts = new \Illuminate\Pagination\LengthAwarePaginator(
-                $currentItems,
-                $postCollection->count(),
-                $perPage,
-                $currentPage,
-                [
-                    'path' => request()->url(),
-                    'query' => request()->query(),
-                ]
-            );
-        @endphp
-
         <div class="mil-blog-list mil-p-0-160">
             <div class="container">
                 <div class="row pilrek-news-grid">
-                    @foreach ($posts as $post)
+                    @forelse ($posts as $post)
                         <div class="col-xl-4 col-md-6 col-sm-12">
-                            <a href="{{ route('publikasi') }}" class="pilrek-news-card mil-mb-30 mil-up">
+                            <a href="{{ route('publikasi', ['slug' => $post['slug']]) }}" class="pilrek-news-card mil-mb-30 mil-up">
                                 <div class="mil-card-cover">
-                                    <img
-                                        src="{{ asset('template/img/inner-pages/blog/' . $post['image']) }}"
-                                        alt="{{ $post['title'] }}"
-                                        class="mil-scale-img"
-                                        data-value-1="1"
-                                        data-value-2="1.2"
-                                    >
+                                    <img src="{{ $post['cover_url'] }}" alt="{{ $post['title'] }}" class="mil-scale-img" data-value-1="1" data-value-2="1.2">
                                 </div>
                                 <div class="mil-descr">
                                     <div class="pilrek-news-tags">
-                                        @foreach ($post['tags'] as $tag)
+                                        @forelse ($post['tags'] as $tag)
                                             <span class="pilrek-news-tag">{{ $tag }}</span>
-                                        @endforeach
+                                        @empty
+                                            <span class="pilrek-news-tag">berita</span>
+                                        @endforelse
                                     </div>
                                     <h4 class="pilrek-news-title">{{ $post['title'] }}</h4>
                                     <div class="pilrek-news-meta-label">Tanggal Terbit</div>
-                                    <div class="pilrek-news-meta-value">{{ $post['published_at'] }}</div>
+                                    <div class="pilrek-news-meta-value">{{ $post['published_label'] }}</div>
                                 </div>
                             </a>
                         </div>
-                    @endforeach
+                    @empty
+                        <div class="col-12">
+                            <div class="alert alert-light text-center">Belum ada berita yang dipublikasikan.</div>
+                        </div>
+                    @endforelse
                 </div>
-                <div class="mil-text-center mil-mt-30 mil-up">
-                    <div class="pilrek-pagination">
-                        <a href="{{ $posts->previousPageUrl() ?: '#' }}" class="pilrek-pagination-link {{ $posts->onFirstPage() ? 'pilrek-disabled' : '' }}">Previous</a>
-                        @for ($page = 1; $page <= $posts->lastPage(); $page++)
-                            <a href="{{ $posts->url($page) }}" class="pilrek-pagination-link {{ $posts->currentPage() === $page ? 'pilrek-active' : '' }}">{{ $page }}</a>
-                        @endfor
-                        <a href="{{ $posts->nextPageUrl() ?: '#' }}" class="pilrek-pagination-link {{ $posts->hasMorePages() ? '' : 'pilrek-disabled' }}">Next</a>
+
+                @if ($posts->lastPage() > 1)
+                    <div class="mil-text-center mil-mt-30 mil-up">
+                        <div class="pilrek-pagination">
+                            <a href="{{ $posts->previousPageUrl() ?: '#' }}" class="pilrek-pagination-link {{ $posts->onFirstPage() ? 'pilrek-disabled' : '' }}">Previous</a>
+                            @for ($page = 1; $page <= $posts->lastPage(); $page++)
+                                <a href="{{ $posts->url($page) }}" class="pilrek-pagination-link {{ $posts->currentPage() === $page ? 'pilrek-active' : '' }}">{{ $page }}</a>
+                            @endfor
+                            <a href="{{ $posts->nextPageUrl() ?: '#' }}" class="pilrek-pagination-link {{ $posts->hasMorePages() ? '' : 'pilrek-disabled' }}">Next</a>
+                        </div>
                     </div>
-                </div>
+                @endif
             </div>
         </div>
-        @include('partials.footer')
 
+        @include('partials.footer')
     </div>
 </div>
 @endsection
-
-

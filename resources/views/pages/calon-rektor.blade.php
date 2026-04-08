@@ -78,41 +78,6 @@
     }
 </style>
 
-@php
-    $candidates = [
-        [
-            'name' => 'Prof. Dr. Ir. Ahmad Prasetyo, M.Sc.',
-            'unit' => 'Fakultas Teknik',
-            'role' => 'Guru Besar Teknik Industri / Dekan Fakultas Teknik',
-            'image' => '1.png',
-        ],
-        [
-            'name' => 'Prof. Dr. Rina Kartikasari, M.Hum.',
-            'unit' => 'Fakultas Ilmu Budaya',
-            'role' => 'Guru Besar Linguistik / Wakil Rektor Bidang Akademik',
-            'image' => '2.png',
-        ],
-        [
-            'name' => 'Prof. Dr. H. Budi Santoso, M.Si.',
-            'unit' => 'Fakultas Matematika dan Ilmu Pengetahuan Alam',
-            'role' => 'Guru Besar Biologi / Ketua Senat Fakultas',
-            'image' => '3.png',
-        ],
-        [
-            'name' => 'Prof. Dr. Dewi Lestari, S.E., M.M.',
-            'unit' => 'Fakultas Ekonomi dan Bisnis',
-            'role' => 'Guru Besar Manajemen / Dekan Fakultas Ekonomi dan Bisnis',
-            'image' => '4.png',
-        ],
-        [
-            'name' => 'Prof. Dr. Ir. Muhammad Arifin, M.T.',
-            'unit' => 'Sekolah Pascasarjana',
-            'role' => 'Direktur Sekolah Pascasarjana / Guru Besar Teknik Sipil',
-            'image' => '1.png',
-        ],
-    ];
-@endphp
-
 <div id="smooth-wrapper" class="mil-wrapper">
 
     <div class="mil-preloader">
@@ -151,35 +116,24 @@
 
         <div class="mil-p-0-160">
             <div class="container pilrek-candidate-grid">
-                <div class="row">
-                    @foreach (array_slice($candidates, 0, 3) as $candidate)
-                        <div class="col-xl-4 col-md-6 mil-mb-30">
-                            <div class="pilrek-candidate-card mil-up">
-                                <div class="pilrek-candidate-portrait">
-                                    <img src="{{ asset('template/img/inner-pages/team/' . $candidate['image']) }}" alt="{{ $candidate['name'] }}">
-                                </div>
-                                <h5 class="mil-mb-15">{{ $candidate['name'] }}</h5>
-                                <div class="pilrek-candidate-unit">{{ $candidate['unit'] }}</div>
-                                <div class="pilrek-candidate-role">{{ $candidate['role'] }}</div>
-                                <a href="{{ route('calon-rektor.detail') }}" class="mil-btn mil-m">Lihat Detail</a>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
                 <div class="row pilrek-candidate-row-centered">
-                    @foreach (array_slice($candidates, 3, 2) as $candidate)
+                    @forelse ($candidates as $candidate)
                         <div class="col-xl-4 col-md-6 mil-mb-30">
                             <div class="pilrek-candidate-card mil-up">
                                 <div class="pilrek-candidate-portrait">
-                                    <img src="{{ asset('template/img/inner-pages/team/' . $candidate['image']) }}" alt="{{ $candidate['name'] }}">
+                                    <img src="{{ $candidate['photo_url'] }}" alt="{{ $candidate['name'] }}">
                                 </div>
                                 <h5 class="mil-mb-15">{{ $candidate['name'] }}</h5>
-                                <div class="pilrek-candidate-unit">{{ $candidate['unit'] }}</div>
-                                <div class="pilrek-candidate-role">{{ $candidate['role'] }}</div>
-                                <a href="{{ route('calon-rektor.detail') }}" class="mil-btn mil-m">Informasi Lengkap</a>
+                                <div class="pilrek-candidate-unit">{{ $candidate['faculty_unit'] ?: '-' }}</div>
+                                <div class="pilrek-candidate-role">{{ $candidate['role_summary'] ?: '-' }}</div>
+                                <a href="{{ route('calon-rektor.detail', $candidate['slug']) }}" class="mil-btn mil-m">Lihat Detail</a>
                             </div>
                         </div>
-                    @endforeach
+                    @empty
+                        <div class="col-12">
+                            <div class="alert alert-light text-center">Data calon rektor belum tersedia.</div>
+                        </div>
+                    @endforelse
                 </div>
             </div>
         </div>
@@ -188,4 +142,3 @@
     </div>
 </div>
 @endsection
-

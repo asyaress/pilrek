@@ -52,33 +52,57 @@
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-xl-9">
-                            <form>
+                            @if (session('status'))
+                                <div class="alert alert-success mil-mb-30">{{ session('status') }}</div>
+                            @endif
+
+                            <form action="{{ route('kontak.submit') }}" method="post">
+                                @csrf
                                 <div class="row">
                                     <div class="col-md-6 mil-mb-30">
-                                        <input class="mil-input mil-up" type="text" placeholder="Name" name="name">
+                                        <input class="mil-input mil-up @error('name') mil-invalid @enderror" type="text"
+                                            placeholder="Name" name="name" value="{{ old('name') }}">
+                                        @error('name')
+                                            <small class="text-danger d-block mt-2">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                     <div class="col-md-6 mil-mb-30">
-                                        <input class="mil-input mil-up" type="email" placeholder="Email" name="email">
+                                        <input class="mil-input mil-up @error('email') mil-invalid @enderror" type="email"
+                                            placeholder="Email" name="email" value="{{ old('email') }}">
+                                        @error('email')
+                                            <small class="text-danger d-block mt-2">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                     <div class="col-xl-12 mil-mb-30">
-                                        <input class="mil-input mil-up" type="tel" placeholder="Telephone number" name="tel">
+                                        <input class="mil-input mil-up @error('tel') mil-invalid @enderror" type="tel"
+                                            placeholder="Telephone number" name="tel" value="{{ old('tel') }}">
+                                        @error('tel')
+                                            <small class="text-danger d-block mt-2">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                     <div class="col-xl-12 mil-mb-30 ">
-                                        <textarea cols="30" rows="10" class="mil-up" placeholder="Message" name="message"></textarea>
+                                        <textarea cols="30" rows="10" class="mil-up @error('message') mil-invalid @enderror" placeholder="Message"
+                                            name="message">{{ old('message') }}</textarea>
+                                        @error('message')
+                                            <small class="text-danger d-block mt-2">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="mil-checkbox-frame mil-mb-30 mil-up">
                                     <div class="mil-checkbox">
-                                        <input type="checkbox" id="checkbox-1" name="checkmark" checked>
+                                        <input type="checkbox" id="checkbox-1" name="checkmark" value="1"
+                                            @checked(old('checkmark', true))>
                                         <label for="checkbox-1"></label>
                                     </div>
                                     <p class="mil-text-xs mil-soft">I agree that the data submitted, collected and stored *</p>
                                 </div>
+                                @error('checkmark')
+                                    <small class="text-danger d-block mt-n3 mb-3">{{ $message }}</small>
+                                @enderror
                                 <div class="mil-up">
                                     <button type="submit" class="mil-btn mil-m">Send Message</button>
                                 </div>
                             </form>
-                            <div class="alert-success" style="display: none;"><h5>Thanks, your message is sent successfully.</h5></div>
                             <div class="mil-p-160-0">
                                 <h5 class="mil-mb-30 mil-up">We are available on the following channels:</h5>
                                 <p class="mil-text-m mil-soft mil-mb-10 mil-up">Address: 999 Rue du Cherche-Midi, 7755500666 Paris, France</p>

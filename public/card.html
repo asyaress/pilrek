@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stacked Card Persyaratan - Apple Like</title>
+    <style>
+        :root {
+            --bg: #f4e9f8;
+            --border: #db9ae8;
+            --tab-h: 68px;
+            --peek: 44px;
+            --radius: 22px;
+            --ease: cubic-bezier(.16, 1, .3, 1);
+            --header-stack-h: 244px;
+            --content-top: 244px;
+            --glass: rgba(255, 255, 255, .12);
+            --glass-border: rgba(255, 255, 255, .10);
+            --text: #fff;
+            --muted: rgba(255, 255, 255, .84);
+            --shadow-soft: 0 20px 50px rgba(78, 46, 140, .14);
+            --shadow-strong: 0 34px 80px rgba(56, 34, 128, .24);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 24px;
+            background: linear-gradient(180deg, #f8effc 0%, #f3e6f9 100%);
+            font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            color: #171717;
+        }
+
+        .wrap {
+            width: min(100%, 1080px);
+        }
+
+        .title {
+            margin: 0 0 10px;
+            text-align: center;
+            font-size: clamp(28px, 3vw, 42px);
+            font-weight: 900;
+            letter-spacing: -.04em;
+            color: #5d43b4;
+        }
+
+        .subtitle {
+            margin: 0 0 22px;
+            text-align: center;
+            color: #7d6aaa;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .frame {
+            position: relative;
+            aspect-ratio: 1127 / 640;
+            background: var(--bg);
+            border: 4px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 18px 50px rgba(170, 105, 190, .12);
+            padding: 16px 18px 18px;
+        }
+
+        .scene {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            perspective: 1800px;
+            transform-style: preserve-3d;
+            isolation: isolate;
+        }
+
+        .headers {
+            position: absolute;
+            inset: 0 0 auto 0;
+            height: var(--header-stack-h);
+            z-index: 3;
+            pointer-events: auto;
+        }
+
+        .header-card {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: var(--tab-h);
+            border: 0;
+            border-radius: 22px 22px 0 0;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            appearance: none;
+            -webkit-appearance: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 18px 0 20px;
+            color: #fff;
+            cursor: pointer;
+            pointer-events: auto;
+            box-shadow: var(--shadow-soft);
+            transition:
+                top .82s var(--ease),
+                transform .82s var(--ease),
+                box-shadow .82s var(--ease),
+                filter .82s var(--ease),
+                opacity .5s ease;
+            will-change: top, transform;
+            transform-origin: center top;
+            user-select: none;
+            overflow: hidden;
+            backface-visibility: hidden;
+        }
+
+        .header-card:focus {
+            outline: none;
+        }
+
+        .header-card:focus-visible {
+            outline: 2px solid rgba(255, 255, 255, .7);
+            outline-offset: -4px;
+        }
+
+        .header-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(255, 255, 255, .10), rgba(255, 255, 255, 0));
+            pointer-events: none;
+        }
+
+        .header-card .left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-card .num {
+            width: 36px;
+            height: 36px;
+            display: grid;
+            place-items: center;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .15);
+            backdrop-filter: blur(10px);
+            font-size: 14px;
+            font-weight: 900;
+            flex: 0 0 auto;
+        }
+
+        .header-card .label {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: .01em;
+            text-shadow: 0 1px 0 rgba(0, 0, 0, .04);
+        }
+
+        .header-card .hint {
+            font-size: 12px;
+            font-weight: 800;
+            opacity: .95;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 1px 0 rgba(0, 0, 0, .04);
+            flex: 0 0 auto;
+        }
+
+        .header-card:not(.active) {
+            transform: translate3d(0, 0, -40px) scale(.997);
+            filter: saturate(.98) brightness(.995);
+        }
+
+        .header-card.active {
+            transform: translate3d(0, 0, 70px) scale(1.003);
+            box-shadow: var(--shadow-strong);
+            filter: none;
+        }
+
+        .header-card.moving-front {
+            animation: liftFront .86s var(--ease);
+        }
+
+        @keyframes liftFront {
+            0% {
+                transform: translate3d(0, 0, -40px) scale(.997);
+            }
+
+            40% {
+                transform: translate3d(0, -10px, 120px) scale(1.012);
+            }
+
+            100% {
+                transform: translate3d(0, 0, 70px) scale(1.003);
+            }
+        }
+
+        .content-shell {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: var(--content-top);
+            bottom: 0;
+            z-index: 1;
+            border-radius: 0 0 var(--radius) var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-strong);
+            transition:
+                background .82s var(--ease),
+                transform .82s var(--ease),
+                box-shadow .82s var(--ease);
+            transform-origin: center top;
+            background:
+                radial-gradient(circle at 72% 26%, rgba(255, 255, 255, .10), rgba(255, 255, 255, 0) 26%),
+                linear-gradient(135deg, #299a8d 0%, #36b6a5 48%, #268d83 100%);
+        }
+
+        .content-shell.switching {
+            animation: shellBreathe .78s var(--ease);
+        }
+
+        @keyframes shellBreathe {
+            0% {
+                transform: translateY(6px) scale(.992);
+            }
+
+            45% {
+                transform: translateY(-4px) scale(1.006);
+            }
+
+            100% {
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .content-inner {
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: 1.08fr .92fr;
+            color: var(--text);
+            padding: 0;
+        }
+
+        .content-inner.enter {
+            animation: contentIn .62s var(--ease);
+        }
+
+        @keyframes contentIn {
+            from {
+                opacity: 0;
+                transform: translateY(18px) scale(.985);
+                filter: blur(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+            }
+        }
+
+        .content {
+            padding: 34px 30px 28px 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .mini-icon {
+            width: 28px;
+            height: 28px;
+            margin-bottom: 20px;
+            opacity: .96;
+        }
+
+        .mini-icon svg {
+            width: 100%;
+            height: 100%;
+            stroke: #fff;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .card-title {
+            margin: 0 0 12px;
+            font-size: clamp(28px, 3.2vw, 54px);
+            line-height: 1.08;
+            font-weight: 900;
+            letter-spacing: -.045em;
+            max-width: 470px;
+            text-wrap: balance;
+        }
+
+        .card-desc {
+            margin: 0 0 18px;
+            max-width: 460px;
+            font-size: 14px;
+            line-height: 1.8;
+            font-weight: 600;
+            color: var(--muted);
+        }
+
+        .detail-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            gap: 12px;
+            max-width: 460px;
+        }
+
+        .detail-list li {
+            display: grid;
+            grid-template-columns: 32px 1fr;
+            gap: 10px;
+            align-items: start;
+            font-size: 14px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, .98);
+        }
+
+        .badge {
+            width: 32px;
+            height: 32px;
+            display: grid;
+            place-items: center;
+            border-radius: 999px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            font-size: 13px;
+            font-weight: 800;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08);
+        }
+
+        .visual {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 18px 18px 18px 0;
+        }
+
+        .visual-panel {
+            width: 92%;
+            height: 88%;
+            position: relative;
+            overflow: hidden;
+            border-radius: 22px;
+            background:
+                radial-gradient(circle at 68% 28%, rgba(255, 255, 255, .20), rgba(255, 255, 255, 0) 34%),
+                linear-gradient(90deg, rgba(255, 255, 255, .10), rgba(255, 255, 255, .22));
+            box-shadow:
+                inset 0 -16px 24px rgba(35, 44, 130, .12),
+                inset 0 0 0 1px rgba(255, 255, 255, .08);
+        }
+
+        .visual-panel.enter {
+            animation: panelIn .7s var(--ease);
+        }
+
+        @keyframes panelIn {
+            from {
+                opacity: 0;
+                transform: translateY(24px) scale(.96);
+                filter: blur(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+            }
+        }
+
+        .big-number {
+            position: absolute;
+            right: 58px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 120px;
+            line-height: 1;
+            font-weight: 900;
+            color: rgba(255, 255, 255, .16);
+            letter-spacing: -.06em;
+            user-select: none;
+        }
+
+        .doc-card {
+            position: absolute;
+            left: 50%;
+            top: 55%;
+            transform: translate(-50%, -50%) rotate(-8deg);
+            width: 180px;
+            height: 220px;
+            border-radius: 20px;
+            background: linear-gradient(180deg, #ffffff 0%, #eff2ff 100%);
+            box-shadow: 0 20px 36px rgba(34, 37, 103, .18);
+            padding: 18px 16px;
+        }
+
+        .doc-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 64px;
+            height: 64px;
+            clip-path: polygon(100% 0, 0 0, 100% 100%);
+            background: linear-gradient(180deg, #dde2ff, #c7d1ff);
+            border-top-right-radius: 20px;
+        }
+
+        .doc-lines {
+            margin-top: 42px;
+            display: grid;
+            gap: 12px;
+        }
+
+        .doc-lines span {
+            display: block;
+            height: 10px;
+            border-radius: 999px;
+            background: #d4d9f7;
+        }
+
+        .doc-lines span:nth-child(1) {
+            width: 62%;
+            background: #6b73e6;
+        }
+
+        .doc-lines span:nth-child(2) {
+            width: 82%;
+        }
+
+        .doc-lines span:nth-child(3) {
+            width: 75%;
+        }
+
+        .doc-lines span:nth-child(4) {
+            width: 56%;
+        }
+
+        .check-bubble,
+        .small-tag,
+        .ring,
+        .dot {
+            position: absolute;
+        }
+
+        .check-bubble {
+            left: 74px;
+            top: 90px;
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: rgba(122, 219, 142, .96);
+            display: grid;
+            place-items: center;
+            box-shadow: 0 12px 20px rgba(28, 108, 54, .14);
+        }
+
+        .check-bubble::before {
+            content: "";
+            width: 18px;
+            height: 10px;
+            border-left: 4px solid #fff;
+            border-bottom: 4px solid #fff;
+            transform: rotate(-45deg) translateY(-1px);
+        }
+
+        .small-tag {
+            right: 64px;
+            top: 90px;
+            width: 78px;
+            height: 78px;
+            border-radius: 22px;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            font-size: 28px;
+            font-weight: 900;
+            background: rgba(255, 255, 255, .13);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08);
+            backdrop-filter: blur(10px);
+        }
+
+        .ring {
+            left: 84px;
+            bottom: 82px;
+            width: 74px;
+            height: 74px;
+            border-radius: 50%;
+            border: 2px dashed rgba(255, 255, 255, .28);
+        }
+
+        .dot {
+            border-radius: 50%;
+        }
+
+        .dot.one {
+            width: 12px;
+            height: 12px;
+            left: 114px;
+            bottom: 52px;
+            background: #a8d8ff;
+        }
+
+        .dot.two {
+            width: 14px;
+            height: 14px;
+            right: 96px;
+            bottom: 74px;
+            background: #bceda8;
+        }
+
+        .dot.three {
+            width: 8px;
+            height: 8px;
+            right: 132px;
+            top: 82px;
+            background: #fff;
+            opacity: .75;
+        }
+
+        @media (max-width: 920px) {
+            .frame {
+                aspect-ratio: auto;
+                min-height: 780px;
+            }
+
+            .content-inner {
+                grid-template-columns: 1fr;
+            }
+
+            .visual {
+                display: none;
+            }
+
+            .content {
+                padding: 26px 22px 24px;
+            }
+
+            .header-card .label {
+                max-width: 170px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <h1 class="title">Persyaratan Pendaftaran</h1>
+        <p class="subtitle">Header belakang sekarang tetap bisa diklik, dan transisinya dibuat lebih halus ala app
+            macOS.</p>
+
+        <div class="frame">
+            <div class="scene">
+                <div class="headers" id="headers"></div>
+                <div class="content-shell" id="contentShell">
+                    <div class="content-inner" id="contentInner"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const items = [
+            {
+                number: '01',
+                label: 'Kartu Identitas',
+                title: 'Persyaratan 1 —\\nKartu Identitas',
+                desc: 'Siapkan identitas utama yang masih berlaku agar proses verifikasi berjalan cepat dan data pendaftar sesuai.',
+                details: [
+                    'Unggah KTP, KK, atau identitas lain yang masih aktif.',
+                    'Pastikan nama, tanggal lahir, dan nomor identitas terlihat jelas.',
+                    'Data identitas harus sama dengan data pada formulir pendaftaran.'
+                ],
+                tab: '#f0b221',
+                grad1: '#d39311',
+                grad2: '#f0b221',
+                grad3: '#d78712'
+            },
+            {
+                number: '02',
+                label: 'Dokumen Pendukung',
+                title: 'Persyaratan 2 —\\nDokumen Pendukung',
+                desc: 'Lengkapi dokumen tambahan supaya berkas tidak tertunda saat proses pemeriksaan administrasi.',
+                details: [
+                    'Siapkan pas foto, surat keterangan, atau formulir yang diminta.',
+                    'Gunakan format file sesuai ketentuan, misalnya PDF atau JPG.',
+                    'Gabungkan dokumen bila diminta agar lebih mudah saat diunggah.'
+                ],
+                tab: '#f15c63',
+                grad1: '#d94d54',
+                grad2: '#f15c63',
+                grad3: '#da4e55'
+            },
+            {
+                number: '03',
+                label: 'Data Kontak Aktif',
+                title: 'Persyaratan 3 —\\nData Kontak Aktif',
+                desc: 'Informasi kontak harus aktif karena seluruh pemberitahuan lanjutan akan dikirim melalui data ini.',
+                details: [
+                    'Masukkan nomor telepon aktif yang dapat dihubungi.',
+                    'Gunakan email yang rutin dibuka untuk menerima notifikasi.',
+                    'Periksa ulang penulisan alamat email dan nomor telepon.'
+                ],
+                tab: '#8ac667',
+                grad1: '#70ae52',
+                grad2: '#8ac667',
+                grad3: '#6da94f'
+            },
+            {
+                number: '04',
+                label: 'Bukti Pembayaran',
+                title: 'Persyaratan 4 —\\nBukti Pembayaran',
+                desc: 'Unggah bukti pembayaran sesuai nominal dan ketentuan agar verifikasi dapat segera diproses.',
+                details: [
+                    'Pastikan nominal transfer sesuai tagihan yang tercantum.',
+                    'Unggah file yang jelas dan tidak buram.',
+                    'Simpan bukti pembayaran sampai proses selesai diverifikasi.'
+                ],
+                tab: '#6170e6',
+                grad1: '#4e5ad4',
+                grad2: '#6170e6',
+                grad3: '#4a58d0'
+            },
+            {
+                number: '05',
+                label: 'Konfirmasi Akhir',
+                title: 'Persyaratan 5 —\\nKonfirmasi Akhir',
+                desc: 'Tahap terakhir berisi pengecekan ulang seluruh informasi dan persetujuan bahwa data yang dikirim sudah benar.',
+                details: [
+                    'Periksa kembali seluruh data sebelum dikirim.',
+                    'Centang persetujuan syarat dan ketentuan.',
+                    'Simpan bukti pendaftaran setelah proses selesai.'
+                ],
+                tab: '#36b6a5',
+                grad1: '#299a8d',
+                grad2: '#36b6a5',
+                grad3: '#268d83'
+            }
+        ];
+
+        const headersEl = document.getElementById('headers');
+        const contentShell = document.getElementById('contentShell');
+        const contentInner = document.getElementById('contentInner');
+
+        let active = 4;
+        let order = items.map((_, i) => i);
+
+        function buildHeaders() {
+            headersEl.innerHTML = '';
+            items.forEach((item, index) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'header-card';
+                btn.dataset.index = index;
+                btn.style.background = item.tab;
+                btn.innerHTML = `
+          <span class="left">
+            <span class="num">${item.number}</span>
+            <span class="label">${item.label}</span>
+          </span>
+          <span class="hint">Klik detail</span>
+        `;
+                btn.addEventListener('click', () => changeActive(index));
+                headersEl.appendChild(btn);
+            });
+        }
+
+        function renderContent(index) {
+            const item = items[index];
+            const titleHtml = item.title.replace(/\\n/g, '<br>');
+            const details = item.details.map((text, i) =>
+                `<li><span class="badge">${i + 1}</span><span>${text}</span></li>`
+            ).join('');
+
+            contentShell.style.background = `
+        radial-gradient(circle at 72% 26%, rgba(255,255,255,.10), rgba(255,255,255,0) 26%),
+        linear-gradient(135deg, ${item.grad1} 0%, ${item.grad2} 48%, ${item.grad3} 100%)
+      `;
+
+            contentInner.innerHTML = `
+        <div class="content">
+          <div class="mini-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M7 3h7l5 5v13H7z"></path>
+              <path d="M14 3v5h5"></path>
+              <path d="M10 13l2 2 4-4"></path>
+            </svg>
+          </div>
+          <h2 class="card-title">${titleHtml}</h2>
+          <p class="card-desc">${item.desc}</p>
+          <ul class="detail-list">${details}</ul>
+        </div>
+
+        <div class="visual">
+          <div class="visual-panel enter">
+            <div class="check-bubble"></div>
+            <div class="small-tag">${item.number}</div>
+            <div class="ring"></div>
+            <div class="dot one"></div>
+            <div class="dot two"></div>
+            <div class="dot three"></div>
+            <div class="big-number">${item.number}</div>
+            <div class="doc-card">
+              <div class="doc-lines">
+                <span></span><span></span><span></span><span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+            contentInner.classList.remove('enter');
+            void contentInner.offsetWidth;
+            contentInner.classList.add('enter');
+
+            contentShell.classList.remove('switching');
+            void contentShell.offsetWidth;
+            contentShell.classList.add('switching');
+        }
+
+        function layoutHeaders(animateLiftIndex = null) {
+            const buttons = [...headersEl.querySelectorAll('.header-card')];
+            buttons.forEach((btn, index) => {
+                const pos = order.indexOf(index);
+                const isActive = index === active;
+                btn.style.top = `${pos * 44}px`;
+                btn.style.zIndex = isActive ? 30 : (10 + pos);
+                btn.classList.toggle('active', isActive);
+                btn.classList.toggle('moving-front', index === animateLiftIndex);
+            });
+
+            setTimeout(() => {
+                buttons.forEach(btn => btn.classList.remove('moving-front'));
+            }, 920);
+        }
+
+        function changeActive(index) {
+            if (index === active) return;
+            active = index;
+            order = order.filter(i => i !== index).concat(index);
+            layoutHeaders(index);
+            renderContent(index);
+        }
+
+        buildHeaders();
+        order = order.filter(i => i !== active).concat(active);
+        layoutHeaders();
+        renderContent(active);
+    </script>
+</body>
+
+</html>
