@@ -24,6 +24,7 @@ class PageController extends Controller
         $balonCandidates = $this->candidateItems(RectorCandidate::STATUS_BALON);
         $calonCandidates = $this->candidateItems(RectorCandidate::STATUS_CALON);
         $settings = Schema::hasTable('site_settings') ? SiteSetting::current() : null;
+        $countdownConfig = $this->countdownConfig($settings);
         $selectedRector = null;
         $selectedRectorCandidateId = (int) ($settings->selected_rector_candidate_id ?? 0);
         if ($selectedRectorCandidateId > 0) {
@@ -38,6 +39,7 @@ class PageController extends Controller
             'homeBalonCandidates' => $balonCandidates->take(4)->values()->all(),
             'homeCalonCandidates' => $calonCandidates->take(4)->values()->all(),
             'selectedRector' => $selectedRector,
+            'countdownConfig' => $countdownConfig,
             'homeNewsItems' => $news->take(3)->values()->all(),
             'homeRequirementItems' => $requirements->take(5)->values()->all(),
         ]);
@@ -520,5 +522,30 @@ class PageController extends Controller
                 'query' => request()->query(),
             ]
         );
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function countdownConfig(?SiteSetting $settings): array
+    {
+        $timezone = 'Asia/Makassar';
+        $target = $settings?->countdown_target_at;
+
+        if (!$target) {
+            $target = Carbon::parse('2026-09-01 08:00:00', $timezone);
+        }
+
+        if (!$target instanceof Carbon) {
+            $target = Carbon::parse((string) $target, $timezone);
+        }
+
+        $targetIso = $target->copy()->setTimezone($timezone)->format('Y-m-d\TH:i:sP');
+
+        return [
+            'title' => $settings?->countdown_title ?: 'Hitung Mundur Tahap Utama Pilrek',
+            'subtitle' => $settings?->countdown_subtitle ?: 'Menuju pemaparan visi dan misi calon rektor',
+            'target_iso' => $targetIso,
+        ];
     }
 }

@@ -8,6 +8,10 @@
         $institutionLogos = old('institution_logos', $settings->institution_logos ?? \App\Models\SiteSetting::defaultInstitutionLogos());
         $institutionLogos = is_array($institutionLogos) && !empty($institutionLogos) ? array_values($institutionLogos) : \App\Models\SiteSetting::defaultInstitutionLogos();
         $calonOptions = $calonOptions ?? [];
+        $countdownTargetValue = old(
+            'countdown_target_at',
+            $settings->countdown_target_at ? $settings->countdown_target_at->format('Y-m-d\TH:i') : ''
+        );
     @endphp
     <div class="card">
         <div class="card-header">
@@ -36,6 +40,45 @@
                             @error('site_tagline')
                                 <span class="invalid-feedback">{{ $message }}</span>
                             @enderror
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Judul Countdown Home</label>
+                            <input type="text" name="countdown_title"
+                                value="{{ old('countdown_title', $settings->countdown_title) }}"
+                                class="form-control @error('countdown_title') is-invalid @enderror"
+                                placeholder="Hitung Mundur Tahap Utama Pilrek">
+                            @error('countdown_title')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Subjudul Countdown Home</label>
+                            <input type="text" name="countdown_subtitle"
+                                value="{{ old('countdown_subtitle', $settings->countdown_subtitle) }}"
+                                class="form-control @error('countdown_subtitle') is-invalid @enderror"
+                                placeholder="Menuju pemaparan visi dan misi calon rektor">
+                            @error('countdown_subtitle')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Target Waktu Countdown</label>
+                            <input type="datetime-local" name="countdown_target_at"
+                                value="{{ $countdownTargetValue }}"
+                                class="form-control @error('countdown_target_at') is-invalid @enderror">
+                            @error('countdown_target_at')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
+                            <small class="form-text text-muted">Waktu server digunakan sebagai acuan hitung mundur.</small>
                         </div>
                     </div>
                 </div>

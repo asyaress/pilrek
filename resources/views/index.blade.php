@@ -629,12 +629,19 @@
 
             <div class="mil-p-100-160">
                 <div class="container">
+                    @php
+                        $countdownConfig = $countdownConfig ?? [
+                            'title' => 'Hitung Mundur Tahap Utama Pilrek',
+                            'subtitle' => 'Menuju pemaparan visi dan misi calon rektor',
+                            'target_iso' => '2026-09-01T08:00:00+08:00',
+                        ];
+                    @endphp
                     <div class="pilrek-countdown-panel mil-up">
                         <div class="mil-text-center mil-mb-10">
-                            <h4 class="mil-mb-10">Hitung Mundur Tahap Utama Pilrek</h4>
-                            <p class="mil-text-m mil-soft">Menuju pemaparan visi dan misi calon rektor</p>
+                            <h4 class="mil-mb-10">{{ $countdownConfig['title'] }}</h4>
+                            <p class="mil-text-m mil-soft">{{ $countdownConfig['subtitle'] }}</p>
                         </div>
-                        <div class="pilrek-countdown-grid" data-countdown-target="2026-09-01T08:00:00+08:00">
+                        <div class="pilrek-countdown-grid" data-countdown-target="{{ $countdownConfig['target_iso'] }}">
                             <div class="pilrek-countdown-item">
                                 <span class="pilrek-countdown-value" data-countdown="days">00</span>
                                 <span class="pilrek-countdown-label">Hari</span>

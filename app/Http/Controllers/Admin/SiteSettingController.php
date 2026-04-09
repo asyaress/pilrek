@@ -9,6 +9,7 @@ use App\Support\AdminActivityLogger;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
@@ -51,6 +52,9 @@ class SiteSettingController extends Controller
         $validated = $request->validate([
             'site_name' => ['required', 'string', 'max:150'],
             'site_tagline' => ['nullable', 'string', 'max:255'],
+            'countdown_title' => ['nullable', 'string', 'max:150'],
+            'countdown_subtitle' => ['nullable', 'string', 'max:255'],
+            'countdown_target_at' => ['nullable', 'date'],
             'footer_note' => ['nullable', 'string'],
             'footer_copyright' => ['nullable', 'string', 'max:255'],
             'contact_email' => ['nullable', 'email', 'max:255'],
@@ -92,6 +96,12 @@ class SiteSettingController extends Controller
         }
 
         $settings = SiteSetting::current();
+
+        if (!empty($validated['countdown_target_at'])) {
+            $validated['countdown_target_at'] = Carbon::parse($validated['countdown_target_at'])->format('Y-m-d H:i:s');
+        } else {
+            $validated['countdown_target_at'] = null;
+        }
 
         if ($request->hasFile('logo')) {
             $validated['logo_path'] = $this->storeAsset($request->file('logo'), 'logo');

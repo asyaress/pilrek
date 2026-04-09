@@ -10,6 +10,9 @@ class SiteSetting extends Model
     protected $fillable = [
         'site_name',
         'site_tagline',
+        'countdown_title',
+        'countdown_subtitle',
+        'countdown_target_at',
         'logo_path',
         'favicon_path',
         'footer_note',
@@ -30,6 +33,7 @@ class SiteSetting extends Model
         return [
             'institution_logos' => 'array',
             'selected_rector_candidate_id' => 'integer',
+            'countdown_target_at' => 'datetime',
         ];
     }
 
@@ -40,6 +44,9 @@ class SiteSetting extends Model
         return [
             'site_name' => 'Portal Pilrek Unmul',
             'site_tagline' => 'Pemilihan Rektor 2026-2030',
+            'countdown_title' => 'Hitung Mundur Tahap Utama Pilrek',
+            'countdown_subtitle' => 'Menuju pemaparan visi dan misi calon rektor',
+            'countdown_target_at' => '2026-09-01 08:00:00',
             'logo_path' => null,
             'favicon_path' => null,
             'footer_note' => 'Portal resmi informasi Pemilihan Rektor Universitas Mulawarman.',
