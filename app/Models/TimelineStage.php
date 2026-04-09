@@ -9,6 +9,7 @@ class TimelineStage extends Model
     public const STATUS_UPCOMING = 'upcoming';
     public const STATUS_ONGOING = 'ongoing';
     public const STATUS_DONE = 'done';
+    public const DEFAULT_ICON_CLASS = 'fa-calendar-alt';
 
     protected $fillable = [
         'stage_order',
@@ -16,6 +17,7 @@ class TimelineStage extends Model
         'title',
         'description',
         'status',
+        'icon_class',
         'is_active',
     ];
 
@@ -48,6 +50,7 @@ class TimelineStage extends Model
                 'title' => 'Sosialisasi dan Penjaringan',
                 'description' => 'Pengumuman resmi tahapan Pilrek dan pembukaan informasi untuk sivitas akademika.',
                 'status' => self::STATUS_DONE,
+                'icon_class' => 'fa-bullhorn',
                 'is_active' => true,
             ],
             [
@@ -56,6 +59,7 @@ class TimelineStage extends Model
                 'title' => 'Pendaftaran Bakal Calon',
                 'description' => 'Pendaftaran bakal calon rektor serta verifikasi administrasi dan persyaratan.',
                 'status' => self::STATUS_DONE,
+                'icon_class' => 'fa-file-signature',
                 'is_active' => true,
             ],
             [
@@ -64,6 +68,7 @@ class TimelineStage extends Model
                 'title' => 'Pemaparan Visi dan Misi',
                 'description' => 'Penyampaian program kerja calon rektor di hadapan senat dan perwakilan pemangku kepentingan.',
                 'status' => self::STATUS_ONGOING,
+                'icon_class' => 'fa-comments',
                 'is_active' => true,
             ],
             [
@@ -72,6 +77,7 @@ class TimelineStage extends Model
                 'title' => 'Pemilihan dan Penetapan',
                 'description' => 'Pemungutan suara, penetapan hasil Pilrek, dan proses administrasi pelantikan.',
                 'status' => self::STATUS_UPCOMING,
+                'icon_class' => 'fa-vote-yea',
                 'is_active' => true,
             ],
             [
@@ -80,6 +86,7 @@ class TimelineStage extends Model
                 'title' => 'Penetapan dan Pengajuan Hasil',
                 'description' => 'Dokumen hasil pemilihan disampaikan sesuai mekanisme tata kelola universitas.',
                 'status' => self::STATUS_UPCOMING,
+                'icon_class' => 'fa-file-alt',
                 'is_active' => true,
             ],
             [
@@ -88,6 +95,7 @@ class TimelineStage extends Model
                 'title' => 'Persiapan Pelantikan',
                 'description' => 'Tahap akhir administrasi dan persiapan transisi kepemimpinan periode 2026-2030.',
                 'status' => self::STATUS_UPCOMING,
+                'icon_class' => 'fa-user-tie',
                 'is_active' => true,
             ],
             [
@@ -96,6 +104,7 @@ class TimelineStage extends Model
                 'title' => 'Monitoring Transisi Kepemimpinan',
                 'description' => 'Pemantauan kelancaran masa transisi agar agenda strategis universitas tetap berjalan.',
                 'status' => self::STATUS_UPCOMING,
+                'icon_class' => 'fa-tasks',
                 'is_active' => true,
             ],
             [
@@ -104,6 +113,7 @@ class TimelineStage extends Model
                 'title' => 'Sinkronisasi Program Kerja',
                 'description' => 'Penajaman target awal periode kepemimpinan berdasarkan masukan sivitas akademika.',
                 'status' => self::STATUS_UPCOMING,
+                'icon_class' => 'fa-project-diagram',
                 'is_active' => true,
             ],
             [
@@ -112,6 +122,7 @@ class TimelineStage extends Model
                 'title' => 'Publikasi Laporan Tahap Akhir',
                 'description' => 'Laporan akhir proses Pilrek dipublikasikan sebagai bentuk transparansi tata kelola.',
                 'status' => self::STATUS_UPCOMING,
+                'icon_class' => 'fa-newspaper',
                 'is_active' => true,
             ],
             [
@@ -120,8 +131,54 @@ class TimelineStage extends Model
                 'title' => 'Evaluasi Menyeluruh Pilrek',
                 'description' => 'Evaluasi proses untuk peningkatan mekanisme pemilihan rektor pada periode berikutnya.',
                 'status' => self::STATUS_UPCOMING,
+                'icon_class' => 'fa-chart-line',
                 'is_active' => true,
             ],
         ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public static function iconOptions(): array
+    {
+        return [
+            'fa-calendar-alt' => 'Kalender',
+            'fa-bullhorn' => 'Sosialisasi',
+            'fa-file-signature' => 'Pendaftaran',
+            'fa-comments' => 'Diskusi/Presentasi',
+            'fa-vote-yea' => 'Pemilihan',
+            'fa-file-alt' => 'Dokumen',
+            'fa-user-tie' => 'Pelantikan',
+            'fa-tasks' => 'Monitoring',
+            'fa-project-diagram' => 'Sinkronisasi Program',
+            'fa-newspaper' => 'Publikasi',
+            'fa-chart-line' => 'Evaluasi',
+            'fa-flag-checkered' => 'Finalisasi',
+            'fa-bullseye' => 'Target',
+            'fa-check-circle' => 'Selesai',
+            'fa-clock' => 'Waktu',
+            'fa-hourglass-half' => 'Proses',
+            'fa-clipboard-check' => 'Validasi',
+            'fa-users' => 'Forum/Senat',
+            'fa-handshake' => 'Kesepakatan',
+            'fa-rocket' => 'Akselerasi',
+            'fa-balance-scale' => 'Penetapan',
+            'fa-gavel' => 'Keputusan',
+            'fa-book' => 'Pedoman',
+            'fa-university' => 'Kelembagaan',
+        ];
+    }
+
+    public static function resolveIconClass(?string $iconClass): string
+    {
+        $iconClass = trim((string) $iconClass);
+        $options = self::iconOptions();
+
+        if ($iconClass !== '' && array_key_exists($iconClass, $options)) {
+            return $iconClass;
+        }
+
+        return self::DEFAULT_ICON_CLASS;
     }
 }

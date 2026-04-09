@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             RectorRequirementSeeder::class,
             RectorCandidateSeeder::class,
             NewsPostSeeder::class,
+            DownloadDocumentSeeder::class,
             UserSeeder::class,
         ]);
     }

@@ -55,7 +55,7 @@
         .pilrek-navbar-logo-group {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 8px;
             flex: 0 0 auto;
             min-width: 0;
             white-space: nowrap;
@@ -77,7 +77,7 @@
 
         .pilrek-navbar-inst-item {
             flex: 0 0 auto;
-            height: 56px;
+            height: 45px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -85,25 +85,25 @@
         }
 
         .pilrek-navbar-inst-item.pilrek-navbar-logo-square {
-            width: 56px;
+            width: 45px;
         }
 
         .pilrek-navbar-inst-item.pilrek-navbar-logo-dies {
-            width: 46px;
+            width: 37px;
         }
 
         .pilrek-navbar-inst-item.pilrek-navbar-logo-dikti {
-            width: 150px;
+            width: 120px;
         }
 
         .pilrek-navbar-inst-item.pilrek-navbar-logo-unggul {
-            width: 126px;
+            width: 101px;
         }
 
         .pilrek-navbar-inst-item img {
             width: auto;
             max-width: 100%;
-            max-height: 56px;
+            max-height: 45px;
             object-fit: contain;
             display: block;
         }
@@ -141,27 +141,27 @@
             }
 
             .pilrek-navbar-inst-item {
-                height: 48px;
+                height: 38px;
             }
 
             .pilrek-navbar-inst-item.pilrek-navbar-logo-square {
-                width: 50px;
-            }
-
-            .pilrek-navbar-inst-item.pilrek-navbar-logo-dies {
                 width: 40px;
             }
 
+            .pilrek-navbar-inst-item.pilrek-navbar-logo-dies {
+                width: 32px;
+            }
+
             .pilrek-navbar-inst-item.pilrek-navbar-logo-dikti {
-                width: 132px;
+                width: 106px;
             }
 
             .pilrek-navbar-inst-item.pilrek-navbar-logo-unggul {
-                width: 112px;
+                width: 90px;
             }
 
             .pilrek-navbar-inst-item img {
-                max-height: 48px;
+                max-height: 38px;
             }
 
             .pilrek-top-panel-inline-logos .mil-top-menu ul li > a {
@@ -273,27 +273,27 @@
             }
 
             .pilrek-navbar-inst-item {
-                height: 40px;
+                height: 32px;
             }
 
             .pilrek-navbar-inst-item.pilrek-navbar-logo-square {
-                width: 42px;
-            }
-
-            .pilrek-navbar-inst-item.pilrek-navbar-logo-dies {
                 width: 34px;
             }
 
+            .pilrek-navbar-inst-item.pilrek-navbar-logo-dies {
+                width: 27px;
+            }
+
             .pilrek-navbar-inst-item.pilrek-navbar-logo-dikti {
-                width: 106px;
+                width: 85px;
             }
 
             .pilrek-navbar-inst-item.pilrek-navbar-logo-unggul {
-                width: 90px;
+                width: 72px;
             }
 
             .pilrek-navbar-inst-item img {
-                max-height: 40px;
+                max-height: 32px;
             }
 
             .pilrek-top-panel-inline-logos .mil-top-menu {
@@ -357,6 +357,12 @@
                     @endif
                     <li class="{{ $activePage === 'persyaratan' ? 'mil-active' : '' }}">
                         <a href="{{ route('persyaratan') }}">Persyaratan</a>
+                    </li>
+                    <li class="{{ $activePage === 'pendaftaran' ? 'mil-active' : '' }}">
+                        <a href="{{ route('pendaftaran') }}">Pendaftaran</a>
+                    </li>
+                    <li class="{{ $activePage === 'unduhan' ? 'mil-active' : '' }}">
+                        <a href="{{ route('unduhan') }}">Unduhan</a>
                     </li>
                     <li class="{{ $activePage === 'berita' ? 'mil-active' : '' }}">
                         <a href="{{ route('berita') }}">Berita</a>

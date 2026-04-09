@@ -9,6 +9,12 @@
             padding-bottom: 70px;
         }
 
+        .pilrek-requirements-kicker {
+            color: #145843;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
         .pilrek-requirements-hero p {
             max-width: 720px;
             margin: 0 auto;
@@ -32,7 +38,7 @@
         <div id="smooth-content">
             <div class="pilrek-requirements-hero">
                 <div class="container mil-text-center">
-                    <div class="mil-text-m mil-text-gradient-2 mil-mb-15">Persyaratan</div>
+                    <div class="mil-text-m pilrek-requirements-kicker mil-mb-15">Persyaratan</div>
                     <h1 class="mil-mb-20">Persyaratan Calon Rektor Unmul</h1>
                     <p class="mil-text-m mil-soft">
                         Ketentuan administrasi untuk tahapan Pilrek Universitas Mulawarman periode 2026-2030.

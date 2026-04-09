@@ -70,7 +70,7 @@
                             <a href="{{ route('admin.candidates.index') }}"
                                 class="nav-link {{ request()->routeIs('admin.candidates.*') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-user-tie"></i>
-                                <p>Kelola Calon</p>
+                                <p>Kelola Balon & Calon</p>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -85,6 +85,13 @@
                                 class="nav-link {{ request()->routeIs('admin.news.*') ? 'active' : '' }}">
                                 <i class="nav-icon far fa-newspaper"></i>
                                 <p>Kelola Berita</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.downloads.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.downloads.*') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-file-download"></i>
+                                <p>Kelola Unduhan</p>
                             </a>
                         </li>
                         <li class="nav-item">

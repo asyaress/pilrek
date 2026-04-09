@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\NewsPost;
+use App\Models\DownloadDocument;
 use App\Models\RectorCandidate;
 use App\Models\RectorRequirement;
+use App\Models\SiteSetting;
 use App\Models\TimelineStage;
 use App\Support\HtmlSanitizer;
 use Illuminate\Support\Carbon;
@@ -19,14 +21,23 @@ class PageController extends Controller
     public function home(): View
     {
         $timelineItems = $this->timelineItems();
-        $candidates = $this->candidateItems(RectorCandidate::STATUS_CALON);
+        $balonCandidates = $this->candidateItems(RectorCandidate::STATUS_BALON);
+        $calonCandidates = $this->candidateItems(RectorCandidate::STATUS_CALON);
+        $settings = Schema::hasTable('site_settings') ? SiteSetting::current() : null;
+        $selectedRector = null;
+        $selectedRectorCandidateId = (int) ($settings->selected_rector_candidate_id ?? 0);
+        if ($selectedRectorCandidateId > 0) {
+            $selectedRector = $calonCandidates->firstWhere('id', $selectedRectorCandidateId);
+        }
         $news = $this->newsItems();
         $requirements = $this->requirementItems();
 
         return view('index', [
             'timelineItems' => $timelineItems,
             'homeTimelineItems' => array_slice($timelineItems, 0, 5),
-            'homeCandidates' => $candidates->take(4)->values()->all(),
+            'homeBalonCandidates' => $balonCandidates->take(4)->values()->all(),
+            'homeCalonCandidates' => $calonCandidates->take(4)->values()->all(),
+            'selectedRector' => $selectedRector,
             'homeNewsItems' => $news->take(3)->values()->all(),
             'homeRequirementItems' => $requirements->take(5)->values()->all(),
         ]);
@@ -53,6 +64,13 @@ class PageController extends Controller
     {
         return view('pages.persyaratan-calon-rektor', [
             'requirementItems' => $this->requirementItems()->values()->all(),
+        ]);
+    }
+
+    public function downloads(): View
+    {
+        return view('pages.unduhan', [
+            'documents' => $this->downloadItems()->values()->all(),
         ]);
     }
 
@@ -134,6 +152,7 @@ class PageController extends Controller
                     'title',
                     'description',
                     'status',
+                    'icon_class',
                 ])
                 ->map(function (TimelineStage $item): array {
                     return [
@@ -141,6 +160,7 @@ class PageController extends Controller
                         'title' => $item->title,
                         'description' => $item->description,
                         'status' => $item->status,
+                        'icon_class' => TimelineStage::resolveIconClass($item->icon_class),
                     ];
                 })
                 ->values()
@@ -154,6 +174,7 @@ class PageController extends Controller
                     'title' => $item['title'],
                     'description' => $item['description'],
                     'status' => $item['status'],
+                    'icon_class' => TimelineStage::resolveIconClass($item['icon_class'] ?? null),
                 ];
             }, TimelineStage::defaultSeedData());
         }
@@ -167,6 +188,10 @@ class PageController extends Controller
     private function candidateItems(?string $status = null): Collection
     {
         $items = collect();
+        // Alur kandidat:
+        // - Halaman Balon menampilkan kandidat tahap awal + yang sudah diangkat menjadi calon
+        //   agar riwayat balon tetap terlihat.
+        // - Halaman Calon hanya menampilkan yang sudah berstatus calon.
         $statusFilter = $status === RectorCandidate::STATUS_BALON
             ? [RectorCandidate::STATUS_BALON, RectorCandidate::STATUS_CALON]
             : ($status ? [$status] : []);
@@ -182,6 +207,7 @@ class PageController extends Controller
                 )
                 ->ordered()
                 ->get([
+                    'id',
                     'candidate_order',
                     ...($hasStatusColumn ? ['status'] : []),
                     'name',
@@ -202,6 +228,7 @@ class PageController extends Controller
                 ])
                 ->map(function (RectorCandidate $item): array {
                     return [
+                        'id' => (int) $item->id,
                         'order' => (int) $item->candidate_order,
                         'status' => ($item->status ?: RectorCandidate::STATUS_CALON),
                         'name' => $item->name,
@@ -236,6 +263,7 @@ class PageController extends Controller
                 )
                 ->map(function (array $item): array {
                     return [
+                        'id' => (int) ($item['id'] ?? 0),
                         'order' => (int) ($item['candidate_order'] ?? 0),
                         'status' => $item['status'] ?? RectorCandidate::STATUS_CALON,
                         'name' => $item['name'],
@@ -369,6 +397,7 @@ class PageController extends Controller
                     'title',
                     'description',
                     'details',
+                    'icon_class',
                     'tab_color',
                     'gradient_start',
                     'gradient_middle',
@@ -381,6 +410,7 @@ class PageController extends Controller
                         'title' => $item->title,
                         'description' => $item->description,
                         'details' => is_array($item->details) ? $item->details : [],
+                        'icon_class' => RectorRequirement::resolveIconClass($item->icon_class),
                         'tab_color' => $item->tab_color ?: '#36b6a5',
                         'gradient_start' => $item->gradient_start ?: '#299a8d',
                         'gradient_middle' => $item->gradient_middle ?: '#36b6a5',
@@ -399,10 +429,74 @@ class PageController extends Controller
                         'title' => $item['title'] ?? 'Persyaratan',
                         'description' => $item['description'] ?? '-',
                         'details' => is_array($item['details'] ?? null) ? $item['details'] : [],
+                        'icon_class' => RectorRequirement::resolveIconClass($item['icon_class'] ?? null),
                         'tab_color' => $item['tab_color'] ?? '#36b6a5',
                         'gradient_start' => $item['gradient_start'] ?? '#299a8d',
                         'gradient_middle' => $item['gradient_middle'] ?? '#36b6a5',
                         'gradient_end' => $item['gradient_end'] ?? '#268d83',
+                    ];
+                })
+                ->values();
+        }
+
+        return $items;
+    }
+
+    /**
+     * @return Collection<int, array<string, mixed>>
+     */
+    private function downloadItems(): Collection
+    {
+        $items = collect();
+
+        if (Schema::hasTable('download_documents')) {
+            $items = DownloadDocument::query()
+                ->active()
+                ->ordered()
+                ->get([
+                    'document_order',
+                    'title',
+                    'description',
+                    'file_path',
+                    'file_name',
+                    'file_extension',
+                    'file_size_kb',
+                    'updated_at',
+                ])
+                ->map(function (DownloadDocument $item): array {
+                    $extension = strtoupper((string) ($item->file_extension ?: pathinfo((string) $item->file_path, PATHINFO_EXTENSION)));
+                    if ($extension === '') {
+                        $extension = 'FILE';
+                    }
+
+                    return [
+                        'order' => (int) $item->document_order,
+                        'title' => $item->title,
+                        'description' => $item->description,
+                        'type' => $extension,
+                        'size_label' => $item->file_size_kb ? number_format((int) $item->file_size_kb, 0, ',', '.') . ' KB' : '-',
+                        'updated_label' => $item->updated_at?->translatedFormat('d F Y') ?? '-',
+                        'is_available' => filled($item->file_path),
+                        'file_url' => $item->file_path ? asset($item->file_path) : null,
+                    ];
+                })
+                ->values();
+        }
+
+        if ($items->isEmpty()) {
+            $items = collect(DownloadDocument::defaultSeedData())
+                ->map(function (array $item): array {
+                    $extension = strtoupper((string) ($item['file_extension'] ?? 'FILE'));
+
+                    return [
+                        'order' => (int) ($item['document_order'] ?? 0),
+                        'title' => $item['title'] ?? 'Dokumen Unduhan',
+                        'description' => $item['description'] ?? null,
+                        'type' => $extension,
+                        'size_label' => isset($item['file_size_kb']) ? number_format((int) $item['file_size_kb'], 0, ',', '.') . ' KB' : '-',
+                        'updated_label' => now()->translatedFormat('d F Y'),
+                        'is_available' => !empty($item['file_path']),
+                        'file_url' => !empty($item['file_path']) ? asset((string) $item['file_path']) : null,
                     ];
                 })
                 ->values();

@@ -6,12 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class RectorRequirement extends Model
 {
+    public const DEFAULT_ICON_CLASS = 'fa-file-alt';
+
     protected $fillable = [
         'requirement_order',
         'label',
         'title',
         'description',
         'details',
+        'icon_class',
         'tab_color',
         'gradient_start',
         'gradient_middle',
@@ -45,84 +48,130 @@ class RectorRequirement extends Model
         return [
             [
                 'requirement_order' => 1,
-                'label' => 'Kartu Identitas',
-                'title' => 'Persyaratan 1 - Kartu Identitas',
-                'description' => 'Siapkan identitas utama yang masih berlaku agar proses verifikasi berjalan cepat dan data pendaftar sesuai.',
+                'label' => 'Status Kepegawaian',
+                'title' => 'Persyaratan 1 - Status Kepegawaian dan Jabatan Akademik',
+                'description' => 'Calon wajib memenuhi syarat dasar kepegawaian dan memiliki jabatan akademik sesuai ketentuan pemilihan rektor.',
                 'details' => [
-                    'Unggah KTP, KK, atau identitas lain yang masih aktif.',
-                    'Pastikan nama, tanggal lahir, dan nomor identitas terlihat jelas.',
-                    'Data identitas harus sama dengan data pada formulir pendaftaran.',
+                    'Berstatus dosen tetap Universitas Mulawarman.',
+                    'Memiliki jabatan akademik sekurang-kurangnya Lektor Kepala.',
+                    'Tidak sedang menjalani tugas belajar penuh waktu atau penugasan di luar ketentuan pilrek.',
                 ],
-                'tab_color' => '#f0b221',
-                'gradient_start' => '#d39311',
-                'gradient_middle' => '#f0b221',
-                'gradient_end' => '#d78712',
+                'icon_class' => 'fa-user-tie',
+                'tab_color' => '#5A827E',
+                'gradient_start' => '#FFFFFF',
+                'gradient_middle' => '#FAFFCA',
+                'gradient_end' => '#B9D4AA',
                 'is_active' => true,
             ],
             [
                 'requirement_order' => 2,
-                'label' => 'Dokumen Pendukung',
-                'title' => 'Persyaratan 2 - Dokumen Pendukung',
-                'description' => 'Lengkapi dokumen tambahan supaya berkas tidak tertunda saat proses pemeriksaan administrasi.',
+                'label' => 'Kualifikasi Pribadi',
+                'title' => 'Persyaratan 2 - Kualifikasi Pendidikan dan Integritas',
+                'description' => 'Calon wajib menunjukkan kualifikasi akademik, kesehatan, dan integritas personal sebagai pimpinan universitas.',
                 'details' => [
-                    'Siapkan pas foto, surat keterangan, atau formulir yang diminta.',
-                    'Gunakan format file sesuai ketentuan, misalnya PDF atau JPG.',
-                    'Gabungkan dokumen bila diminta agar lebih mudah saat diunggah.',
+                    'Memiliki kualifikasi akademik minimal doktor (S3).',
+                    'Sehat jasmani dan rohani dibuktikan dengan surat keterangan resmi.',
+                    'Tidak pernah dikenai sanksi disiplin berat serta tidak sedang tersangkut perkara pidana.',
                 ],
-                'tab_color' => '#f15c63',
-                'gradient_start' => '#d94d54',
-                'gradient_middle' => '#f15c63',
-                'gradient_end' => '#da4e55',
+                'icon_class' => 'fa-check-circle',
+                'tab_color' => '#84AE92',
+                'gradient_start' => '#FFFFFF',
+                'gradient_middle' => '#B9D4AA',
+                'gradient_end' => '#84AE92',
                 'is_active' => true,
             ],
             [
                 'requirement_order' => 3,
-                'label' => 'Data Kontak Aktif',
-                'title' => 'Persyaratan 3 - Data Kontak Aktif',
-                'description' => 'Informasi kontak harus aktif karena seluruh pemberitahuan lanjutan akan dikirim melalui data ini.',
+                'label' => 'Berkas Administratif',
+                'title' => 'Persyaratan 3 - Kelengkapan Dokumen Pencalonan',
+                'description' => 'Seluruh berkas administratif pencalonan harus lengkap, valid, dan sesuai format panitia.',
                 'details' => [
-                    'Masukkan nomor telepon aktif yang dapat dihubungi.',
-                    'Gunakan email yang rutin dibuka untuk menerima notifikasi.',
-                    'Periksa ulang penulisan alamat email dan nomor telepon.',
+                    'Formulir pendaftaran, surat pernyataan kesediaan, dan daftar riwayat hidup.',
+                    'Salinan SK jabatan fungsional, ijazah terakhir, serta identitas kepegawaian yang sah.',
+                    'Dokumen diserahkan sesuai jadwal dan format yang ditetapkan panitia.',
                 ],
-                'tab_color' => '#8ac667',
-                'gradient_start' => '#70ae52',
-                'gradient_middle' => '#8ac667',
-                'gradient_end' => '#6da94f',
+                'icon_class' => 'fa-file-signature',
+                'tab_color' => '#5A827E',
+                'gradient_start' => '#FFFFFF',
+                'gradient_middle' => '#FAFFCA',
+                'gradient_end' => '#B9D4AA',
                 'is_active' => true,
             ],
             [
                 'requirement_order' => 4,
-                'label' => 'Bukti Pembayaran',
-                'title' => 'Persyaratan 4 - Bukti Pembayaran',
-                'description' => 'Unggah bukti pembayaran sesuai nominal dan ketentuan agar verifikasi dapat segera diproses.',
+                'label' => 'Rekam Jejak',
+                'title' => 'Persyaratan 4 - Tridharma dan Kepemimpinan',
+                'description' => 'Calon harus memiliki rekam jejak yang terukur pada tridharma perguruan tinggi serta pengalaman kepemimpinan.',
                 'details' => [
-                    'Pastikan nominal transfer sesuai tagihan yang tercantum.',
-                    'Unggah file yang jelas dan tidak buram.',
-                    'Simpan bukti pembayaran sampai proses selesai diverifikasi.',
+                    'Memiliki portofolio tridharma: pendidikan, penelitian, dan pengabdian kepada masyarakat.',
+                    'Memiliki pengalaman manajerial di lingkungan perguruan tinggi atau institusi sejenis.',
+                    'Menyertakan bukti capaian kinerja akademik dan kelembagaan yang relevan.',
                 ],
-                'tab_color' => '#6170e6',
-                'gradient_start' => '#4e5ad4',
-                'gradient_middle' => '#6170e6',
-                'gradient_end' => '#4a58d0',
+                'icon_class' => 'fa-chart-line',
+                'tab_color' => '#84AE92',
+                'gradient_start' => '#FFFFFF',
+                'gradient_middle' => '#B9D4AA',
+                'gradient_end' => '#84AE92',
                 'is_active' => true,
             ],
             [
                 'requirement_order' => 5,
-                'label' => 'Konfirmasi Akhir',
-                'title' => 'Persyaratan 5 - Konfirmasi Akhir',
-                'description' => 'Tahap terakhir berisi pengecekan ulang seluruh informasi dan persetujuan bahwa data yang dikirim sudah benar.',
+                'label' => 'Naskah Program',
+                'title' => 'Persyaratan 5 - Visi, Misi, dan Program Kerja',
+                'description' => 'Calon menyampaikan naskah strategis sebagai dasar penilaian substansi kepemimpinan periode 2026-2030.',
                 'details' => [
-                    'Periksa kembali seluruh data sebelum dikirim.',
-                    'Centang persetujuan syarat dan ketentuan.',
-                    'Simpan bukti pendaftaran setelah proses selesai.',
+                    'Menyusun visi dan misi pengembangan Universitas Mulawarman secara terukur.',
+                    'Menyusun program kerja prioritas yang realistis dan selaras dengan Renstra Unmul.',
+                    'Siap memaparkan naskah program kerja pada tahap uji publik/senat sesuai jadwal.',
                 ],
-                'tab_color' => '#36b6a5',
-                'gradient_start' => '#299a8d',
-                'gradient_middle' => '#36b6a5',
-                'gradient_end' => '#268d83',
+                'icon_class' => 'fa-bullseye',
+                'tab_color' => '#5A827E',
+                'gradient_start' => '#FFFFFF',
+                'gradient_middle' => '#FAFFCA',
+                'gradient_end' => '#B9D4AA',
                 'is_active' => true,
             ],
         ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public static function iconOptions(): array
+    {
+        return [
+            'fa-file-alt' => 'Dokumen',
+            'fa-file-signature' => 'Dokumen Tanda Tangan',
+            'fa-user-tie' => 'Kepegawaian',
+            'fa-check-circle' => 'Verifikasi',
+            'fa-shield-alt' => 'Integritas',
+            'fa-chart-line' => 'Rekam Jejak',
+            'fa-bullseye' => 'Visi Misi',
+            'fa-tasks' => 'Persyaratan',
+            'fa-clipboard-list' => 'Checklist',
+            'fa-university' => 'Akademik',
+            'fa-id-card' => 'Identitas',
+            'fa-book' => 'Pedoman',
+            'fa-balance-scale' => 'Kepatuhan',
+            'fa-gavel' => 'Regulasi',
+            'fa-award' => 'Prestasi',
+            'fa-handshake' => 'Komitmen',
+            'fa-users' => 'Sivitas',
+            'fa-graduation-cap' => 'Pendidikan',
+            'fa-lightbulb' => 'Inovasi',
+            'fa-briefcase' => 'Manajerial',
+        ];
+    }
+
+    public static function resolveIconClass(?string $iconClass): string
+    {
+        $iconClass = trim((string) $iconClass);
+        $options = self::iconOptions();
+
+        if ($iconClass !== '' && array_key_exists($iconClass, $options)) {
+            return $iconClass;
+        }
+
+        return self::DEFAULT_ICON_CLASS;
     }
 }

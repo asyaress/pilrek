@@ -102,6 +102,34 @@
             display: block;
         }
 
+        .pilrek-selected-rector-section {
+            padding-top: 24px;
+        }
+
+        .pilrek-selected-rector-card {
+            border-radius: 28px;
+            overflow: hidden;
+            border: 1px solid rgba(2, 34, 53, 0.08);
+            background: linear-gradient(180deg, #ffffff 0%, #f7fafb 100%);
+            box-shadow: 0 18px 45px rgba(2, 34, 53, 0.1);
+            padding: 22px;
+        }
+
+        .pilrek-selected-rector-photo {
+            border-radius: 20px;
+            overflow: hidden;
+            aspect-ratio: 4 / 5;
+            background: #e8eef2;
+            height: 100%;
+        }
+
+        .pilrek-selected-rector-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
         .pilrek-roadmap-shell {
             background: transparent;
         }
@@ -591,7 +619,7 @@
                         </div>
                         <div class="col-xl-6">
                             <div class="mil-banner-img">
-                                <img src="{{ asset('foto-depan.png') }}" alt="Pilrek Unmul"
+                                <img src="{{ asset('rektorat.png') }}" alt="Pilrek Unmul"
                                     style="max-width: 135%; transform: translateX(5%)">
                             </div>
                         </div>
@@ -628,20 +656,83 @@
                 </div>
             </div>
 
-            @if (!empty($homeCandidates))
+            @if (!empty($selectedRector))
+                <div class="mil-p-0-130 pilrek-selected-rector-section">
+                    <div class="container">
+                        <div class="row justify-content-between align-items-end mil-mb-40">
+                            <div class="col-xl-8">
+                                <div class="mil-text-m mil-text-gradient-2 mil-mb-15">Rektor Terpilih</div>
+                                <h2>{{ $selectedRector['name'] }}</h2>
+                            </div>
+                            <div class="col-xl-4 mil-text-right mil-sm-text-left">
+                                <a href="{{ route('calon-rektor.detail', $selectedRector['slug']) }}" class="mil-btn mil-m mil-add-arrow">Profil Lengkap</a>
+                            </div>
+                        </div>
+                        <div class="pilrek-selected-rector-card mil-up">
+                            <div class="row align-items-center">
+                                <div class="col-lg-4 mil-mb-30 mil-lg-mb-0">
+                                    <div class="pilrek-selected-rector-photo">
+                                        <img src="{{ $selectedRector['photo_url'] }}" alt="{{ $selectedRector['name'] }}">
+                                    </div>
+                                </div>
+                                <div class="col-lg-8">
+                                    <h4 class="mil-mb-10">{{ $selectedRector['name'] }}</h4>
+                                    <p class="mil-text-m mil-soft mil-mb-10">{{ $selectedRector['faculty_unit'] ?: '-' }}</p>
+                                    <p class="mil-text-m mil-soft mil-mb-20">{{ $selectedRector['role_summary'] ?: '-' }}</p>
+                                    <p class="mil-text-s mil-soft mil-mb-0">
+                                        {{ $selectedRector['short_profile'] ?: 'Profil singkat rektor terpilih belum tersedia.' }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            @if (!empty($homeBalonCandidates))
+                <div class="mil-p-0-130 pilrek-candidate-section">
+                    <div class="container">
+                        <div class="row justify-content-between align-items-end mil-mb-60">
+                            <div class="col-xl-8">
+                                <div class="mil-text-m mil-text-gradient-2 mil-mb-15">Balon Rektor</div>
+                                <h2>Balon Rektor Unmul</h2>
+                            </div>
+                            <div class="col-xl-4 mil-text-right mil-sm-text-left">
+                                <a href="{{ route('balon') }}" class="mil-btn mil-m mil-add-arrow">Lihat Semua Balon</a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            @foreach (($homeBalonCandidates ?? []) as $candidate)
+                                <div class="col-xl-3 col-md-6 mil-mb-30">
+                                    <div class="pilrek-candidate-card mil-up">
+                                        <div class="pilrek-candidate-photo">
+                                            <img src="{{ $candidate['photo_url'] }}" alt="{{ $candidate['name'] }}">
+                                        </div>
+                                        <h5 class="mil-mb-10">{{ $candidate['name'] }}</h5>
+                                        <p class="mil-text-s mil-soft mil-mb-20 pilrek-candidate-role">{{ $candidate['role_summary'] ?: '-' }}</p>
+                                        <a href="{{ route('balon.detail', $candidate['slug']) }}" class="mil-link mil-accent">Profil Lengkap</a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            @if (!empty($homeCalonCandidates))
                 <div class="mil-p-0-130 pilrek-candidate-section">
                     <div class="container">
                         <div class="row justify-content-between align-items-end mil-mb-60">
                             <div class="col-xl-8">
                                 <div class="mil-text-m mil-text-gradient-2 mil-mb-15">Calon Rektor</div>
-                                <h2>Foto Calon Rektor Unmul</h2>
+                                <h2>Calon Rektor Unmul</h2>
                             </div>
                             <div class="col-xl-4 mil-text-right mil-sm-text-left">
                                 <a href="{{ route('calon-rektor') }}" class="mil-btn mil-m mil-add-arrow">Lihat Semua Calon</a>
                             </div>
                         </div>
                         <div class="row">
-                            @foreach (($homeCandidates ?? []) as $candidate)
+                            @foreach (($homeCalonCandidates ?? []) as $candidate)
                                 <div class="col-xl-3 col-md-6 mil-mb-30">
                                     <div class="pilrek-candidate-card mil-up">
                                         <div class="pilrek-candidate-photo">
@@ -664,7 +755,14 @@
                 $homeTimelineVisible = 5;
                 $homeTimelineItems = $homeTimelineItems ?? array_slice($timelineItems, 0, $homeTimelineVisible);
                 $timelineStepColors = ['#f2c400', '#a8b42d', '#56a35f', '#158a7b', '#0f463d'];
-                $timelineStepIcons = ['fa-chart-line', 'fa-user-check', 'fa-file-signature', 'fa-bullseye', 'fa-flag-checkered'];
+                $timelineStepIcons = collect($homeTimelineItems)
+                    ->map(
+                        static fn (array $item): string => \App\Models\TimelineStage::resolveIconClass(
+                            $item['icon_class'] ?? null,
+                        ),
+                    )
+                    ->values()
+                    ->all();
             @endphp
 
             <div class="mil-p-0-130">

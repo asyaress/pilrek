@@ -56,6 +56,17 @@
                     </a>
                 </div>
                 <div class="col-md-3">
+                    <a href="{{ route('admin.downloads.index') }}" class="text-dark">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-indigo"><i class="fas fa-file-download"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Unduhan</span>
+                                <span class="info-box-number">Kelola Dokumen</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3">
                     <a href="{{ route('admin.messages.index') }}" class="text-dark">
                         <div class="info-box">
                             <span class="info-box-icon bg-danger"><i class="fas fa-inbox"></i></span>

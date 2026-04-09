@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\RectorCandidate;
 use App\Models\SiteSetting;
 use App\Support\AdminActivityLogger;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
 
 class SiteSettingController extends Controller
@@ -19,8 +20,26 @@ class SiteSettingController extends Controller
      */
     public function edit(): View
     {
+        $calonOptions = [];
+
+        if (Schema::hasTable('rector_candidates')) {
+            $hasStatusColumn = Schema::hasColumn('rector_candidates', 'status');
+            $calonOptions = RectorCandidate::query()
+                ->when(
+                    $hasStatusColumn,
+                    fn ($query) => $query->where('status', RectorCandidate::STATUS_CALON)
+                )
+                ->ordered()
+                ->get(['id', 'name'])
+                ->mapWithKeys(static fn (RectorCandidate $item): array => [
+                    (string) $item->id => $item->name,
+                ])
+                ->all();
+        }
+
         return view('pages.admin.settings', [
             'settings' => SiteSetting::current(),
+            'calonOptions' => $calonOptions,
         ]);
     }
 
@@ -41,6 +60,7 @@ class SiteSettingController extends Controller
             'facebook_url' => ['nullable', 'url', 'max:255'],
             'youtube_url' => ['nullable', 'url', 'max:255'],
             'x_url' => ['nullable', 'url', 'max:255'],
+            'selected_rector_candidate_id' => ['nullable', 'integer'],
             'logo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
             'favicon' => ['nullable', 'file', 'mimes:ico,png,webp', 'max:1024'],
             'institution_logos' => ['nullable', 'array'],
@@ -51,6 +71,25 @@ class SiteSettingController extends Controller
             'institution_logos.*.remove' => ['nullable', 'in:0,1'],
             'institution_logos.*.file' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
         ]);
+
+        if (!empty($validated['selected_rector_candidate_id']) && Schema::hasTable('rector_candidates')) {
+            $hasStatusColumn = Schema::hasColumn('rector_candidates', 'status');
+            $exists = RectorCandidate::query()
+                ->whereKey((int) $validated['selected_rector_candidate_id'])
+                ->when(
+                    $hasStatusColumn,
+                    fn ($query) => $query->where('status', RectorCandidate::STATUS_CALON)
+                )
+                ->exists();
+
+            if (!$exists) {
+                return back()
+                    ->withErrors([
+                        'selected_rector_candidate_id' => 'Kandidat terpilih harus berasal dari data calon rektor.',
+                    ])
+                    ->withInput();
+            }
+        }
 
         $settings = SiteSetting::current();
 

@@ -7,6 +7,7 @@ use App\Models\RectorRequirement;
 use App\Support\AdminActivityLogger;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class RectorRequirementController extends Controller
@@ -37,6 +38,7 @@ class RectorRequirementController extends Controller
 
         return view('pages.admin.requirements.index', [
             'requirements' => $query->ordered()->paginate(10)->withQueryString(),
+            'iconOptions' => RectorRequirement::iconOptions(),
             'filters' => [
                 'q' => $filters['q'] ?? '',
                 'active' => $filters['active'] ?? 'all',
@@ -72,6 +74,7 @@ class RectorRequirementController extends Controller
         return view('pages.admin.requirements.edit', [
             'requirement' => $requirement,
             'detailsInput' => implode(PHP_EOL, $requirement->details ?? []),
+            'iconOptions' => RectorRequirement::iconOptions(),
         ]);
     }
 
@@ -164,6 +167,7 @@ class RectorRequirementController extends Controller
             'title' => ['required', 'string', 'max:220'],
             'description' => ['required', 'string'],
             'details_input' => ['nullable', 'string'],
+            'icon_class' => ['required', 'string', Rule::in(array_keys(RectorRequirement::iconOptions()))],
             'tab_color' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
             'gradient_start' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
             'gradient_middle' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],

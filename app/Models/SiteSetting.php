@@ -21,6 +21,7 @@ class SiteSetting extends Model
         'facebook_url',
         'youtube_url',
         'x_url',
+        'selected_rector_candidate_id',
         'institution_logos',
     ];
 
@@ -28,6 +29,7 @@ class SiteSetting extends Model
     {
         return [
             'institution_logos' => 'array',
+            'selected_rector_candidate_id' => 'integer',
         ];
     }
 
@@ -49,6 +51,7 @@ class SiteSetting extends Model
             'facebook_url' => null,
             'youtube_url' => null,
             'x_url' => null,
+            'selected_rector_candidate_id' => null,
             'institution_logos' => self::defaultInstitutionLogos(),
         ];
     }

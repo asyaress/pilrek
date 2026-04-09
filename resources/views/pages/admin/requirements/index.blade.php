@@ -4,6 +4,56 @@
 @section('page_title', 'Kelola Persyaratan Calon Rektor')
 
 @section('content')
+    @push('styles')
+        <style>
+            .pilrek-icon-preview-box {
+                border: 1px solid #dfe4ea;
+                border-radius: .375rem;
+                background: #f8f9fa;
+                padding: .75rem;
+            }
+
+            .pilrek-icon-preview-box i {
+                font-size: 1.5rem;
+            }
+
+            .pilrek-icon-grid {
+                display: grid;
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+                gap: .5rem;
+                margin-top: .5rem;
+            }
+
+            .pilrek-icon-btn {
+                border: 1px solid #dfe4ea;
+                border-radius: .5rem;
+                padding: .45rem .35rem;
+                background: #fff;
+                text-align: center;
+                transition: .2s ease;
+                cursor: pointer;
+            }
+
+            .pilrek-icon-btn i {
+                display: block;
+                font-size: 1.05rem;
+                margin-bottom: .2rem;
+            }
+
+            .pilrek-icon-btn span {
+                display: block;
+                font-size: .7rem;
+                line-height: 1.2;
+                color: #6c757d;
+            }
+
+            .pilrek-icon-btn.is-active {
+                border-color: #007bff;
+                background: #eaf3ff;
+            }
+        </style>
+    @endpush
+
     <div class="row">
         <div class="col-lg-5">
             <div class="card card-primary">
@@ -48,6 +98,40 @@
                             @error('details_input')
                                 <span class="invalid-feedback">{{ $message }}</span>
                             @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label>Icon Card</label>
+                            <select name="icon_class" id="requirement_icon_class"
+                                class="form-control @error('icon_class') is-invalid @enderror" data-icon-select
+                                required>
+                                @foreach ($iconOptions as $iconValue => $iconLabel)
+                                    <option value="{{ $iconValue }}" @selected(old('icon_class', 'fa-file-alt') === $iconValue)>
+                                        {{ $iconLabel }} ({{ $iconValue }})
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('icon_class')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
+
+                            <div class="pilrek-icon-preview-box mt-2" data-icon-preview-for="requirement_icon_class">
+                                <div class="small text-muted mb-1">Preview Icon</div>
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-file-alt mr-2" data-icon-preview></i>
+                                    <code data-icon-preview-label>fa-file-alt</code>
+                                </div>
+                            </div>
+
+                            <div class="pilrek-icon-grid" data-icon-grid-for="requirement_icon_class">
+                                @foreach ($iconOptions as $iconValue => $iconLabel)
+                                    <button type="button" class="pilrek-icon-btn" data-icon-value="{{ $iconValue }}"
+                                        title="{{ $iconLabel }}">
+                                        <i class="fas {{ $iconValue }}"></i>
+                                        <span>{{ $iconLabel }}</span>
+                                    </button>
+                                @endforeach
+                            </div>
                         </div>
 
                         <div class="form-row">
@@ -140,6 +224,7 @@
                                     <th style="width: 84px;">Urutan</th>
                                     <th style="min-width: 160px;">Label</th>
                                     <th style="min-width: 220px;">Judul</th>
+                                    <th style="width: 120px;">Icon</th>
                                     <th style="width: 120px;">Warna</th>
                                     <th style="width: 80px;">Aktif</th>
                                     <th style="width: 190px;">Aksi</th>
@@ -183,6 +268,10 @@
                                             </div>
                                         </td>
                                         <td>
+                                            <i class="fas {{ $requirement->icon_class ?? 'fa-file-alt' }} mr-1"></i>
+                                            <span class="text-muted text-sm">{{ $requirement->icon_class ?? 'fa-file-alt' }}</span>
+                                        </td>
+                                        <td>
                                             <div class="d-flex align-items-center">
                                                 <span class="d-inline-block rounded-circle mr-1"
                                                     style="width: 18px;height: 18px;background: {{ $requirement->tab_color }};"></span>
@@ -219,7 +308,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="text-center text-muted py-4">Belum ada data
+                                        <td colspan="7" class="text-center text-muted py-4">Belum ada data
                                             persyaratan.</td>
                                     </tr>
                                 @endforelse
@@ -235,4 +324,45 @@
             </div>
         </div>
     </div>
+
+    @push('scripts')
+        <script>
+            (function() {
+                var select = document.getElementById('requirement_icon_class');
+                if (!select) return;
+
+                var previewBox = document.querySelector('[data-icon-preview-for="requirement_icon_class"]');
+                var previewIcon = previewBox ? previewBox.querySelector('[data-icon-preview]') : null;
+                var previewLabel = previewBox ? previewBox.querySelector('[data-icon-preview-label]') : null;
+                var iconButtons = Array.prototype.slice.call(document.querySelectorAll(
+                    '[data-icon-grid-for="requirement_icon_class"] [data-icon-value]'
+                ));
+
+                function syncIconUI() {
+                    var value = select.value || 'fa-file-alt';
+                    if (previewIcon) {
+                        previewIcon.className = 'fas ' + value + ' mr-2';
+                    }
+                    if (previewLabel) {
+                        previewLabel.textContent = value;
+                    }
+                    iconButtons.forEach(function(btn) {
+                        btn.classList.toggle('is-active', btn.getAttribute('data-icon-value') === value);
+                    });
+                }
+
+                iconButtons.forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                        var value = btn.getAttribute('data-icon-value');
+                        if (!value) return;
+                        select.value = value;
+                        syncIconUI();
+                    });
+                });
+
+                select.addEventListener('change', syncIconUI);
+                syncIconUI();
+            })();
+        </script>
+    @endpush
 @endsection

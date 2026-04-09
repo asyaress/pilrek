@@ -9,7 +9,7 @@
 @once
     <style>
         .pilrek-req-wrap {
-            width: min(100%, 1240px);
+            width: min(100%, 1120px);
             margin: 0 auto;
         }
 
@@ -39,10 +39,18 @@
             --content-top: 244px;
             --glass: rgba(255, 255, 255, .12);
             --glass-border: rgba(255, 255, 255, .10);
-            --text: #0f4b44;
-            --muted: #4b6f69;
-            --shadow-soft: 0 20px 50px rgba(78, 46, 140, .14);
-            --shadow-strong: 0 34px 80px rgba(56, 34, 128, .24);
+            --theme-primary: #5A827E;
+            --theme-secondary: #84AE92;
+            --theme-soft: #B9D4AA;
+            --theme-warm: #FAFFCA;
+            --theme-text: #27403d;
+            --theme-muted: #56706b;
+            --theme-border: rgba(90, 130, 126, .28);
+            --theme-surface: color-mix(in srgb, #B9D4AA 26%, #ffffff 74%);
+            --text: var(--theme-text);
+            --muted: var(--theme-muted);
+            --shadow-soft: 0 16px 34px rgba(24, 71, 57, .10);
+            --shadow-strong: 0 24px 48px rgba(24, 71, 57, .14);
             position: relative;
             height: clamp(760px, 74vw, 940px);
             background: transparent;
@@ -51,6 +59,28 @@
             overflow: hidden;
             box-shadow: none;
             padding: 0;
+        }
+
+        .pilrek-req-frame[data-theme="a"] {
+            --theme-primary: #5A827E;
+            --theme-secondary: #84AE92;
+            --theme-soft: #B9D4AA;
+            --theme-warm: #FAFFCA;
+            --theme-text: #27403d;
+            --theme-muted: #56706b;
+            --theme-border: rgba(90, 130, 126, .28);
+            --theme-surface: color-mix(in srgb, #B9D4AA 26%, #ffffff 74%);
+        }
+
+        .pilrek-req-frame[data-theme="b"] {
+            --theme-primary: #84AE92;
+            --theme-secondary: #5A827E;
+            --theme-soft: #FAFFCA;
+            --theme-warm: #B9D4AA;
+            --theme-text: #2f4d48;
+            --theme-muted: #607872;
+            --theme-border: rgba(132, 174, 146, .34);
+            --theme-surface: color-mix(in srgb, #FAFFCA 34%, #ffffff 66%);
         }
 
         .pilrek-req-scene {
@@ -99,8 +129,8 @@
             overflow: hidden;
             backface-visibility: hidden;
             background: #ffffff;
-            color: #145843;
-            border: 1px solid #d7e9e4;
+            color: var(--theme-text);
+            border: 1px solid var(--theme-border);
         }
 
         .pilrek-req-header-card:focus-visible {
@@ -131,12 +161,13 @@
             display: grid;
             place-items: center;
             border-radius: 999px;
-            background: #e6f1ee;
+            background: #ffffff;
             backdrop-filter: blur(10px);
             font-size: 14px;
             font-weight: 900;
             flex: 0 0 auto;
-            color: #145843;
+            color: var(--theme-text);
+            border: 1px solid color-mix(in srgb, var(--theme-primary) 30%, #ffffff 70%);
         }
 
         .pilrek-req-header-card .label {
@@ -164,9 +195,9 @@
             transform: translate3d(0, 0, -40px) scale(.997);
             filter: none;
             background: #ffffff;
-            color: #145843;
-            border: 1px solid #d7e9e4;
-            box-shadow: 0 10px 24px rgba(20, 88, 67, .08);
+            color: var(--theme-text);
+            border: 1px solid var(--theme-border);
+            box-shadow: 0 10px 24px color-mix(in srgb, var(--theme-primary) 16%, transparent);
         }
 
         .pilrek-req-header-card.active {
@@ -174,8 +205,8 @@
             box-shadow: var(--shadow-strong);
             filter: none;
             background: #ffffff;
-            color: #145843;
-            border: 1px solid #d7e9e4;
+            color: var(--theme-text);
+            border: 1px solid color-mix(in srgb, var(--theme-primary) 42%, #ffffff 58%);
         }
 
         .pilrek-req-header-card:not(.active)::after {
@@ -183,14 +214,14 @@
         }
 
         .pilrek-req-header-card:not(.active) .num {
-            background: #f1f8f6;
-            color: #145843;
-            border: 1px solid #c8ddd7;
+            background: #ffffff;
+            color: var(--theme-text);
+            border: 1px solid color-mix(in srgb, var(--theme-primary) 24%, #ffffff 76%);
         }
 
         .pilrek-req-header-card.active .num {
-            background: #dcede8;
-            border: 1px solid #9fc4bb;
+            background: #ffffff;
+            border: 1px solid color-mix(in srgb, var(--theme-primary) 42%, #ffffff 58%);
         }
 
         .pilrek-req-content-shell {
@@ -204,8 +235,8 @@
             overflow: hidden;
             box-shadow: var(--shadow-strong);
             transition: background .82s var(--ease);
-            background: #f8fcfb;
-            border: 1px solid #d8eae5;
+            background: #ffffff;
+            border: 1px solid color-mix(in srgb, var(--theme-primary) 24%, #ffffff 76%);
         }
 
         .pilrek-req-mac-dots {
@@ -218,10 +249,12 @@
         }
 
         .pilrek-req-mac-dots span {
-            width: 11px;
-            height: 11px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
-            box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .09);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, .45),
+                inset 0 0 0 1px rgba(0, 0, 0, .18);
         }
 
         .pilrek-req-mac-dots .dot-red {
@@ -287,7 +320,7 @@
             align-items: start;
             font-size: 14px;
             line-height: 1.6;
-            color: #315f57;
+            color: var(--theme-text);
         }
 
         .pilrek-req-badge {
@@ -296,12 +329,12 @@
             display: grid;
             place-items: center;
             border-radius: 999px;
-            background: #eef8f5;
-            border: 1px solid #b9dad1;
+            background: #ffffff;
+            border: 1px solid color-mix(in srgb, var(--theme-primary) 24%, #ffffff 76%);
             backdrop-filter: blur(10px);
             font-size: 13px;
             font-weight: 800;
-            color: #145843;
+            color: var(--theme-text);
         }
 
         .pilrek-req-visual {
@@ -318,10 +351,10 @@
             position: relative;
             overflow: hidden;
             border-radius: 22px;
-            background: #eef8f5;
-            border: 1px solid rgba(126, 188, 172, .52);
+            background: #ffffff;
+            border: 0;
             box-shadow:
-                inset 0 -16px 24px rgba(32, 117, 101, .12),
+                inset 0 -16px 24px color-mix(in srgb, var(--theme-primary) 16%, transparent),
                 inset 0 0 0 1px rgba(255, 255, 255, .4);
         }
 
@@ -333,53 +366,34 @@
             font-size: 120px;
             line-height: 1;
             font-weight: 900;
-            color: rgba(20, 88, 67, .18);
+            color: rgba(255, 255, 255, .92);
+            text-shadow: 0 0 1px rgba(90, 130, 126, .24);
             letter-spacing: -.06em;
             user-select: none;
         }
 
-        .pilrek-req-doc-card {
+        .pilrek-req-icon-badge {
             position: absolute;
             left: 50%;
             top: 55%;
-            transform: translate(-50%, -50%) rotate(-8deg);
-            width: 180px;
-            height: 220px;
-            border-radius: 20px;
+            transform: translate(-50%, -50%);
+            width: 172px;
+            height: 172px;
+            border-radius: 50%;
             background: #ffffff;
-            box-shadow: 0 20px 36px rgba(26, 95, 82, .18);
-            border: 1px solid #c9e2db;
-            padding: 18px 16px;
+            border: 0;
+            box-shadow:
+                0 18px 30px color-mix(in srgb, var(--theme-primary) 24%, transparent),
+                inset 0 0 0 1px rgba(255, 255, 255, .62);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--theme-primary);
         }
 
-        .pilrek-req-doc-lines {
-            margin-top: 42px;
-            display: grid;
-            gap: 12px;
-        }
-
-        .pilrek-req-doc-lines span {
-            display: block;
-            height: 10px;
-            border-radius: 999px;
-            background: #d4d9f7;
-        }
-
-        .pilrek-req-doc-lines span:nth-child(1) {
-            width: 62%;
-            background: #2d8b76;
-        }
-
-        .pilrek-req-doc-lines span:nth-child(2) {
-            width: 82%;
-        }
-
-        .pilrek-req-doc-lines span:nth-child(3) {
-            width: 75%;
-        }
-
-        .pilrek-req-doc-lines span:nth-child(4) {
-            width: 56%;
+        .pilrek-req-icon-badge i {
+            font-size: 66px;
+            line-height: 1;
         }
 
         @media (max-width: 920px) {
@@ -480,6 +494,7 @@
                         frameEl.style.setProperty("--header-stack-h", headerStackHeight + "px");
                         frameEl.style.setProperty("--content-top", headerStackHeight + "px");
                         frameEl.style.minHeight = Math.max(760, headerStackHeight + 460) + "px";
+                        frameEl.setAttribute("data-theme", "a");
                     }
 
                     var active = Math.max(0, items.length - 1);
@@ -525,6 +540,8 @@
 
                     function renderContent(index) {
                         var item = items[index] || {};
+                        var themeKey = index % 2 === 0 ? "a" : "b";
+                        var iconClass = String(item.icon_class || "fa-file-alt").trim();
                         var itemNumber = parseInt(item.order, 10);
                         var numberText = Number.isFinite(itemNumber) ? formatNumber(itemNumber) : formatNumber(index + 1);
                         var details = Array.isArray(item.details) ? item.details.filter(function (detail) {
@@ -532,6 +549,10 @@
                         }) : [];
                         if (!details.length) {
                             details = ["Detail persyaratan belum diisi."];
+                        }
+
+                        if (frameEl) {
+                            frameEl.setAttribute("data-theme", themeKey);
                         }
 
                         var detailHtml = details.map(function (text, i) {
@@ -547,8 +568,8 @@
                             '<div class="pilrek-req-visual">' +
                             '<div class="pilrek-req-visual-panel">' +
                             '<div class="pilrek-req-big-number">' + numberText + "</div>" +
-                            '<div class="pilrek-req-doc-card">' +
-                            '<div class="pilrek-req-doc-lines"><span></span><span></span><span></span><span></span></div>' +
+                            '<div class="pilrek-req-icon-badge">' +
+                            '<i class="fas ' + escapeHtml(iconClass) + '"></i>' +
                             "</div>" +
                             "</div>" +
                             "</div>";

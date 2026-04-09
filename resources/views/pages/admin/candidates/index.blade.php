@@ -1,23 +1,23 @@
 @extends('layouts.admin.app')
 
-@section('title', 'Kelola Calon Rektor | Pilrek CMS')
-@section('page_title', 'Kelola Calon Rektor')
+@section('title', 'Kelola Balon & Calon | Pilrek CMS')
+@section('page_title', 'Kelola Kandidat Rektor (Balon -> Calon)')
 
 @section('content')
     <div class="row">
         <div class="col-lg-5">
             <div class="card card-primary">
                 <div class="card-header">
-                    <h3 class="card-title">Tambah Calon Rektor</h3>
+                    <h3 class="card-title">Tambah Kandidat Rektor</h3>
                 </div>
                 <form action="{{ route('admin.candidates.store') }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="card-body" style="max-height: 72vh; overflow: auto;">
                         <div class="form-group">
-                            <label>Status Kandidat</label>
+                            <label>Status Kandidat (Tahap Saat Ini)</label>
                             <select name="status" class="form-control @error('status') is-invalid @enderror" required>
                                 @foreach ($statusOptions as $statusValue => $statusLabel)
-                                    <option value="{{ $statusValue }}" @selected(old('status', \App\Models\RectorCandidate::STATUS_CALON) === $statusValue)>{{ $statusLabel }}</option>
+                                    <option value="{{ $statusValue }}" @selected(old('status', \App\Models\RectorCandidate::STATUS_BALON) === $statusValue)>{{ $statusLabel }}</option>
                                 @endforeach
                             </select>
                             @error('status')
@@ -160,7 +160,7 @@
                     </div>
 
                     <div class="card-footer text-right">
-                        <button type="submit" class="btn btn-primary">Simpan Calon</button>
+                        <button type="submit" class="btn btn-primary">Simpan Kandidat</button>
                     </div>
                 </form>
             </div>
@@ -169,7 +169,7 @@
         <div class="col-lg-7">
             <div class="card">
                 <div class="card-header border-0">
-                    <h3 class="card-title">Daftar Calon Rektor</h3>
+                    <h3 class="card-title">Daftar Kandidat Rektor</h3>
                     <div class="card-tools">
                         <span class="badge badge-light">Total: {{ $candidates->total() }}</span>
                     </div>
@@ -265,8 +265,25 @@
                                             <a href="{{ route('admin.candidates.edit', $candidate) }}" class="btn btn-sm btn-info">
                                                 <i class="fas fa-pen"></i> Edit
                                             </a>
+                                            @if (($candidate->status ?? \App\Models\RectorCandidate::STATUS_BALON) === \App\Models\RectorCandidate::STATUS_BALON)
+                                                <form action="{{ route('admin.candidates.promote', $candidate) }}" method="post"
+                                                    class="d-inline" onsubmit="return confirm('Angkat kandidat ini menjadi Calon?')">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-sm btn-success">
+                                                        <i class="fas fa-arrow-up"></i> Angkat Calon
+                                                    </button>
+                                                </form>
+                                            @else
+                                                <form action="{{ route('admin.candidates.demote', $candidate) }}" method="post"
+                                                    class="d-inline" onsubmit="return confirm('Ubah kandidat ini kembali ke Balon?')">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-sm btn-warning">
+                                                        <i class="fas fa-arrow-down"></i> Set Balon
+                                                    </button>
+                                                </form>
+                                            @endif
                                             <form action="{{ route('admin.candidates.destroy', $candidate) }}" method="post"
-                                                class="d-inline" onsubmit="return confirm('Hapus calon ini?')">
+                                                class="d-inline" onsubmit="return confirm('Hapus kandidat ini?')">
                                                 @csrf
                                                 @method('delete')
                                                 <button type="submit" class="btn btn-sm btn-danger">
@@ -277,7 +294,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="text-center text-muted py-4">Belum ada data calon rektor.</td>
+                                        <td colspan="6" class="text-center text-muted py-4">Belum ada data kandidat rektor.</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -293,3 +310,4 @@
         </div>
     </div>
 @endsection
+

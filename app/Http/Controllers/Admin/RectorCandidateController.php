@@ -74,14 +74,14 @@ class RectorCandidateController extends Controller
 
         AdminActivityLogger::log(
             'candidate.create',
-            'Menambahkan calon rektor baru.',
+            'Menambahkan kandidat rektor baru.',
             $candidate,
             ['name' => $candidate->name, 'order' => $candidate->candidate_order],
             $request
         );
 
         return redirect()->route('admin.candidates.index')
-            ->with('status', 'Calon rektor berhasil ditambahkan.');
+            ->with('status', 'Kandidat rektor berhasil ditambahkan.');
     }
 
     public function edit(RectorCandidate $candidate): View
@@ -110,14 +110,14 @@ class RectorCandidateController extends Controller
 
         AdminActivityLogger::log(
             'candidate.update',
-            'Memperbarui data calon rektor.',
+            'Memperbarui data kandidat rektor.',
             $candidate,
             ['name' => $candidate->name, 'order' => $candidate->candidate_order],
             $request
         );
 
         return redirect()->route('admin.candidates.index')
-            ->with('status', 'Calon rektor berhasil diperbarui.');
+            ->with('status', 'Kandidat rektor berhasil diperbarui.');
     }
 
     public function destroy(Request $request, RectorCandidate $candidate): RedirectResponse
@@ -132,14 +132,14 @@ class RectorCandidateController extends Controller
 
         AdminActivityLogger::log(
             'candidate.delete',
-            'Menghapus calon rektor.',
+            'Menghapus kandidat rektor.',
             null,
             $snapshot,
             $request
         );
 
         return redirect()->route('admin.candidates.index')
-            ->with('status', 'Calon rektor berhasil dihapus.');
+            ->with('status', 'Kandidat rektor berhasil dihapus.');
     }
 
     public function move(Request $request, RectorCandidate $candidate): RedirectResponse
@@ -175,6 +175,54 @@ class RectorCandidateController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function promote(Request $request, RectorCandidate $candidate): RedirectResponse
+    {
+        if (($candidate->status ?? RectorCandidate::STATUS_BALON) === RectorCandidate::STATUS_CALON) {
+            return redirect()->back()->with('status', 'Kandidat sudah berstatus Calon.');
+        }
+
+        $candidate->update([
+            'status' => RectorCandidate::STATUS_CALON,
+        ]);
+
+        AdminActivityLogger::log(
+            'candidate.promote',
+            'Mengangkat status kandidat dari Balon ke Calon.',
+            $candidate,
+            [
+                'name' => $candidate->name,
+                'new_status' => RectorCandidate::STATUS_CALON,
+            ],
+            $request
+        );
+
+        return redirect()->back()->with('status', 'Status kandidat berhasil diangkat menjadi Calon.');
+    }
+
+    public function demote(Request $request, RectorCandidate $candidate): RedirectResponse
+    {
+        if (($candidate->status ?? RectorCandidate::STATUS_BALON) === RectorCandidate::STATUS_BALON) {
+            return redirect()->back()->with('status', 'Kandidat sudah berstatus Balon.');
+        }
+
+        $candidate->update([
+            'status' => RectorCandidate::STATUS_BALON,
+        ]);
+
+        AdminActivityLogger::log(
+            'candidate.demote',
+            'Mengubah status kandidat dari Calon ke Balon.',
+            $candidate,
+            [
+                'name' => $candidate->name,
+                'new_status' => RectorCandidate::STATUS_BALON,
+            ],
+            $request
+        );
+
+        return redirect()->back()->with('status', 'Status kandidat berhasil diubah menjadi Balon.');
     }
 
     /**

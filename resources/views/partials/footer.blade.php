@@ -127,6 +127,9 @@
                         <a href="{{ route('persyaratan') }}">Persyaratan</a>
                     </li>
                     <li class="mil-text-m mil-soft mil-mb-15">
+                        <a href="{{ route('unduhan') }}">Unduhan</a>
+                    </li>
+                    <li class="mil-text-m mil-soft mil-mb-15">
                         <a href="{{ route('berita') }}">Berita</a>
                     </li>
                 </ul>

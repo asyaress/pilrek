@@ -1,7 +1,7 @@
 @extends('layouts.admin.app')
 
-@section('title', 'Edit Calon Rektor | Pilrek CMS')
-@section('page_title', 'Edit Calon Rektor')
+@section('title', 'Edit Kandidat Rektor | Pilrek CMS')
+@section('page_title', 'Edit Kandidat Rektor')
 
 @section('content')
     <div class="row justify-content-center">
@@ -181,7 +181,7 @@
 
                     <div class="card-footer d-flex justify-content-between">
                         <a href="{{ route('admin.candidates.index') }}" class="btn btn-default">Batal</a>
-                        <button type="submit" class="btn btn-info">Update Calon</button>
+                        <button type="submit" class="btn btn-info">Update Kandidat</button>
                     </div>
                 </form>
             </div>

@@ -7,6 +7,7 @@ use App\Models\TimelineStage;
 use App\Support\AdminActivityLogger;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class TimelineStageController extends Controller
@@ -46,6 +47,7 @@ class TimelineStageController extends Controller
         return view('pages.admin.timeline.index', [
             'timelineStages' => $query->ordered()->paginate(10)->withQueryString(),
             'statusOptions' => $this->statusOptions(),
+            'iconOptions' => TimelineStage::iconOptions(),
             'filters' => [
                 'q' => $filters['q'] ?? '',
                 'status' => $filters['status'] ?? 'all',
@@ -85,6 +87,7 @@ class TimelineStageController extends Controller
         return view('pages.admin.timeline.edit', [
             'timelineStage' => $timelineStage,
             'statusOptions' => $this->statusOptions(),
+            'iconOptions' => TimelineStage::iconOptions(),
         ]);
     }
 
@@ -195,6 +198,7 @@ class TimelineStageController extends Controller
             'title' => ['required', 'string', 'max:180'],
             'description' => ['required', 'string'],
             'status' => ['required', 'in:upcoming,ongoing,done'],
+            'icon_class' => ['required', 'string', Rule::in(array_keys(TimelineStage::iconOptions()))],
         ]);
     }
 

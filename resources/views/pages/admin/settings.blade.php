@@ -7,6 +7,7 @@
     @php
         $institutionLogos = old('institution_logos', $settings->institution_logos ?? \App\Models\SiteSetting::defaultInstitutionLogos());
         $institutionLogos = is_array($institutionLogos) && !empty($institutionLogos) ? array_values($institutionLogos) : \App\Models\SiteSetting::defaultInstitutionLogos();
+        $calonOptions = $calonOptions ?? [];
     @endphp
     <div class="card">
         <div class="card-header">
@@ -35,6 +36,37 @@
                             @error('site_tagline')
                                 <span class="invalid-feedback">{{ $message }}</span>
                             @enderror
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Rektor Terpilih (Home)</label>
+                            <select name="selected_rector_candidate_id"
+                                class="form-control @error('selected_rector_candidate_id') is-invalid @enderror">
+                                <option value="">-- Belum dipilih --</option>
+                                @foreach ($calonOptions as $candidateId => $candidateName)
+                                    <option value="{{ $candidateId }}"
+                                        @selected((string) old('selected_rector_candidate_id', $settings->selected_rector_candidate_id) === (string) $candidateId)>
+                                        {{ $candidateName }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('selected_rector_candidate_id')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
+                            <small class="form-text text-muted">
+                                Ambil langsung dari data kandidat berstatus Calon. Jika kosong, section rektor terpilih tidak tampil di Home.
+                            </small>
+                        </div>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-end">
+                        <div class="mb-3">
+                            <a href="{{ route('admin.candidates.index') }}" class="btn btn-outline-info btn-sm">
+                                <i class="fas fa-user-tie mr-1"></i>Buka Kelola Balon & Calon
+                            </a>
                         </div>
                     </div>
                 </div>

@@ -424,7 +424,14 @@
             @php
                 $timelineItems = $timelineItems ?? [];
                 $timelineStepColors = ['#f2c400', '#a8b42d', '#56a35f', '#158a7b', '#0f463d'];
-                $timelineStepIcons = ['fa-chart-line', 'fa-user-check', 'fa-file-signature', 'fa-bullseye', 'fa-flag-checkered'];
+                $timelineStepIcons = collect($timelineItems)
+                    ->map(
+                        static fn (array $item): string => \App\Models\TimelineStage::resolveIconClass(
+                            $item['icon_class'] ?? null,
+                        ),
+                    )
+                    ->values()
+                    ->all();
             @endphp
 
             <div class="mil-p-0-160">

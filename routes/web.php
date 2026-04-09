@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\ActivityLogController;
 use App\Http\Controllers\Admin\ContactMessageController;
+use App\Http\Controllers\Admin\DownloadDocumentController;
 use App\Http\Controllers\Admin\NewsPostController;
 use App\Http\Controllers\Admin\RectorCandidateController;
 use App\Http\Controllers\Admin\RectorRequirementController;
@@ -19,6 +20,8 @@ Route::get('/balon/{slug}', [PageController::class, 'prospectiveCandidateDetail'
 Route::get('/calon-rektor', [PageController::class, 'candidates'])->name('calon-rektor');
 Route::get('/calon-rektor/{slug}', [PageController::class, 'candidateDetail'])->name('calon-rektor.detail');
 Route::get('/persyaratan-calon-rektor', [PageController::class, 'requirements'])->name('persyaratan');
+Route::view('/pendaftaran', 'pages.pendaftaran')->name('pendaftaran');
+Route::get('/unduhan', [PageController::class, 'downloads'])->name('unduhan');
 Route::get('/berita', [PageController::class, 'news'])->name('berita');
 Route::get('/berita/{slug}', [PageController::class, 'newsDetail'])->name('berita.detail');
 Route::get('/publikasi/{slug?}', [PageController::class, 'publication'])->name('publikasi');
@@ -71,6 +74,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
             ->middleware('admin.role:super_admin,editor');
         Route::post('/candidates/{candidate}/move', [RectorCandidateController::class, 'move'])->name('candidates.move')
             ->middleware('admin.role:super_admin,editor');
+        Route::post('/candidates/{candidate}/promote', [RectorCandidateController::class, 'promote'])->name('candidates.promote')
+            ->middleware('admin.role:super_admin,editor');
+        Route::post('/candidates/{candidate}/demote', [RectorCandidateController::class, 'demote'])->name('candidates.demote')
+            ->middleware('admin.role:super_admin,editor');
         Route::get('/requirements', [RectorRequirementController::class, 'index'])->name('requirements.index')
             ->middleware('admin.role:super_admin,editor');
         Route::post('/requirements', [RectorRequirementController::class, 'store'])->name('requirements.store')
@@ -96,6 +103,18 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('/news/{news}', [NewsPostController::class, 'update'])->name('news.update')
             ->middleware('admin.role:super_admin,editor');
         Route::delete('/news/{news}', [NewsPostController::class, 'destroy'])->name('news.destroy')
+            ->middleware('admin.role:super_admin,editor');
+        Route::get('/downloads', [DownloadDocumentController::class, 'index'])->name('downloads.index')
+            ->middleware('admin.role:super_admin,editor');
+        Route::post('/downloads', [DownloadDocumentController::class, 'store'])->name('downloads.store')
+            ->middleware('admin.role:super_admin,editor');
+        Route::get('/downloads/{download}/edit', [DownloadDocumentController::class, 'edit'])->name('downloads.edit')
+            ->middleware('admin.role:super_admin,editor');
+        Route::put('/downloads/{download}', [DownloadDocumentController::class, 'update'])->name('downloads.update')
+            ->middleware('admin.role:super_admin,editor');
+        Route::delete('/downloads/{download}', [DownloadDocumentController::class, 'destroy'])->name('downloads.destroy')
+            ->middleware('admin.role:super_admin,editor');
+        Route::post('/downloads/{download}/move', [DownloadDocumentController::class, 'move'])->name('downloads.move')
             ->middleware('admin.role:super_admin,editor');
         Route::get('/messages', [ContactMessageController::class, 'index'])->name('messages.index')
             ->middleware('admin.role:super_admin,editor');
