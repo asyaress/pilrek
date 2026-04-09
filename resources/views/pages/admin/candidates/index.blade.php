@@ -14,6 +14,18 @@
                     @csrf
                     <div class="card-body" style="max-height: 72vh; overflow: auto;">
                         <div class="form-group">
+                            <label>Status Kandidat</label>
+                            <select name="status" class="form-control @error('status') is-invalid @enderror" required>
+                                @foreach ($statusOptions as $statusValue => $statusLabel)
+                                    <option value="{{ $statusValue }}" @selected(old('status', \App\Models\RectorCandidate::STATUS_CALON) === $statusValue)>{{ $statusLabel }}</option>
+                                @endforeach
+                            </select>
+                            @error('status')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
                             <label>Nama Lengkap</label>
                             <input type="text" name="name" value="{{ old('name') }}"
                                 class="form-control @error('name') is-invalid @enderror" required>
@@ -177,7 +189,16 @@
                                 <option value="0" @selected(($filters['active'] ?? 'all') === '0')>Nonaktif</option>
                             </select>
                         </div>
-                        <div class="form-group col-md-2 mb-2 text-md-right">
+                        <div class="form-group col-md-2 mb-2">
+                            <label class="mb-1">Status</label>
+                            <select name="status" class="form-control">
+                                <option value="all" @selected(($filters['status'] ?? 'all') === 'all')>Semua</option>
+                                @foreach ($statusOptions as $statusValue => $statusLabel)
+                                    <option value="{{ $statusValue }}" @selected(($filters['status'] ?? 'all') === $statusValue)>{{ $statusLabel }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group col-md-12 mb-2 text-md-right">
                             <button type="submit" class="btn btn-primary btn-block">Filter</button>
                             <a href="{{ route('admin.candidates.index') }}" class="btn btn-light btn-block mt-2">Reset</a>
                         </div>
@@ -190,6 +211,7 @@
                                 <tr>
                                     <th style="width: 84px;">Urutan</th>
                                     <th>Nama</th>
+                                    <th style="width: 100px;">Status</th>
                                     <th style="min-width: 180px;">Unit</th>
                                     <th style="width: 80px;">Aktif</th>
                                     <th style="width: 190px;">Aksi</th>
@@ -223,6 +245,14 @@
                                             <div class="font-weight-bold">{{ $candidate->name }}</div>
                                             <div class="text-muted text-sm">{{ $candidate->role_summary ?: '-' }}</div>
                                         </td>
+                                        <td>
+                                            @php
+                                                $candidateStatus = $candidate->status ?: \App\Models\RectorCandidate::STATUS_CALON;
+                                            @endphp
+                                            <span class="badge badge-{{ $candidateStatus === \App\Models\RectorCandidate::STATUS_BALON ? 'warning' : 'success' }}">
+                                                {{ $statusOptions[$candidateStatus] ?? ucfirst($candidateStatus) }}
+                                            </span>
+                                        </td>
                                         <td>{{ $candidate->faculty_unit ?: '-' }}</td>
                                         <td>
                                             @if ($candidate->is_active)
@@ -247,7 +277,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="5" class="text-center text-muted py-4">Belum ada data calon rektor.</td>
+                                        <td colspan="6" class="text-center text-muted py-4">Belum ada data calon rektor.</td>
                                     </tr>
                                 @endforelse
                             </tbody>

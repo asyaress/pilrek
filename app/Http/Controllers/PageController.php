@@ -19,7 +19,7 @@ class PageController extends Controller
     public function home(): View
     {
         $timelineItems = $this->timelineItems();
-        $candidates = $this->candidateItems();
+        $candidates = $this->candidateItems(RectorCandidate::STATUS_CALON);
         $news = $this->newsItems();
         $requirements = $this->requirementItems();
 
@@ -41,9 +41,12 @@ class PageController extends Controller
 
     public function candidates(): View
     {
-        return view('pages.calon-rektor', [
-            'candidates' => $this->candidateItems(),
-        ]);
+        return $this->candidateListPage(RectorCandidate::STATUS_CALON);
+    }
+
+    public function prospectiveCandidates(): View
+    {
+        return $this->candidateListPage(RectorCandidate::STATUS_BALON);
     }
 
     public function requirements(): View
@@ -55,12 +58,31 @@ class PageController extends Controller
 
     public function candidateDetail(string $slug): View
     {
-        $candidate = $this->candidateItems()->firstWhere('slug', $slug);
+        return $this->candidateDetailPage(RectorCandidate::STATUS_CALON, $slug);
+    }
+
+    public function prospectiveCandidateDetail(string $slug): View
+    {
+        return $this->candidateDetailPage(RectorCandidate::STATUS_BALON, $slug);
+    }
+
+    private function candidateListPage(string $status): View
+    {
+        return view('pages.calon-rektor', [
+            'candidates' => $this->candidateItems($status),
+            'pageMeta' => $this->candidatePageMeta($status),
+        ]);
+    }
+
+    private function candidateDetailPage(string $status, string $slug): View
+    {
+        $candidate = $this->candidateItems($status)->firstWhere('slug', $slug);
 
         abort_if(!$candidate, 404);
 
         return view('pages.detail-calon-rektor', [
             'candidate' => $candidate,
+            'pageMeta' => $this->candidatePageMeta($status),
         ]);
     }
 
@@ -142,16 +164,26 @@ class PageController extends Controller
     /**
      * @return Collection<int, array<string, mixed>>
      */
-    private function candidateItems(): Collection
+    private function candidateItems(?string $status = null): Collection
     {
         $items = collect();
+        $statusFilter = $status === RectorCandidate::STATUS_BALON
+            ? [RectorCandidate::STATUS_BALON, RectorCandidate::STATUS_CALON]
+            : ($status ? [$status] : []);
+        $hasCandidateTable = Schema::hasTable('rector_candidates');
 
-        if (Schema::hasTable('rector_candidates')) {
+        if ($hasCandidateTable) {
+            $hasStatusColumn = Schema::hasColumn('rector_candidates', 'status');
             $items = RectorCandidate::query()
                 ->active()
+                ->when(
+                    !empty($statusFilter) && $hasStatusColumn,
+                    fn ($query) => $query->whereIn('status', $statusFilter)
+                )
                 ->ordered()
                 ->get([
                     'candidate_order',
+                    ...($hasStatusColumn ? ['status'] : []),
                     'name',
                     'slug',
                     'role_summary',
@@ -171,6 +203,7 @@ class PageController extends Controller
                 ->map(function (RectorCandidate $item): array {
                     return [
                         'order' => (int) $item->candidate_order,
+                        'status' => ($item->status ?: RectorCandidate::STATUS_CALON),
                         'name' => $item->name,
                         'slug' => $item->slug,
                         'role_summary' => $item->role_summary,
@@ -188,14 +221,23 @@ class PageController extends Controller
                         'photo_url' => $item->photo_path ? asset($item->photo_path) : asset('template/img/inner-pages/team/1.png'),
                     ];
                 })
+                ->when(
+                    $status && !$hasStatusColumn,
+                    fn (Collection $collection) => in_array(RectorCandidate::STATUS_CALON, $statusFilter, true) ? $collection : collect()
+                )
                 ->values();
         }
 
-        if ($items->isEmpty()) {
+        if (!$hasCandidateTable && $items->isEmpty()) {
             $items = collect(RectorCandidate::defaultSeedData())
+                ->when(
+                    !empty($statusFilter),
+                    fn (Collection $collection) => $collection->whereIn('status', $statusFilter)
+                )
                 ->map(function (array $item): array {
                     return [
                         'order' => (int) ($item['candidate_order'] ?? 0),
+                        'status' => $item['status'] ?? RectorCandidate::STATUS_CALON,
                         'name' => $item['name'],
                         'slug' => $item['slug'] ?? Str::slug((string) ($item['name'] ?? 'calon-rektor')),
                         'role_summary' => $item['role_summary'] ?? null,
@@ -217,6 +259,40 @@ class PageController extends Controller
         }
 
         return $items;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function candidatePageMeta(string $status): array
+    {
+        $isBalon = $status === RectorCandidate::STATUS_BALON;
+
+        return [
+            'status' => $status,
+            'activePage' => $isBalon ? 'balon' : 'calon-rektor',
+            'title' => $isBalon ? 'Balon Rektor' : 'Calon Rektor',
+            'kicker' => 'Pemilihan Rektor 2026',
+            'description' => $isBalon
+                ? 'Daftar bakal calon rektor Pemilihan Rektor Universitas Periode 2026-2030'
+                : 'Daftar calon rektor Pemilihan Rektor Universitas Periode 2026-2030',
+            'empty' => $isBalon
+                ? 'Data bakal calon rektor belum tersedia.'
+                : 'Data calon rektor belum tersedia.',
+            'detailKicker' => $isBalon ? 'Balon Rektor' : 'Calon Rektor',
+            'profileKicker' => $isBalon ? 'Profil Balon' : 'Profil Calon',
+            'shortProfileFallback' => $isBalon
+                ? 'Profil singkat balon belum tersedia.'
+                : 'Profil singkat calon belum tersedia.',
+            'visionFallback' => $isBalon
+                ? 'Visi balon belum tersedia.'
+                : 'Visi calon belum tersedia.',
+            'missionsFallback' => $isBalon
+                ? 'Data misi balon belum tersedia.'
+                : 'Data misi calon belum tersedia.',
+            'indexRoute' => $isBalon ? 'balon' : 'calon-rektor',
+            'detailRoute' => $isBalon ? 'balon.detail' : 'calon-rektor.detail',
+        ];
     }
 
     /**

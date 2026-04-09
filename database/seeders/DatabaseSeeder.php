@@ -20,8 +20,7 @@ class DatabaseSeeder extends Seeder
             RectorRequirementSeeder::class,
             RectorCandidateSeeder::class,
             NewsPostSeeder::class,
-            AdminUserSeeder::class,
-            EditorUserSeeder::class,
+            UserSeeder::class,
         ]);
     }
 }

@@ -6,8 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class RectorCandidate extends Model
 {
+    public const STATUS_BALON = 'balon';
+    public const STATUS_CALON = 'calon';
+
     protected $fillable = [
         'candidate_order',
+        'status',
         'name',
         'slug',
         'role_summary',
@@ -45,6 +49,22 @@ class RectorCandidate extends Model
         return $query->where('is_active', true);
     }
 
+    public function scopeForStatus($query, string $status)
+    {
+        return $query->where('status', $status);
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public static function statusOptions(): array
+    {
+        return [
+            self::STATUS_BALON => 'Balon',
+            self::STATUS_CALON => 'Calon',
+        ];
+    }
+
     /**
      * @return array<int, array<string, mixed>>
      */
@@ -53,6 +73,7 @@ class RectorCandidate extends Model
         return [
             [
                 'candidate_order' => 1,
+                'status' => self::STATUS_CALON,
                 'name' => 'Prof. Dr. Ir. Ahmad Prasetyo, M.Sc.',
                 'slug' => 'ahmad-prasetyo',
                 'role_summary' => 'Guru Besar Teknik Industri / Dekan Fakultas Teknik',
@@ -85,6 +106,7 @@ class RectorCandidate extends Model
             ],
             [
                 'candidate_order' => 2,
+                'status' => self::STATUS_CALON,
                 'name' => 'Prof. Dr. Rina Kartikasari, M.Hum.',
                 'slug' => 'rina-kartikasari',
                 'role_summary' => 'Guru Besar Linguistik / Wakil Rektor Bidang Akademik',
@@ -113,6 +135,7 @@ class RectorCandidate extends Model
             ],
             [
                 'candidate_order' => 3,
+                'status' => self::STATUS_CALON,
                 'name' => 'Prof. Dr. H. Budi Santoso, M.Si.',
                 'slug' => 'budi-santoso',
                 'role_summary' => 'Guru Besar Biologi / Ketua Senat Fakultas',
@@ -141,6 +164,7 @@ class RectorCandidate extends Model
             ],
             [
                 'candidate_order' => 4,
+                'status' => self::STATUS_CALON,
                 'name' => 'Prof. Dr. Dewi Lestari, S.E., M.M.',
                 'slug' => 'dewi-lestari',
                 'role_summary' => 'Guru Besar Manajemen / Dekan Fakultas Ekonomi dan Bisnis',
@@ -169,6 +193,7 @@ class RectorCandidate extends Model
             ],
             [
                 'candidate_order' => 5,
+                'status' => self::STATUS_CALON,
                 'name' => 'Prof. Dr. Ir. Muhammad Arifin, M.T.',
                 'slug' => 'muhammad-arifin',
                 'role_summary' => 'Direktur Sekolah Pascasarjana / Guru Besar Teknik Sipil',

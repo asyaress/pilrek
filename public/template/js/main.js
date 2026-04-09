@@ -83,12 +83,34 @@ $(function () {
     const progressWrap = document.querySelector('.progress-wrap');
 
     if (progressWrap) {
+        let targetProgress = 0;
+        let currentProgress = 0;
+        let progressFrame = null;
+
+        const renderBackToTopProgress = () => {
+            currentProgress += (targetProgress - currentProgress) * 0.14;
+
+            if (Math.abs(targetProgress - currentProgress) < 0.0015) {
+                currentProgress = targetProgress;
+            }
+
+            progressWrap.style.setProperty('--scroll-progress', `${currentProgress * 100}%`);
+
+            if (Math.abs(targetProgress - currentProgress) >= 0.0015) {
+                progressFrame = window.requestAnimationFrame(renderBackToTopProgress);
+            } else {
+                progressFrame = null;
+            }
+        };
+
         const updateBackToTopProgress = () => {
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
             const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const progress = scrollHeight > 0 ? Math.min(scrollTop / scrollHeight, 1) : 0;
+            targetProgress = scrollHeight > 0 ? Math.min(scrollTop / scrollHeight, 1) : 0;
 
-            progressWrap.style.setProperty('--scroll-progress', `${progress * 100}%`);
+            if (!progressFrame) {
+                progressFrame = window.requestAnimationFrame(renderBackToTopProgress);
+            }
         };
 
         gsap.fromTo(progressWrap, {

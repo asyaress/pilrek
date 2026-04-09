@@ -22,6 +22,18 @@
 
                     <div class="card-body">
                         <div class="form-group">
+                            <label>Status Kandidat</label>
+                            <select name="status" class="form-control @error('status') is-invalid @enderror" required>
+                                @foreach ($statusOptions as $statusValue => $statusLabel)
+                                    <option value="{{ $statusValue }}" @selected(old('status', $candidate->status) === $statusValue)>{{ $statusLabel }}</option>
+                                @endforeach
+                            </select>
+                            @error('status')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
                             <label>Nama Lengkap</label>
                             <input type="text" name="name" value="{{ old('name', $candidate->name) }}"
                                 class="form-control @error('name') is-invalid @enderror" required>

@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/timeline', [PageController::class, 'timeline'])->name('timeline');
+Route::get('/balon', [PageController::class, 'prospectiveCandidates'])->name('balon');
+Route::get('/balon/{slug}', [PageController::class, 'prospectiveCandidateDetail'])->name('balon.detail');
 Route::get('/calon-rektor', [PageController::class, 'candidates'])->name('calon-rektor');
 Route::get('/calon-rektor/{slug}', [PageController::class, 'candidateDetail'])->name('calon-rektor.detail');
 Route::get('/persyaratan-calon-rektor', [PageController::class, 'requirements'])->name('persyaratan');

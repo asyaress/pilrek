@@ -16,9 +16,11 @@ class RectorCandidateController extends Controller
 {
     public function index(Request $request): View
     {
+        $hasStatusColumn = \Illuminate\Support\Facades\Schema::hasColumn('rector_candidates', 'status');
         $filters = $request->validate([
             'q' => ['nullable', 'string', 'max:180'],
             'active' => ['nullable', 'in:all,1,0'],
+            'status' => ['nullable', 'in:all,' . implode(',', array_keys(RectorCandidate::statusOptions()))],
         ]);
 
         $query = RectorCandidate::query()
@@ -37,6 +39,10 @@ class RectorCandidateController extends Controller
             ->when(
                 ($filters['active'] ?? 'all') !== 'all',
                 fn ($builder) => $builder->where('is_active', $filters['active'] === '1')
+            )
+            ->when(
+                $hasStatusColumn && ($filters['status'] ?? 'all') !== 'all',
+                fn ($builder) => $builder->where('status', $filters['status'])
             );
 
         return view('pages.admin.candidates.index', [
@@ -44,7 +50,9 @@ class RectorCandidateController extends Controller
             'filters' => [
                 'q' => $filters['q'] ?? '',
                 'active' => $filters['active'] ?? 'all',
+                'status' => $filters['status'] ?? 'all',
             ],
+            'statusOptions' => RectorCandidate::statusOptions(),
         ]);
     }
 
@@ -81,6 +89,7 @@ class RectorCandidateController extends Controller
         return view('pages.admin.candidates.edit', [
             'candidate' => $candidate,
             'missionsInput' => $this->missionsToTextarea($candidate->missions ?? []),
+            'statusOptions' => RectorCandidate::statusOptions(),
         ]);
     }
 
@@ -175,6 +184,7 @@ class RectorCandidateController extends Controller
     {
         return $request->validate([
             'name' => ['required', 'string', 'max:180'],
+            'status' => ['required', 'in:' . implode(',', array_keys(RectorCandidate::statusOptions()))],
             'role_summary' => ['nullable', 'string', 'max:200'],
             'faculty_unit' => ['nullable', 'string', 'max:180'],
             'study_program' => ['nullable', 'string', 'max:180'],

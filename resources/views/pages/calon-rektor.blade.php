@@ -1,6 +1,6 @@
 ﻿@extends('layouts.app')
 
-@section('title', 'Calon Rektor')
+@section('title', $pageMeta['title'])
 
 @section('content')
 <style>
@@ -90,7 +90,7 @@
     </div>
 
     <div class="progress-wrap active-progress"></div>
-    @include('partials.navbar', ['activePage' => 'calon-rektor'])
+    @include('partials.navbar', ['activePage' => $pageMeta['activePage']])
 
 
 
@@ -101,12 +101,12 @@
                 <div class="row align-items-center justify-content-center">
                     <div class="col-xl-8">
                         <div class="mil-banner-text mil-text-center">
-                            <div class="mil-text-m mil-mb-20">Pemilihan Rektor 2026</div>
-                            <h1 class="mil-mb-40">Calon Rektor</h1>
-                            <p class="mil-text-m mil-soft mil-mb-40">Daftar kandidat Pemilihan Rektor Universitas Periode 2026-2030</p>
+                            <div class="mil-text-m mil-mb-20">{{ $pageMeta['kicker'] }}</div>
+                            <h1 class="mil-mb-40">{{ $pageMeta['title'] }}</h1>
+                            <p class="mil-text-m mil-soft mil-mb-40">{{ $pageMeta['description'] }}</p>
                             <ul class="mil-breadcrumbs mil-center">
                                 <li><a href="{{ route('home') }}">Home</a></li>
-                                <li><a href="{{ route('calon-rektor') }}">Calon Rektor</a></li>
+                                <li><a href="{{ route($pageMeta['indexRoute']) }}">{{ $pageMeta['title'] }}</a></li>
                             </ul>
                         </div>
                     </div>
@@ -126,12 +126,12 @@
                                 <h5 class="mil-mb-15">{{ $candidate['name'] }}</h5>
                                 <div class="pilrek-candidate-unit">{{ $candidate['faculty_unit'] ?: '-' }}</div>
                                 <div class="pilrek-candidate-role">{{ $candidate['role_summary'] ?: '-' }}</div>
-                                <a href="{{ route('calon-rektor.detail', $candidate['slug']) }}" class="mil-btn mil-m">Lihat Detail</a>
+                                <a href="{{ route($pageMeta['detailRoute'], $candidate['slug']) }}" class="mil-btn mil-m">Lihat Detail</a>
                             </div>
                         </div>
                     @empty
                         <div class="col-12">
-                            <div class="alert alert-light text-center">Data calon rektor belum tersedia.</div>
+                            <div class="alert alert-light text-center">{{ $pageMeta['empty'] }}</div>
                         </div>
                     @endforelse
                 </div>

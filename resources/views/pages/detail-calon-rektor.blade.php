@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Detail Calon Rektor')
+@section('title', 'Detail ' . $pageMeta['title'])
 
 @section('content')
 <style>
@@ -193,7 +193,7 @@
     </div>
 
     <div class="progress-wrap active-progress"></div>
-    @include('partials.navbar', ['activePage' => 'calon-rektor'])
+    @include('partials.navbar', ['activePage' => $pageMeta['activePage']])
 
     <div id="smooth-content">
 
@@ -202,7 +202,7 @@
                 <div class="row align-items-center justify-content-center">
                     <div class="col-xl-9">
                         <div class="mil-banner-text mil-text-center">
-                            <div class="mil-text-m mil-mb-20">Calon Rektor</div>
+                            <div class="mil-text-m mil-mb-20">{{ $pageMeta['detailKicker'] }}</div>
                             <h1 class="mil-mb-40">{{ $candidate['name'] }}</h1>
                             <ul class="mil-breadcrumbs mil-pub-info mil-center">
                                 <li><span>{{ $candidate['faculty_unit'] ?: '-' }}</span></li>
@@ -226,7 +226,7 @@
                     </div>
                     <div class="col-xl-8 col-lg-7 mil-mb-60">
                         <div class="pilrek-profile-card mil-up">
-                            <div class="pilrek-section-kicker mil-mb-20">Profil Calon</div>
+                            <div class="pilrek-section-kicker mil-mb-20">{{ $pageMeta['profileKicker'] }}</div>
                             <h3 class="mil-mb-30">Informasi Akademik dan Kelembagaan</h3>
                             <ul class="pilrek-profile-list">
                                 <li>
@@ -271,7 +271,7 @@
                         <div class="pilrek-content-card mil-up">
                             <div class="pilrek-section-kicker mil-mb-20">Profil Singkat</div>
                             <h3 class="mil-mb-25">Ringkasan Akademik dan Kepemimpinan</h3>
-                            <p>{{ $candidate['short_profile'] ?: 'Profil singkat calon belum tersedia.' }}</p>
+                            <p>{{ $candidate['short_profile'] ?: $pageMeta['shortProfileFallback'] }}</p>
                         </div>
                     </div>
 
@@ -279,7 +279,7 @@
                         <div class="pilrek-content-card mil-up">
                             <div class="pilrek-section-kicker mil-mb-20">Visi</div>
                             <div class="pilrek-vision-statement">
-                                <h4>{{ $candidate['vision'] ?: 'Visi calon belum tersedia.' }}</h4>
+                                <h4>{{ $candidate['vision'] ?: $pageMeta['visionFallback'] }}</h4>
                             </div>
                         </div>
                     </div>
@@ -302,7 +302,7 @@
                                         <div class="pilrek-mission-number">01</div>
                                         <div class="pilrek-mission-body">
                                             <h5>Misi</h5>
-                                            <p>Data misi calon belum tersedia.</p>
+                                            <p>{{ $pageMeta['missionsFallback'] }}</p>
                                         </div>
                                     </li>
                                 @endforelse

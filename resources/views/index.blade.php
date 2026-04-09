@@ -628,37 +628,35 @@
                 </div>
             </div>
 
-            <div class="mil-p-0-130 pilrek-candidate-section">
-                <div class="container">
-                    <div class="row justify-content-between align-items-end mil-mb-60">
-                        <div class="col-xl-8">
-                            <div class="mil-text-m mil-text-gradient-2 mil-mb-15">Calon Rektor</div>
-                            <h2>Foto Calon Rektor Unmul</h2>
+            @if (!empty($homeCandidates))
+                <div class="mil-p-0-130 pilrek-candidate-section">
+                    <div class="container">
+                        <div class="row justify-content-between align-items-end mil-mb-60">
+                            <div class="col-xl-8">
+                                <div class="mil-text-m mil-text-gradient-2 mil-mb-15">Calon Rektor</div>
+                                <h2>Foto Calon Rektor Unmul</h2>
+                            </div>
+                            <div class="col-xl-4 mil-text-right mil-sm-text-left">
+                                <a href="{{ route('calon-rektor') }}" class="mil-btn mil-m mil-add-arrow">Lihat Semua Calon</a>
+                            </div>
                         </div>
-                        <div class="col-xl-4 mil-text-right mil-sm-text-left">
-                            <a href="{{ route('calon-rektor') }}" class="mil-btn mil-m mil-add-arrow">Lihat Semua Calon</a>
-                        </div>
-                    </div>
-                    <div class="row">
-                        @forelse (($homeCandidates ?? []) as $candidate)
-                            <div class="col-xl-3 col-md-6 mil-mb-30">
-                                <div class="pilrek-candidate-card mil-up">
-                                    <div class="pilrek-candidate-photo">
-                                        <img src="{{ $candidate['photo_url'] }}" alt="{{ $candidate['name'] }}">
+                        <div class="row">
+                            @foreach (($homeCandidates ?? []) as $candidate)
+                                <div class="col-xl-3 col-md-6 mil-mb-30">
+                                    <div class="pilrek-candidate-card mil-up">
+                                        <div class="pilrek-candidate-photo">
+                                            <img src="{{ $candidate['photo_url'] }}" alt="{{ $candidate['name'] }}">
+                                        </div>
+                                        <h5 class="mil-mb-10">{{ $candidate['name'] }}</h5>
+                                        <p class="mil-text-s mil-soft mil-mb-20 pilrek-candidate-role">{{ $candidate['role_summary'] ?: '-' }}</p>
+                                        <a href="{{ route('calon-rektor.detail', $candidate['slug']) }}" class="mil-link mil-accent">Profil Lengkap</a>
                                     </div>
-                                    <h5 class="mil-mb-10">{{ $candidate['name'] }}</h5>
-                                    <p class="mil-text-s mil-soft mil-mb-20 pilrek-candidate-role">{{ $candidate['role_summary'] ?: '-' }}</p>
-                                    <a href="{{ route('calon-rektor.detail', $candidate['slug']) }}" class="mil-link mil-accent">Profil Lengkap</a>
                                 </div>
-                            </div>
-                        @empty
-                            <div class="col-12">
-                                <div class="alert alert-light text-center">Data calon rektor belum tersedia.</div>
-                            </div>
-                        @endforelse
+                            @endforeach
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endif
 
             @php
                 $timelineItems = $timelineItems ?? [];
